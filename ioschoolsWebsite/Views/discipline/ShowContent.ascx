@@ -1,0 +1,82 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ioschoolsWebsite.Models.discipline.DisciplineViewModel>" %>
+<%@ Import Namespace="ioschoolsWebsite.Library" %>
+<%@ Import Namespace="ioschoolsWebsite.Models.discipline" %>
+<% if (Model.disciplines.Count() != 0)
+   {%>
+<div class="ar mr10">
+    <strong class="larger">
+        <%= Model.totalPoints.ToPointModel() %>
+        :</strong>
+    <%= Model.totalMerit%>
+    merit,
+    <%= Model.totalDemerit %>
+    demerit
+</div>
+<% } %>
+<table id="disciplineTable" class="table_brown mb20">
+    <thead>
+        <tr>
+            <td class="w300px">
+                Conduct Type
+            </td>
+            <td>
+                Details
+            </td>
+            <td class="w100px">
+                Points
+            </td>
+            <td class="w175px">
+            </td>
+        </tr>
+    </thead>
+    <% if (!Model.disciplines.Any())
+       {%>
+    <tbody>
+        <tr>
+            <td class="norow" colspan="4">
+                No records found.
+            </td>
+        </tr>
+    </tbody>
+    <%
+       }
+       else
+       {%>
+    <tbody>
+        <%
+           foreach (var d in Model.disciplines.OrderByDescending(x => x.id))
+           {%>
+        <tr alt="<%=d.id%>">
+            <td>
+                <span class="font_black">
+                    <%=d.type%></span>
+                <div class="smaller font_grey">
+                    <%=d.created%>
+                    <%
+               if (!Model.hideCreator)
+               {%>
+                    -
+                    <%=d.creator_name%>
+                    <%
+               }%></div>
+            </td>
+            <td>
+                <%=d.reason.ToHtmlBreak() %>
+            </td>
+            <td>
+                <%=d.points.ToPointModel()%>
+            </td>
+            <td class="ar">
+                <%
+               if (d.canEdit)
+               {%>
+                <span class="jqedit">edit</span> <span class="jqdelete">delete</span>
+                <%
+               }%>
+            </td>
+        </tr>
+        <%
+           }%>
+    </tbody>
+    <%}%>
+</table>

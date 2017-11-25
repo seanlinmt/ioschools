@@ -1,0 +1,724 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="" Class="ioschoolsDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=;Persist Security Info=True;User ID=" SettingsObjectName="ioschools.DB.Properties.Settings" SettingsPropertyName="tConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ecas" Member="ecas">
+    <Type Name="eca">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="eca_eca_student" Member="eca_students" ThisKey="id" OtherKey="ecaid" Type="eca_student" />
+      <Association Name="eca_attendance" Member="attendances" ThisKey="id" OtherKey="ecaid" Type="attendance" />
+      <Association Name="school_eca" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ELMAH_Error" Member="ELMAH_Errors">
+    <Type Name="ELMAH_Error">
+      <Column Name="ErrorId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Application" Type="System.String" DbType="NVarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Host" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Source" Type="System.String" DbType="NVarChar(60) NOT NULL" CanBeNull="false" />
+      <Column Name="Message" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="[User]" Member="User" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StatusCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TimeUtc" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Sequence" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AllXml" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exam_classes" Member="exam_classes">
+    <Type Name="exam_class">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="examid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="exam_exam_class" Member="exam" ThisKey="examid" OtherKey="id" Type="exam" IsForeignKey="true" />
+      <Association Name="school_class_exam_class" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.homework_classes" Member="homework_classes">
+    <Type Name="homework_class">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="homeworkid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="homework_homework_class" Member="homework" ThisKey="homeworkid" OtherKey="id" Type="homework" IsForeignKey="true" />
+      <Association Name="school_class_homework_class" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mails" Member="mails">
+    <Type Name="mail">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="toName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="toEmail" Type="System.String" DbType="NVarChar(320) NOT NULL" CanBeNull="false" />
+      <Column Name="subject" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="NVarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="fromEmail" Type="System.String" DbType="NVarChar(320)" CanBeNull="true" />
+      <Column Name="fromName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.siblings" Member="siblings">
+    <Type Name="sibling">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="siblingid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="otherid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="user_sibling" Member="user" ThisKey="otherid" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_sibling1" Member="user1" ThisKey="siblingid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_files" Member="user_files">
+    <Type Name="user_file">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="NVarChar(320) NOT NULL" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="filename" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="user_user_file" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.homework_files" Member="homework_files">
+    <Type Name="homework_file">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="NVarChar(320) NOT NULL" CanBeNull="false" />
+      <Column Name="homeworkid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="filename" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="size" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="homework_homework_file" Member="homework" ThisKey="homeworkid" OtherKey="id" Type="homework" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.feedbacks" Member="feedbacks">
+    <Type Name="feedback">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="message" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="status" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="user_feedback" Member="user" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.registration_notifications" Member="registration_notifications">
+    <Type Name="registration_notification">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Association Name="user_registration_notification" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.changelogs" Member="changelogs">
+    <Type Name="changelog">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="changes" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="user_changelog" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.students_guardians" Member="students_guardians">
+    <Type Name="students_guardian">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="parentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="user_students_guardian" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_students_guardian1" Member="user1" ThisKey="parentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.pages" Member="pages">
+    <Type Name="page">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="content" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.blog_files" Member="blog_files">
+    <Type Name="blog_file">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="blogid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(320) NOT NULL" CanBeNull="false" />
+      <Association Name="blog_blog_file" Member="blog" ThisKey="blogid" OtherKey="id" Type="blog" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.blog_images" Member="blog_images">
+    <Type Name="blog_image">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(1000)" CanBeNull="true" />
+      <Column Name="blogid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="blog_blog_image" Member="blog" ThisKey="blogid" OtherKey="id" Type="blog" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_parents" Member="user_parents">
+    <Type Name="user_parent">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="occupation" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="employer" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="phone_office" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="user_user_parent" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.blogs" Member="blogs">
+    <Type Name="blog">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ispublic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="emailed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="layoutMethod" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Association Name="blog_blog_file" Member="blog_files" ThisKey="id" OtherKey="blogid" Type="blog_file" />
+      <Association Name="blog_blog_image" Member="blog_images" ThisKey="id" OtherKey="blogid" Type="blog_image" />
+      <Association Name="user_blog" Member="user" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.registrations" Member="registrations">
+    <Type Name="registration">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="applicantid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="schoolyearid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="reviewer" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="reviewMessage" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="enrollingYear" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="previous_school" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="previous_report" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="previous_class" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="leaving_reason" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="isHandicap" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="hasLearningProblem" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="disability_details" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="admissionDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="leftDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="test_academic" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_diligence" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_attendance" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_responsible" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_initiative" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_conduct" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_honesty" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_reliance" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_collaborate" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_appearance" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_bm" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_english" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="test_remarks" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="cert_reason" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="cert_remarks" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="school_registration" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="school_year_registration" Member="school_year" ThisKey="schoolyearid" OtherKey="id" Type="school_year" IsForeignKey="true" />
+      <Association Name="user_registration" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_registration1" Member="user1" ThisKey="applicantid" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_registration2" Member="user2" ThisKey="reviewer" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.classes_teachers_allocated" Member="classes_teachers_allocateds">
+    <Type Name="classes_teachers_allocated">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="teacherid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="subjectid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="day" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="time_start" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="time_end" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Association Name="subject_classes_teachers_allocated" Member="subject" ThisKey="subjectid" OtherKey="id" Type="subject" IsForeignKey="true" />
+      <Association Name="school_classes_teachers_allocated" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="school_class_classes_teachers_allocated" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="user_classes_teachers_allocated" Member="user" ThisKey="teacherid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.classes_students_allocated" Member="classes_students_allocateds">
+    <Type Name="classes_students_allocated">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="school_class_classes_students_allocated" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="user_classes_students_allocated" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_images" Member="user_images">
+    <Type Name="user_image">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+      <Association Name="user_image_user" Member="users" ThisKey="id" OtherKey="photo" Type="user" />
+    </Type>
+  </Table>
+  <Table Name="dbo.eca_students" Member="eca_students">
+    <Type Name="eca_student">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="post" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="ecaid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="achievement" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="type" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="eca_eca_student" Member="eca" ThisKey="ecaid" OtherKey="id" Type="eca" IsForeignKey="true" />
+      <Association Name="user_eca_student" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.school_terms" Member="school_terms">
+    <Type Name="school_term">
+      <Column Name="id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="school_term_attendance_term" Member="attendance_terms" ThisKey="id" OtherKey="termid" Type="attendance_term" />
+      <Association Name="school_term_students_remark" Member="students_remarks" ThisKey="id" OtherKey="term" Type="students_remark" />
+      <Association Name="school_school_term" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.attendance_terms" Member="attendance_terms">
+    <Type Name="attendance_term">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="termid" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="startdate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="enddate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="days" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="school_term_attendance_term" Member="school_term" ThisKey="termid" OtherKey="id" Type="school_term" IsForeignKey="true" />
+      <Association Name="school_attendance_term" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.students_remarks" Member="students_remarks">
+    <Type Name="students_remark">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="term" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="conduct" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Association Name="school_term_students_remark" Member="school_term" ThisKey="term" OtherKey="id" Type="school_term" IsForeignKey="true" />
+      <Association Name="user_students_remark" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exam_marks" Member="exam_marks">
+    <Type Name="exam_mark">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="exam_subjectid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="mark" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="examid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="absent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="exam_subject_exam_mark" Member="exam_subject" ThisKey="exam_subjectid" OtherKey="id" Type="exam_subject" IsForeignKey="true" />
+      <Association Name="exam_exam_mark" Member="exam" ThisKey="examid" OtherKey="id" Type="exam" IsForeignKey="true" />
+      <Association Name="user_exam_mark" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.user_staff" Member="user_staffs">
+    <Type Name="user_staff">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="salary_grade" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="income_tax" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="epf" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="socso" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="spouse_name" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="spouse_employer" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="spouse_employer_address" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="spouse_phone_cell" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="spouse_phone_work" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="user_user_staff" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.subjects" Member="subjects">
+    <Type Name="subject">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="subject_classes_teachers_allocated" Member="classes_teachers_allocateds" ThisKey="id" OtherKey="subjectid" Type="classes_teachers_allocated" />
+      <Association Name="subject_subject_teacher" Member="subject_teachers" ThisKey="id" OtherKey="subjectid" Type="subject_teacher" />
+      <Association Name="subject_exam_template_subject" Member="exam_template_subjects" ThisKey="id" OtherKey="subjectid" Type="exam_template_subject" />
+      <Association Name="subject_homework" Member="homeworks" ThisKey="id" OtherKey="subjectid" Type="homework" />
+      <Association Name="school_subject" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.subject_teachers" Member="subject_teachers">
+    <Type Name="subject_teacher">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="teacherid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="subjectid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="subject_subject_teacher" Member="subject" ThisKey="subjectid" OtherKey="id" Type="subject" IsForeignKey="true" />
+      <Association Name="school_class_subject_teacher" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="user_subject_teacher" Member="user" ThisKey="teacherid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exam_template_subjects" Member="exam_template_subjects">
+    <Type Name="exam_template_subject">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="templateid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="position" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="subjectid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="subject_exam_template_subject" Member="subject" ThisKey="subjectid" OtherKey="id" Type="subject" IsForeignKey="true" />
+      <Association Name="exam_template_exam_template_subject" Member="exam_template" ThisKey="templateid" OtherKey="id" Type="exam_template" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exam_subjects" Member="exam_subjects">
+    <Type Name="exam_subject">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="examid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="code" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="position" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="subjectid" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="exam_subject_exam_mark" Member="exam_marks" ThisKey="id" OtherKey="exam_subjectid" Type="exam_mark" />
+      <Association Name="exam_exam_subject" Member="exam" ThisKey="examid" OtherKey="id" Type="exam" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.schools" Member="schools">
+    <Type Name="school">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="school_eca" Member="ecas" ThisKey="id" OtherKey="schoolid" Type="eca" />
+      <Association Name="school_registration" Member="registrations" ThisKey="id" OtherKey="schoolid" Type="registration" />
+      <Association Name="school_classes_teachers_allocated" Member="classes_teachers_allocateds" ThisKey="id" OtherKey="schoolid" Type="classes_teachers_allocated" />
+      <Association Name="school_school_term" Member="school_terms" ThisKey="id" OtherKey="schoolid" Type="school_term" />
+      <Association Name="school_attendance_term" Member="attendance_terms" ThisKey="id" OtherKey="schoolid" Type="attendance_term" />
+      <Association Name="school_subject" Member="subjects" ThisKey="id" OtherKey="schoolid" Type="subject" />
+      <Association Name="school_exam_template" Member="exam_templates" ThisKey="id" OtherKey="schoolid" Type="exam_template" />
+      <Association Name="school_exam" Member="exams" ThisKey="id" OtherKey="schoolid" Type="exam" />
+      <Association Name="school_school_class" Member="school_classes" ThisKey="id" OtherKey="schoolid" Type="school_class" />
+      <Association Name="school_school_year" Member="school_years" ThisKey="id" OtherKey="schoolid" Type="school_year" />
+      <Association Name="school_user" Member="users" ThisKey="id" OtherKey="schoolid" Type="user" />
+      <Association Name="school_fees_type" Member="fees_types" ThisKey="id" OtherKey="schoolid" Type="fees_type" />
+    </Type>
+  </Table>
+  <Table Name="dbo.homework_answers" Member="homework_answers">
+    <Type Name="homework_answer">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="url" Type="System.String" DbType="NVarChar(320) NOT NULL" CanBeNull="false" />
+      <Column Name="homeworkid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="filename" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="size" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="homeworkstudentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="homework_homework_answer" Member="homework" ThisKey="homeworkid" OtherKey="id" Type="homework" IsForeignKey="true" />
+      <Association Name="homework_student_homework_answer" Member="homework_student" ThisKey="homeworkstudentid" OtherKey="id" Type="homework_student" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.homeworks" Member="homeworks">
+    <Type Name="homework">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="message" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="subjectid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="notifyme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="homework_homework_class" Member="homework_classes" ThisKey="id" OtherKey="homeworkid" Type="homework_class" />
+      <Association Name="homework_homework_file" Member="homework_files" ThisKey="id" OtherKey="homeworkid" Type="homework_file" />
+      <Association Name="homework_homework_answer" Member="homework_answers" ThisKey="id" OtherKey="homeworkid" Type="homework_answer" />
+      <Association Name="homework_homework_student" Member="homework_students" ThisKey="id" OtherKey="homeworkid" Type="homework_student" />
+      <Association Name="subject_homework" Member="subject" ThisKey="subjectid" OtherKey="id" Type="subject" IsForeignKey="true" />
+      <Association Name="user_homework" Member="user" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.homework_students" Member="homework_students">
+    <Type Name="homework_student">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="homeworkid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="marks" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Association Name="homework_student_homework_answer" Member="homework_answers" ThisKey="id" OtherKey="homeworkstudentid" Type="homework_answer" />
+      <Association Name="homework_homework_student" Member="homework" ThisKey="homeworkid" OtherKey="id" Type="homework" IsForeignKey="true" />
+      <Association Name="school_class_homework_student" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="user_homework_student" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.leaves" Member="leaves">
+    <Type Name="leave">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="defaultTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="leave_leaves_allocated" Member="leaves_allocateds" ThisKey="id" OtherKey="type" Type="leaves_allocated" />
+    </Type>
+  </Table>
+  <Table Name="dbo.leaves_allocated" Member="leaves_allocateds">
+    <Type Name="leaves_allocated">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="staffid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="annualTotal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="remaining" Type="System.Decimal" DbType="Decimal(4,1)" CanBeNull="true" />
+      <Association Name="leaves_allocated_leaves_taken" Member="leaves_takens" ThisKey="id" OtherKey="allocatedid" Type="leaves_taken" />
+      <Association Name="leave_leaves_allocated" Member="leave" ThisKey="type" OtherKey="id" Type="leave" IsForeignKey="true" />
+      <Association Name="user_leaves_allocated" Member="user" ThisKey="staffid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.leaves_taken" Member="leaves_takens">
+    <Type Name="leaves_taken">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="allocatedid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="startdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="starttime" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="enddate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="endtime" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="details" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="staffid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="reason" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="days" Type="System.Decimal" DbType="Decimal(4,1) NOT NULL" CanBeNull="false" />
+      <Association Name="leaves_allocated_leaves_taken" Member="leaves_allocated" ThisKey="allocatedid" OtherKey="id" Type="leaves_allocated" IsForeignKey="true" />
+      <Association Name="user_leaves_taken" Member="user" ThisKey="staffid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.employments" Member="employments">
+    <Type Name="employment">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="start_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="end_date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="userid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="user_employment" Member="user" ThisKey="userid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exam_templates" Member="exam_templates">
+    <Type Name="exam_template">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="maxMark" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="isprivate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="exam_template_exam_template_subject" Member="exam_template_subjects" ThisKey="id" OtherKey="templateid" Type="exam_template_subject" />
+      <Association Name="school_exam_template" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="user_exam_template" Member="user" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.exams" Member="exams">
+    <Type Name="exam">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="exam_date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="maxMark" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="exam_exam_class" Member="exam_classes" ThisKey="id" OtherKey="examid" Type="exam_class" />
+      <Association Name="exam_exam_mark" Member="exam_marks" ThisKey="id" OtherKey="examid" Type="exam_mark" />
+      <Association Name="exam_exam_subject" Member="exam_subjects" ThisKey="id" OtherKey="examid" Type="exam_subject" />
+      <Association Name="school_exam" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="user_exam" Member="user" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.school_classes" Member="school_classes">
+    <Type Name="school_class">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="nextclass" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="schoolyearid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="school_class_exam_class" Member="exam_classes" ThisKey="id" OtherKey="classid" Type="exam_class" />
+      <Association Name="school_class_homework_class" Member="homework_classes" ThisKey="id" OtherKey="classid" Type="homework_class" />
+      <Association Name="school_class_classes_teachers_allocated" Member="classes_teachers_allocateds" ThisKey="id" OtherKey="classid" Type="classes_teachers_allocated" />
+      <Association Name="school_class_classes_students_allocated" Member="classes_students_allocateds" ThisKey="id" OtherKey="classid" Type="classes_students_allocated" />
+      <Association Name="school_class_subject_teacher" Member="subject_teachers" ThisKey="id" OtherKey="classid" Type="subject_teacher" />
+      <Association Name="school_class_homework_student" Member="homework_students" ThisKey="id" OtherKey="classid" Type="homework_student" />
+      <Association Name="school_class_school_class" Member="school_classes" ThisKey="id" OtherKey="nextclass" Type="school_class" />
+      <Association Name="school_class_attendance" Member="attendances" ThisKey="id" OtherKey="classid" Type="attendance" />
+      <Association Name="school_school_class" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="school_class_school_class" Member="school_class1" ThisKey="nextclass" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="school_year_school_class" Member="school_year" ThisKey="schoolyearid" OtherKey="id" Type="school_year" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.school_years" Member="school_years">
+    <Type Name="school_year">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="grademethodid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="school_year_registration" Member="registrations" ThisKey="id" OtherKey="schoolyearid" Type="registration" />
+      <Association Name="school_year_school_class" Member="school_classes" ThisKey="id" OtherKey="schoolyearid" Type="school_class" />
+      <Association Name="school_school_year" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+      <Association Name="grades_method_school_year" Member="grades_method" ThisKey="grademethodid" OtherKey="id" Type="grades_method" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.grades_methods" Member="grades_methods">
+    <Type Name="grades_method">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="grades_method_school_year" Member="school_years" ThisKey="id" OtherKey="grademethodid" Type="school_year" />
+      <Association Name="grades_method_grades_rule" Member="grades_rules" ThisKey="id" OtherKey="methodid" Type="grades_rule" />
+    </Type>
+  </Table>
+  <Table Name="dbo.grades_rules" Member="grades_rules">
+    <Type Name="grades_rule">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="methodid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="grade" Type="System.String" DbType="NVarChar(5)" CanBeNull="true" />
+      <Column Name="gradepoint" Type="System.Decimal" DbType="Decimal(3,1)" CanBeNull="true" />
+      <Column Name="mark" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="grades_method_grades_rule" Member="grades_method" ThisKey="methodid" OtherKey="id" Type="grades_method" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.students_disciplines" Member="students_disciplines">
+    <Type Name="students_discipline">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="points" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="reason" Type="System.String" DbType="NVarChar(1000) NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="conduct_students_discipline" Member="conduct" ThisKey="type" OtherKey="id" Type="conduct" IsForeignKey="true" />
+      <Association Name="user_students_discipline" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_students_discipline1" Member="user1" ThisKey="creator" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.conducts" Member="conducts">
+    <Type Name="conduct">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="min" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="max" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="isdemerit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="conduct_students_discipline" Member="students_disciplines" ThisKey="id" OtherKey="type" Type="students_discipline" />
+    </Type>
+  </Table>
+  <Table Name="dbo.users" Member="users">
+    <Type Name="user">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="status" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="email" Type="System.String" DbType="VarChar(320)" CanBeNull="true" />
+      <Column Name="passwordhash" Type="System.String" DbType="VarChar(128)" CanBeNull="true" />
+      <Column Name="designation" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="usergroup" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="photo" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="settings" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="nric_new" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dob" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="race" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dialect" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="gender" Type="System.String" DbType="VarChar(6)" CanBeNull="true" />
+      <Column Name="pob" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="citizenship" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="birthcertno" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="passportno" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="isbumi" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="religion" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="phone_home" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="phone_cell" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="address" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="notes" Type="System.String" DbType="NVarChar(3000)" CanBeNull="true" />
+      <Column Name="updated" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="marital_status" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="permissions" Type="System.Int64" DbType="BigInt" CanBeNull="false" />
+      <Association Name="user_sibling" Member="siblings" ThisKey="id" OtherKey="otherid" Type="sibling" />
+      <Association Name="user_sibling1" Member="siblings1" ThisKey="id" OtherKey="siblingid" Type="sibling" />
+      <Association Name="user_user_file" Member="user_files" ThisKey="id" OtherKey="userid" Type="user_file" />
+      <Association Name="user_feedback" Member="feedbacks" ThisKey="id" OtherKey="creator" Type="feedback" />
+      <Association Name="user_registration_notification" Member="registration_notifications" ThisKey="id" OtherKey="userid" Type="registration_notification" />
+      <Association Name="user_changelog" Member="changelogs" ThisKey="id" OtherKey="userid" Type="changelog" />
+      <Association Name="user_students_guardian" Member="students_guardians" ThisKey="id" OtherKey="studentid" Type="students_guardian" />
+      <Association Name="user_students_guardian1" Member="students_guardians1" ThisKey="id" OtherKey="parentid" Type="students_guardian" />
+      <Association Name="user_user_parent" Member="user_parents" ThisKey="id" OtherKey="userid" Type="user_parent" Cardinality="One" />
+      <Association Name="user_blog" Member="blogs" ThisKey="id" OtherKey="creator" Type="blog" />
+      <Association Name="user_registration" Member="registrations" ThisKey="id" OtherKey="studentid" Type="registration" />
+      <Association Name="user_registration1" Member="registrations1" ThisKey="id" OtherKey="applicantid" Type="registration" />
+      <Association Name="user_registration2" Member="registrations2" ThisKey="id" OtherKey="reviewer" Type="registration" />
+      <Association Name="user_classes_teachers_allocated" Member="classes_teachers_allocateds" ThisKey="id" OtherKey="teacherid" Type="classes_teachers_allocated" />
+      <Association Name="user_classes_students_allocated" Member="classes_students_allocateds" ThisKey="id" OtherKey="studentid" Type="classes_students_allocated" />
+      <Association Name="user_eca_student" Member="eca_students" ThisKey="id" OtherKey="studentid" Type="eca_student" />
+      <Association Name="user_students_remark" Member="students_remarks" ThisKey="id" OtherKey="studentid" Type="students_remark" />
+      <Association Name="user_exam_mark" Member="exam_marks" ThisKey="id" OtherKey="studentid" Type="exam_mark" />
+      <Association Name="user_user_staff" Member="user_staffs" ThisKey="id" OtherKey="userid" Type="user_staff" Cardinality="One" />
+      <Association Name="user_subject_teacher" Member="subject_teachers" ThisKey="id" OtherKey="teacherid" Type="subject_teacher" />
+      <Association Name="user_homework" Member="homeworks" ThisKey="id" OtherKey="creator" Type="homework" />
+      <Association Name="user_homework_student" Member="homework_students" ThisKey="id" OtherKey="studentid" Type="homework_student" />
+      <Association Name="user_leaves_allocated" Member="leaves_allocateds" ThisKey="id" OtherKey="staffid" Type="leaves_allocated" />
+      <Association Name="user_leaves_taken" Member="leaves_takens" ThisKey="id" OtherKey="staffid" Type="leaves_taken" />
+      <Association Name="user_employment" Member="employments" ThisKey="id" OtherKey="userid" Type="employment" />
+      <Association Name="user_exam_template" Member="exam_templates" ThisKey="id" OtherKey="creator" Type="exam_template" />
+      <Association Name="user_exam" Member="exams" ThisKey="id" OtherKey="creator" Type="exam" />
+      <Association Name="user_students_discipline" Member="students_disciplines" ThisKey="id" OtherKey="studentid" Type="students_discipline" />
+      <Association Name="user_students_discipline1" Member="students_disciplines1" ThisKey="id" OtherKey="creator" Type="students_discipline" />
+      <Association Name="user_attendance" Member="attendances" ThisKey="id" OtherKey="studentid" Type="attendance" />
+      <Association Name="user_fees_reminder" Member="fees_reminders" ThisKey="id" OtherKey="receiver" Type="fees_reminder" />
+      <Association Name="user_fees_reminder1" Member="fees_reminders1" ThisKey="id" OtherKey="sender" Type="fees_reminder" />
+      <Association Name="user_fee" Member="fees" ThisKey="id" OtherKey="studentid" Type="fee" />
+      <Association Name="user_image_user" Member="user_image" ThisKey="photo" OtherKey="id" Type="user_image" IsForeignKey="true" DeleteRule="SET NULL" />
+      <Association Name="school_user" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.attendances" Member="attendances">
+    <Type Name="attendance">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="classid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ecaid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="reason" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="creator" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="eca_attendance" Member="eca" ThisKey="ecaid" OtherKey="id" Type="eca" IsForeignKey="true" />
+      <Association Name="school_class_attendance" Member="school_class" ThisKey="classid" OtherKey="id" Type="school_class" IsForeignKey="true" />
+      <Association Name="user_attendance" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.fees_types" Member="fees_types">
+    <Type Name="fees_type">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="schoolid" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Association Name="fees_type_fee" Member="fees" ThisKey="id" OtherKey="typeid" Type="fee" />
+      <Association Name="school_fees_type" Member="school" ThisKey="schoolid" OtherKey="id" Type="school" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.fees_templates" Member="fees_templates">
+    <Type Name="fees_template">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="title" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="body" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.fees_reminders" Member="fees_reminders">
+    <Type Name="fees_reminder">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="templatename" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="created" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="paymentdue" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="receiver" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="sender" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="feeid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="uniqueid" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="viewed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="reference" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="user_fees_reminder" Member="user" ThisKey="receiver" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="user_fees_reminder1" Member="user1" ThisKey="sender" OtherKey="id" Type="user" IsForeignKey="true" />
+      <Association Name="fee_fees_reminder" Member="fee" ThisKey="feeid" OtherKey="id" Type="fee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.fees" Member="fees">
+    <Type Name="fee">
+      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="typeid" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="studentid" Type="System.Int64" DbType="BigInt NOT NULL" CanBeNull="false" />
+      <Column Name="status" Type="System.String" DbType="VarChar(7) NOT NULL" CanBeNull="false" />
+      <Column Name="amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="duedate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="fee_fees_reminder" Member="fees_reminders" ThisKey="id" OtherKey="feeid" Type="fees_reminder" />
+      <Association Name="fees_type_fee" Member="fees_type" ThisKey="typeid" OtherKey="id" Type="fees_type" IsForeignKey="true" />
+      <Association Name="user_fee" Member="user" ThisKey="studentid" OtherKey="id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.calendar" Member="calendars">
+    <Type Name="calendar">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="details" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="isHoliday" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

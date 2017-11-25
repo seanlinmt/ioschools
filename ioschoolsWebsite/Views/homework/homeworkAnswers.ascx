@@ -1,0 +1,32 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<System.Collections.Generic.IEnumerable<ioschoolsWebsite.Models.homework.HomeworkAnswer>>" %>
+<table class="table_blue">
+    <thead>
+        <tr>
+            <td>
+                Student
+            </td>
+            <td>
+                Answers Uploaded by Student
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <% foreach (var answer in Model)
+           {%>
+        <tr>
+            <td>
+                <a target="_blank" href="/users/<%= answer.studentid %>">
+                    <%= answer.studentname %></a>
+            </td>
+            <td>
+                <ul>
+                    <% foreach (var answerFile in answer.files)
+                       {%>
+  <li><a href="<%= answerFile.url %>"><%= answerFile.name %></a><div class="font_grey smaller"><%= answerFile.created %></div></li>
+                      <%  } %>
+                </ul>
+            </td>
+        </tr>
+        <%  } %>
+    </tbody>
+</table>

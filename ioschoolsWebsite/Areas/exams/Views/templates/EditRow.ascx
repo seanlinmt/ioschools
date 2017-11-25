@@ -1,0 +1,15 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ioschoolsWebsite.Models.exam.templates.ExamTemplateSubjectViewModel>" %>
+<tr>
+    <td>
+        <%= Html.TextBox("subjectname", Model.examsubjectname, new Dictionary<string, object>(){{"class","w300px"}}) %>
+    </td>
+    <td>
+        <%= Html.TextBox("code", Model.code, new Dictionary<string, object>() { { "class", "w100px" } })%>
+    </td>
+    <td>
+        <%= Html.DropDownList("subject", Model.subjects, new Dictionary<string, object>() { { "class", "w200px" } })%>
+    </td>
+    <td>
+        <%= Html.Hidden("templatesubjectid", Model.id) %>
+    </td>
+</tr>

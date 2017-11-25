@@ -1,0 +1,12 @@
+﻿.curFocus{
+    border: solid 1px rgb(103, 146, 233) !important;
+}
+
+#mainnav ul li:hover {
+    background-color:#fff;
+    border: 1px solid #eee;
+}
+
+table#exam_single_table_header {
+    overflow: hidden;
+}

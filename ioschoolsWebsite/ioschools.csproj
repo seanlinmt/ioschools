@@ -1,0 +1,1027 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{34A3C5DD-69E7-45FF-A748-8B9089889DBD}</ProjectGuid>
+    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ioschoolsWebsite</RootNamespace>
+    <AssemblyName>ioschoolsWebsite</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TEST</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;TEST</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\ioschoolsWebsite.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NPOI, Version=1.2.4.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\opensource\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="RouteDebug">
+      <HintPath>..\..\..\dlls\RouteDebug.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Areas\exams\Controllers\templatesController.cs" />
+    <Compile Include="Areas\exams\examsAreaRegistration.cs" />
+    <Compile Include="Areas\exams\Models\StudentRemark.cs" />
+    <Compile Include="Areas\exams\Models\StudentRemarksViewModel.cs" />
+    <Compile Include="Controllers\about\aboutController.cs" />
+    <Compile Include="Controllers\adminController.cs" />
+    <Compile Include="Controllers\admission\admissionController.cs" />
+    <Compile Include="Controllers\admission\enrolmentController.cs" />
+    <Compile Include="Controllers\admission\feesController.cs" />
+    <Compile Include="Controllers\attendance\attendanceController.cs" />
+    <Compile Include="Controllers\baseController.cs" />
+    <Compile Include="Controllers\blog\blogController.cs" />
+    <Compile Include="Controllers\calendarController.cs" />
+    <Compile Include="Controllers\discipline\conductController.cs" />
+    <Compile Include="Controllers\finance\financeController.cs" />
+    <Compile Include="Controllers\schools\classesController.cs" />
+    <Compile Include="Controllers\contactController.cs" />
+    <Compile Include="Controllers\cssController.cs" />
+    <Compile Include="Controllers\dashboard\dashboardController.cs" />
+    <Compile Include="Controllers\discipline\disciplineController.cs" />
+    <Compile Include="Controllers\dummyController.cs" />
+    <Compile Include="Controllers\eca\ecaController.cs" />
+    <Compile Include="Controllers\elearning\homeworkController.cs" />
+    <Compile Include="Controllers\error\errorController.cs" />
+    <Compile Include="Areas\exams\Controllers\examsController.cs" />
+    <Compile Include="Controllers\feedback\feedbackController.cs" />
+    <Compile Include="Controllers\finance\schoolfeesController.cs" />
+    <Compile Include="Controllers\filesController.cs" />
+    <Compile Include="Controllers\helpController.cs" />
+    <Compile Include="Controllers\homeController.cs" />
+    <Compile Include="Controllers\jsController.cs" />
+    <Compile Include="Controllers\login\loginController.cs" />
+    <Compile Include="Controllers\login\logoutController.cs" />
+    <Compile Include="Controllers\blog\newsController.cs" />
+    <Compile Include="Controllers\messaging\emailController.cs" />
+    <Compile Include="Controllers\photoController.cs" />
+    <Compile Include="Controllers\resourcesController.cs" />
+    <Compile Include="Controllers\schedule\scheduleController.cs" />
+    <Compile Include="Controllers\schools\gradingController.cs" />
+    <Compile Include="Controllers\schools\internationalController.cs" />
+    <Compile Include="Controllers\schools\kindergartenController.cs" />
+    <Compile Include="Controllers\schools\primaryController.cs" />
+    <Compile Include="Controllers\schools\schoolsController.cs" />
+    <Compile Include="Controllers\schools\secondaryController.cs" />
+    <Compile Include="Controllers\admission\uniformsController.cs" />
+    <Compile Include="Controllers\staff\leaveController.cs" />
+    <Compile Include="Controllers\staff\staffController.cs" />
+    <Compile Include="Controllers\student\testimonialController.cs" />
+    <Compile Include="Controllers\student\leavingCertController.cs" />
+    <Compile Include="Controllers\subjects\subjectsController.cs" />
+    <Compile Include="Controllers\testController.cs" />
+    <Compile Include="Controllers\users\guardianController.cs" />
+    <Compile Include="Controllers\users\usersController.cs" />
+    <Compile Include="Controllers\vacanciesController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Library\ActionFilters\CompressFilter.cs" />
+    <Compile Include="Library\ActionFilters\ExamJsonFilterAttribute.cs" />
+    <Compile Include="Library\ActionFilters\ElmahErrorAttribute.cs" />
+    <Compile Include="Library\ActionFilters\GroupsFilterAttribute.cs" />
+    <Compile Include="Library\ActionFilters\HomeworkJsonFilterAttribute.cs" />
+    <Compile Include="Library\ActionFilters\JsonFilterAttribute.cs" />
+    <Compile Include="Library\ActionFilters\NoCache.cs" />
+    <Compile Include="Library\ActionFilters\PermissionFilterAttribute.cs" />
+    <Compile Include="Library\CssLoader.cs" />
+    <Compile Include="Library\Extensions\LambdaComparer.cs" />
+    <Compile Include="Library\Extensions\LinqExtensions.cs" />
+    <Compile Include="Library\Extensions\Models\GroupSelectListItem.cs" />
+    <Compile Include="Library\Extensions\NPOIExtension.cs" />
+    <Compile Include="Library\Extensions\SelectExtension.cs" />
+    <Compile Include="Library\Helpers\DateHelper.cs" />
+    <Compile Include="Library\email\Email.cs" />
+    <Compile Include="Library\email\EmailExtensions.cs" />
+    <Compile Include="Library\email\EmailHelper.cs" />
+    <Compile Include="Library\email\EmailViewType.cs" />
+    <Compile Include="Library\Extensions\SelectYearExtension.cs" />
+    <Compile Include="Library\File\FileHandler.cs" />
+    <Compile Include="Library\File\UploaderType.cs" />
+    <Compile Include="Library\Helpers\EnumHelper.cs" />
+    <Compile Include="Library\ErrorData.cs" />
+    <Compile Include="Library\Helpers\ExcelHelper.cs" />
+    <Compile Include="Library\Helpers\JsonHelper.cs" />
+    <Compile Include="Library\Helpers\SelectListHelper.cs" />
+    <Compile Include="Library\Helpers\StringHelper.cs" />
+    <Compile Include="Library\Imaging\Img.cs" />
+    <Compile Include="Library\Imaging\ImgSize.cs" />
+    <Compile Include="Library\Imaging\UtilImage.cs" />
+    <Compile Include="Library\JavascriptReturnCodes.cs" />
+    <Compile Include="Library\JsLoader.cs" />
+    <Compile Include="Library\JsonData.cs" />
+    <Compile Include="Library\Liquid\filters\InputFilter.cs" />
+    <Compile Include="Library\Liquid\filters\MoneyFilter.cs" />
+    <Compile Include="Library\Liquid\filters\TextFilter.cs" />
+    <Compile Include="Library\Liquid\filters\UrlFilter.cs" />
+    <Compile Include="Library\Liquid\LiquidTemplate.cs" />
+    <Compile Include="Library\LoadedContent.cs" />
+    <Compile Include="Library\Lucene\LuceneHit.cs" />
+    <Compile Include="Library\Lucene\LuceneSearch.cs" />
+    <Compile Include="Library\Lucene\LuceneUtil.cs" />
+    <Compile Include="Library\Month.cs" />
+    <Compile Include="Library\MyMin.cs" />
+    <Compile Include="Library\scheduler\CacheScheduler.cs" />
+    <Compile Include="Library\scheduler\CacheTimerType.cs" />
+    <Compile Include="Library\scheduler\ScheduledTask.cs" />
+    <Compile Include="Library\sms\Clickatell.cs" />
+    <Compile Include="Library\Utility.cs" />
+    <Compile Include="Library\Helpers\ViewHelpers.cs" />
+    <Compile Include="Models\admin\AdminViewModel.cs" />
+    <Compile Include="Models\admin\ChangeLog.cs" />
+    <Compile Include="Models\admin\ChangeLogViewModel.cs" />
+    <Compile Include="Models\attendance\Attendance.cs" />
+    <Compile Include="Models\attendance\AttendanceViewModel.cs" />
+    <Compile Include="Models\blog\NewsPanelViewModel.cs" />
+    <Compile Include="Models\calendar\admin\CalendarAdminEntry.cs" />
+    <Compile Include="Models\calendar\admin\CalendarAdminViewModel.cs" />
+    <Compile Include="Models\discipline\Conduct.cs" />
+    <Compile Include="Models\fees\FeeNotificationTemplate.cs" />
+    <Compile Include="Models\fees\FeePayable.cs" />
+    <Compile Include="Models\fees\LateFeeAlert.cs" />
+    <Compile Include="Models\fees\LateFeeAlertSiblings.cs" />
+    <Compile Include="Models\fees\liquid\Children.cs" />
+    <Compile Include="Models\fees\liquid\Reminder.cs" />
+    <Compile Include="Models\fees\ReminderChildrenJSON.cs" />
+    <Compile Include="Models\fees\ReminderJSON.cs" />
+    <Compile Include="Models\fees\ReminderSent.cs" />
+    <Compile Include="Models\fees\SchoolFeeUpdateRow.cs" />
+    <Compile Include="Models\fees\SchoolFeeStudentEdit.cs" />
+    <Compile Include="Models\fees\statistics\FeeRow.cs" />
+    <Compile Include="Models\fees\statistics\StatisticsViewModel.cs" />
+    <Compile Include="Models\fees\statistics\StatRow.cs" />
+    <Compile Include="Models\fees\viewmodel\FeeStatusUpdateViewModel.cs" />
+    <Compile Include="Models\fees\viewmodel\ParentFinanceViewModel.cs" />
+    <Compile Include="Models\fees\viewmodel\ReminderViewModel.cs" />
+    <Compile Include="Models\finance\FinanceViewModel.cs" />
+    <Compile Include="Models\finance\StatementChildren.cs" />
+    <Compile Include="Models\finance\StatementViewModel.cs" />
+    <Compile Include="Models\RangeJSON.cs" />
+    <Compile Include="Models\school\json\GradingJSON.cs" />
+    <Compile Include="Models\school\json\GradingRuleJSON.cs" />
+    <Compile Include="Models\school\SchoolClass.cs" />
+    <Compile Include="Models\dashboard\DashboardViewModel.cs" />
+    <Compile Include="Models\discipline\DisciplineType.cs" />
+    <Compile Include="Models\discipline\DisciplineViewModel.cs" />
+    <Compile Include="Models\eca\ECAStudentViewModel.cs" />
+    <Compile Include="Models\eca\stats\ECAStatistic.cs" />
+    <Compile Include="Models\eca\ECAViewModel.cs" />
+    <Compile Include="Models\eca\stats\Entry.cs" />
+    <Compile Include="Models\enrolment\Admission.cs" />
+    <Compile Include="Models\enrolment\AdmissionStatus.cs" />
+    <Compile Include="Models\enrolment\EnrolmentListViewModel.cs" />
+    <Compile Include="Models\enrolment\IdType.cs" />
+    <Compile Include="Models\exam\statistics\ExamStat.cs" />
+    <Compile Include="Models\exam\ExamStudentViewModel.cs" />
+    <Compile Include="Models\exam\Grade.cs" />
+    <Compile Include="Models\exam\PositionCalculator.cs" />
+    <Compile Include="Models\exam\ReportCardExamSelectViewModel.cs" />
+    <Compile Include="Models\exam\templates\ExamSubject.cs" />
+    <Compile Include="Models\exam\templates\ExamTemplate.cs" />
+    <Compile Include="Models\exam\templates\ExamTemplateSubjectViewModel.cs" />
+    <Compile Include="Models\exam\viewmodels\ExamDashboardViewModel.cs" />
+    <Compile Include="Models\exam\viewmodels\ExamViewModel.cs" />
+    <Compile Include="Models\exam\JSON\ExamMarkJsonModel.cs" />
+    <Compile Include="Models\exam\JSON\StudentMarkJsonModel.cs" />
+    <Compile Include="Models\exam\templates\ExamTemplateViewModel.cs" />
+    <Compile Include="Models\exam\templates\TemplateListViewModel.cs" />
+    <Compile Include="Models\exam\viewmodels\ExamRemarksViewModel.cs" />
+    <Compile Include="Models\feedback\FeedbackEmailViewModel.cs" />
+    <Compile Include="Models\feedback\StudentFeedbackViewModel.cs" />
+    <Compile Include="Models\fees\SchoolFeeStudent.cs" />
+    <Compile Include="Models\fees\viewmodel\SchoolFeeStudentViewModel.cs" />
+    <Compile Include="Models\homework\HomeworkAnswer.cs" />
+    <Compile Include="Models\homework\HomeworkAnswerFile.cs" />
+    <Compile Include="Models\homework\HomeworkJSON.cs" />
+    <Compile Include="Models\homework\HomeworkStudent.cs" />
+    <Compile Include="Models\homework\viewmodels\HomeworkStudentViewModel.cs" />
+    <Compile Include="Models\leave\AdminLeave.cs" />
+    <Compile Include="Models\leave\LeaveTaken.cs" />
+    <Compile Include="Models\leave\LeaveTakenEdit.cs" />
+    <Compile Include="Models\leave\LeaveViewModel.cs" />
+    <Compile Include="Models\leave\StaffLeave.cs" />
+    <Compile Include="Models\notifications\LeaveNotification.cs" />
+    <Compile Include="Models\notifications\NotificationSendViewModel.cs" />
+    <Compile Include="Models\attendance\AttendanceType.cs" />
+    <Compile Include="Models\attendance\AttendanceAddViewModel.cs" />
+    <Compile Include="Models\BaseViewModel.cs" />
+    <Compile Include="Models\blog\Blog.cs" />
+    <Compile Include="Models\blog\BlogSummary.cs" />
+    <Compile Include="Models\blog\BlogSummaryViewData.cs" />
+    <Compile Include="Models\blog\BlogViewData.cs" />
+    <Compile Include="Models\blog\CircularViewModel.cs" />
+    <Compile Include="Models\calendar\Calendar.cs" />
+    <Compile Include="Models\calendar\CalendarViewModel.cs" />
+    <Compile Include="Models\calendar\CalendarEntry.cs" />
+    <Compile Include="Models\classes\AllocatedStudent.cs" />
+    <Compile Include="Models\classes\AllocatedTeacher.cs" />
+    <Compile Include="Models\discipline\Discipline.cs" />
+    <Compile Include="Models\eca\ECA.cs" />
+    <Compile Include="Models\eca\ECAStudent.cs" />
+    <Compile Include="Models\eca\ECAStudentEditViewModel.cs" />
+    <Compile Include="Models\eca\ECARow.cs" />
+    <Compile Include="Models\email\EmailRegistrationUpdateViewModel.cs" />
+    <Compile Include="Models\email\EmailAttendanceViewModel.cs" />
+    <Compile Include="Models\email\EmailRegistrationViewModel.cs" />
+    <Compile Include="Models\email\EmailStudentViewModel.cs" />
+    <Compile Include="Models\enrolment\AdmissionViewModel.cs" />
+    <Compile Include="Models\enrolment\Enrolment.cs" />
+    <Compile Include="Models\enrolment\EnrolmentViewModel.cs" />
+    <Compile Include="Models\exam\Exam.cs" />
+    <Compile Include="Models\exam\ExamMark.cs" />
+    <Compile Include="Models\exam\ExamSection.cs" />
+    <Compile Include="Models\exam\ExamStudent.cs" />
+    <Compile Include="Models\exam\SubjectMark.cs" />
+    <Compile Include="Models\homework\Homework.cs" />
+    <Compile Include="Models\IdNameUrl.cs" />
+    <Compile Include="Models\homework\viewmodels\HomeworkViewModel.cs" />
+    <Compile Include="Models\IdName.cs" />
+    <Compile Include="Models\jqgrid\JqgridRow.cs" />
+    <Compile Include="Models\jqgrid\JqgridTable.cs" />
+    <Compile Include="Models\pages\PageViewModel.cs" />
+    <Compile Include="Models\photo\Photo.cs" />
+    <Compile Include="Models\photo\PhotoUpload.cs" />
+    <Compile Include="Models\schedule\Schedule.cs" />
+    <Compile Include="Models\schedule\ScheduleViewModel.cs" />
+    <Compile Include="Models\school\AdminSchoolClassesViewModel.cs" />
+    <Compile Include="Models\school\AdminSchoolTermsViewModel.cs" />
+    <Compile Include="Models\school\SchoolTerm.cs" />
+    <Compile Include="Models\school\json\SchoolTermJSON.cs" />
+    <Compile Include="Models\school\SchoolTermsViewModel.cs" />
+    <Compile Include="Models\school\json\TermJSON.cs" />
+    <Compile Include="Models\school\SchoolYear.cs" />
+    <Compile Include="Models\stats\ClassStatistics.cs" />
+    <Compile Include="Models\stats\ConductStatistic.cs" />
+    <Compile Include="Models\stats\ConductStatistics.cs" />
+    <Compile Include="Models\stats\Race.cs" />
+    <Compile Include="Models\stats\RaceCollection.cs" />
+    <Compile Include="Models\stats\StatsViewModel.cs" />
+    <Compile Include="Models\subject\JSON\SubjectTeacherJSONCollection.cs" />
+    <Compile Include="Models\subject\SubjectRow.cs" />
+    <Compile Include="Models\subject\Subject.cs" />
+    <Compile Include="Models\subject\SubjectTeacher.cs" />
+    <Compile Include="Models\subject\SubjectTeacherEntry.cs" />
+    <Compile Include="Models\subject\JSON\SubjectTeacherJSON.cs" />
+    <Compile Include="Models\subject\viewmodels\AdminSubject.cs" />
+    <Compile Include="Models\subject\viewmodels\SubjectsTeaching.cs" />
+    <Compile Include="Models\timeline\Event.cs" />
+    <Compile Include="Models\timeline\Timeline.cs" />
+    <Compile Include="Models\user\Designation.cs" />
+    <Compile Include="Models\user\JGrowl.cs" />
+    <Compile Include="Models\user\staff\EmploymentPeriod.cs" />
+    <Compile Include="Models\user\staff\UserStaff.cs" />
+    <Compile Include="Models\user\student\StudentJSON.cs" />
+    <Compile Include="Models\user\student\Testimonial.cs" />
+    <Compile Include="Models\user\student\GuardianViewModel.cs" />
+    <Compile Include="Models\user\student\LeavingCert.cs" />
+    <Compile Include="Models\user\student\StudentViewModel.cs" />
+    <Compile Include="Models\user\User.cs" />
+    <Compile Include="Models\user\UserBase.cs" />
+    <Compile Include="Models\user\UserChild.cs" />
+    <Compile Include="Models\user\UserCredentials.cs" />
+    <Compile Include="Models\user\UserParent.cs" />
+    <Compile Include="Models\user\UserSearch.cs" />
+    <Compile Include="Models\user\UserViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app_offline_off.htm" />
+    <Content Include="Content\css\all.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Content\css\anytime\anytimec.css" />
+    <Content Include="Content\css\codemirror\codemirror.css" />
+    <Content Include="Content\css\codemirror\csscolors.css" />
+    <Content Include="Content\css\codemirror\jscolors.css" />
+    <Content Include="Content\css\codemirror\liquidcolors.css" />
+    <Content Include="Content\css\codemirror\xmlcolors.css" />
+    <Content Include="Content\css\common.css" />
+    <Content Include="Content\css\fileuploader\fileuploader.css" />
+    <Content Include="Content\css\fileuploader\loading.gif" />
+    <Content Include="Content\css\gallery\gallery.css" />
+    <Content Include="Content\css\gallery\images\loader.gif" />
+    <Content Include="Content\css\gallery\images\nextPageArrow.gif" />
+    <Content Include="Content\css\gallery\images\prevPageArrow.gif" />
+    <Content Include="Content\css\ie.css" />
+    <Content Include="Content\css\ie\PIE.htc" />
+    <Content Include="Content\css\jgrowl\jquery.jgrowl.css" />
+    <Content Include="Content\css\jqgrid\ui.jqgrid.css" />
+    <Content Include="Content\css\jqueryui\jquery-ui-1.7.2.custom.css" />
+    <Content Include="Content\css\lightbox\jquery.lightbox-0.5.css" />
+    <Content Include="Content\css\nivoslider\images\arrows.png" />
+    <Content Include="Content\css\nivoslider\images\bullets.png" />
+    <Content Include="Content\css\nivoslider\nivo-slider.css" />
+    <Content Include="Content\css\prettyLoader\prettyLoader.css" />
+    <Content Include="Content\images\ui-bg_flat_0_4f4f4f_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_0_e2dfdf_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_55_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_f6f6f6_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_25_0073ea_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_50_dddddd_1x100.png" />
+    <Content Include="Content\images\ui-icons_0073ea_256x240.png" />
+    <Content Include="Content\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\images\ui-icons_666666_256x240.png" />
+    <Content Include="Content\images\ui-icons_db1400_256x240.png" />
+    <Content Include="Content\images\ui-icons_ff6600_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\img\about\about.jpg" />
+    <Content Include="Content\img\about\about1.jpg" />
+    <Content Include="Content\img\about\about2.jpg" />
+    <Content Include="Content\img\about\about3.jpg" />
+    <Content Include="Content\img\about\about4.jpg" />
+    <Content Include="Content\img\about\goals.jpg" />
+    <Content Include="Content\img\about\governance.png" />
+    <Content Include="Content\img\about\history\history.jpg" />
+    <Content Include="Content\img\about\mission.jpg" />
+    <Content Include="Content\img\about\mission1.jpg" />
+    <Content Include="Content\img\about\mission2.jpg" />
+    <Content Include="Content\img\about\mission3.jpg" />
+    <Content Include="Content\img\about\mission4.jpg" />
+    <Content Include="Content\img\about\mission5.jpg" />
+    <Content Include="Content\img\about\people.jpg" />
+    <Content Include="Content\img\about\philosophy.jpg" />
+    <Content Include="Content\img\about\philosophy1.jpg" />
+    <Content Include="Content\img\about\philosophy2.jpg" />
+    <Content Include="Content\img\about\spirit1.jpg" />
+    <Content Include="Content\img\about\spirit2.jpg" />
+    <Content Include="Content\img\about\vision.jpg" />
+    <Content Include="Content\img\about\vision1.jpg" />
+    <Content Include="Content\img\about\vision2.jpg" />
+    <Content Include="Content\img\about\vision3.jpg" />
+    <Content Include="Content\img\about\vision4.jpg" />
+    <Content Include="Content\img\about\vision5.jpg" />
+    <Content Include="Content\img\about\vision6.jpg" />
+    <Content Include="Content\img\apple-touch-icon-ipad.png" />
+    <Content Include="Content\img\apple-touch-icon-iphone.png" />
+    <Content Include="Content\img\apple-touch-icon-iphone4.png" />
+    <Content Include="Content\img\arrow_up.png" />
+    <Content Include="Content\img\background\back.png" />
+    <Content Include="Content\img\background\bg-grey-top-white-bottom.gif" />
+    <Content Include="Content\img\background\bg.gif" />
+    <Content Include="Content\img\background\bg_semester.png" />
+    <Content Include="Content\img\background\shadow_bottom_inner.png" />
+    <Content Include="Content\img\bullets\bullet_blue.png" />
+    <Content Include="Content\img\bullets\tick-circle-frame.png" />
+    <Content Include="Content\img\calendar.png" />
+    <Content Include="Content\img\decorations\quote.gif" />
+    <Content Include="Content\img\favicon.png" />
+    <Content Include="Content\img\female.gif" />
+    <Content Include="Content\img\heading_add.png" />
+    <Content Include="Content\img\icons\arrow_left.png" />
+    <Content Include="Content\img\icons\arrow_right.png" />
+    <Content Include="Content\img\icons\cancel.png" />
+    <Content Include="Content\img\icons\clock.png" />
+    <Content Include="Content\img\icons\continue.png" />
+    <Content Include="Content\img\icons\delete.png" />
+    <Content Include="Content\img\icons\disk.png" />
+    <Content Include="Content\img\icons\document.png" />
+    <Content Include="Content\img\icons\blog.png" />
+    <Content Include="Content\img\icons\edit.png" />
+    <Content Include="Content\img\icons\exclamation.png" />
+    <Content Include="Content\img\icons\hover_move.png" />
+    <Content Include="Content\img\icons\printer.png" />
+    <Content Include="Content\img\icons\tick.png" />
+    <Content Include="Content\img\icons\up.png" />
+    <Content Include="Content\img\icons\file_new.png" />
+    <Content Include="Content\img\icons\help.png" />
+    <Content Include="Content\img\icons\home.png" />
+    <Content Include="Content\img\icons\hover_add.png" />
+    <Content Include="Content\img\icons\hover_delete.png" />
+    <Content Include="Content\img\icons\hover_edit.png" />
+    <Content Include="Content\img\icons\icon_edit.png" />
+    <Content Include="Content\img\icons\info.png" />
+    <Content Include="Content\img\icons\mobile.png" />
+    <Content Include="Content\img\icons\orb_cross_grey.png" />
+    <Content Include="Content\img\icons\orb_tick_grey.png" />
+    <Content Include="Content\img\icons\pin.png" />
+    <Content Include="Content\img\icons\plus.png" />
+    <Content Include="Content\img\icons\power.png" />
+    <Content Include="Content\img\icons\required.png" />
+    <Content Include="Content\img\icons\reset.png" />
+    <Content Include="Content\img\icons\save.png" />
+    <Content Include="Content\img\icons\search.png" />
+    <Content Include="Content\img\icons\send.png" />
+    <Content Include="Content\img\icons\server.png" />
+    <Content Include="Content\img\icons\user.png" />
+    <Content Include="Content\img\landingpage\gallery1.jpg" />
+    <Content Include="Content\img\landingpage\gallery10.jpg" />
+    <Content Include="Content\img\landingpage\gallery2.jpg" />
+    <Content Include="Content\img\landingpage\gallery3.jpg" />
+    <Content Include="Content\img\landingpage\gallery4.jpg" />
+    <Content Include="Content\img\landingpage\gallery5.jpg" />
+    <Content Include="Content\img\landingpage\gallery6.jpg" />
+    <Content Include="Content\img\landingpage\gallery7.jpg" />
+    <Content Include="Content\img\landingpage\gallery8.jpg" />
+    <Content Include="Content\img\landingpage\gallery9.jpg" />
+    <Content Include="Content\img\landingpage\slider1.jpg" />
+    <Content Include="Content\img\landingpage\slider10.jpg" />
+    <Content Include="Content\img\landingpage\slider10_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider11.jpg" />
+    <Content Include="Content\img\landingpage\slider11_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider12.jpg" />
+    <Content Include="Content\img\landingpage\slider12_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider1_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider2.jpg" />
+    <Content Include="Content\img\landingpage\slider2_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider3.jpg" />
+    <Content Include="Content\img\landingpage\slider3_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider4.jpg" />
+    <Content Include="Content\img\landingpage\slider4_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider5.jpg" />
+    <Content Include="Content\img\landingpage\slider5_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider6.jpg" />
+    <Content Include="Content\img\landingpage\slider6_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider7.jpg" />
+    <Content Include="Content\img\landingpage\slider7_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider8.jpg" />
+    <Content Include="Content\img\landingpage\slider8_thumb.jpg" />
+    <Content Include="Content\img\landingpage\slider9.jpg" />
+    <Content Include="Content\img\landingpage\slider9_thumb.jpg" />
+    <Content Include="Content\img\lightbox\lightbox-blank.gif" />
+    <Content Include="Content\img\lightbox\lightbox-btn-close.gif" />
+    <Content Include="Content\img\lightbox\lightbox-btn-next.gif" />
+    <Content Include="Content\img\lightbox\lightbox-btn-prev.gif" />
+    <Content Include="Content\img\lightbox\lightbox-ico-loading.gif" />
+    <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\img\loading_circle.gif" />
+    <Content Include="Content\img\loading_grey.gif" />
+    <Content Include="Content\img\logo_small.png" />
+    <Content Include="Content\img\male.gif" />
+    <Content Include="Content\img\mimetype\msexcel_xls.png" />
+    <Content Include="Content\img\mimetype\pdf_alt.png" />
+    <Content Include="Content\img\nav\arrow_down.gif" />
+    <Content Include="Content\img\nav\arrow_right.gif" />
+    <Content Include="Content\img\nav\button_begins.gif" />
+    <Content Include="Content\img\nav\button_ends.gif" />
+    <Content Include="Content\img\nav\button_nexts.gif" />
+    <Content Include="Content\img\nav\button_prvs.gif" />
+    <Content Include="Content\img\landingpage\home.png" />
+    <Content Include="Content\img\news\vertical_banner.jpg" />
+    <Content Include="Content\img\notebook.png" />
+    <Content Include="Content\img\prettyLoader\ajax-loader.gif" />
+    <Content Include="Content\img\prettyLoader\prettyLoader.gif" />
+    <Content Include="Content\img\prettyLoader\prettyLoader.png" />
+    <Content Include="Content\img\question.png" />
+    <Content Include="Content\img\resources\banner-linus.gif" />
+    <Content Include="Content\img\resources\EDUWEBTV.jpg" />
+    <Content Include="Content\img\resources\gems.gif" />
+    <Content Include="Content\img\resources\ictban.jpg" />
+    <Content Include="Content\img\resources\ictlm.jpg" />
+    <Content Include="Content\img\resources\latihtubi.jpg" />
+    <Content Include="Content\img\resources\mygfl.jpg" />
+    <Content Include="Content\img\resources\PPSMI.JPG" />
+    <Content Include="Content\img\schools\international\about1.jpg" />
+    <Content Include="Content\img\schools\international\about2.jpg" />
+    <Content Include="Content\img\schools\international\facility1.jpg" />
+    <Content Include="Content\img\schools\international\facility2.jpg" />
+    <Content Include="Content\img\schools\international\facility3.jpg" />
+    <Content Include="Content\img\schools\international\panel.jpg" />
+    <Content Include="Content\img\schools\kindergarten\about1.jpg" />
+    <Content Include="Content\img\schools\kindergarten\about2.jpg" />
+    <Content Include="Content\img\schools\kindergarten\about3.jpg" />
+    <Content Include="Content\img\schools\kindergarten\about4.jpg" />
+    <Content Include="Content\img\schools\kindergarten\collage.jpg" />
+    <Content Include="Content\img\schools\kindergarten\facility1.jpg" />
+    <Content Include="Content\img\schools\kindergarten\facility2.jpg" />
+    <Content Include="Content\img\schools\kindergarten\facility3.jpg" />
+    <Content Include="Content\img\schools\kindergarten\facility4.jpg" />
+    <Content Include="Content\img\schools\kindergarten\panel.jpg" />
+    <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\schools\primary\about1.jpg" />
+    <Content Include="Content\img\schools\primary\about2.jpg" />
+    <Content Include="Content\img\schools\primary\about3.jpg" />
+    <Content Include="Content\img\schools\primary\about4.jpg" />
+    <Content Include="Content\img\schools\primary\about5.jpg" />
+    <Content Include="Content\img\schools\primary\about6.jpg" />
+    <Content Include="Content\img\schools\primary\collage.jpg" />
+    <Content Include="Content\img\schools\primary\facility1.jpg" />
+    <Content Include="Content\img\schools\primary\facility2.jpg" />
+    <Content Include="Content\img\schools\primary\facility3.jpg" />
+    <Content Include="Content\img\schools\primary\facility4.jpg" />
+    <Content Include="Content\img\schools\primary\facility5.jpg" />
+    <Content Include="Content\img\schools\primary\panel.jpg" />
+    <Content Include="Content\img\schools\secondary\about1.jpg" />
+    <Content Include="Content\img\schools\secondary\about2.jpg" />
+    <Content Include="Content\img\schools\secondary\about3.jpg" />
+    <Content Include="Content\img\schools\secondary\collage.jpg" />
+    <Content Include="Content\img\schools\secondary\panel.jpg" />
+    <Content Include="Content\img\slogan.png" />
+    <Content Include="Content\img\small_newfile.png" />
+    <Content Include="Content\img\toggle_down_light.png" />
+    <Content Include="Content\img\uniforms\kindy.jpg" />
+    <Content Include="Content\img\uniforms\PE1.jpg" />
+    <Content Include="Content\img\uniforms\primary.jpg" />
+    <Content Include="Content\img\uniforms\secondary1.jpg" />
+    <Content Include="Content\img\uniforms\secondary2.jpg" />
+    <Content Include="Content\img\uniforms\secondary3.jpg" />
+    <Content Include="Content\img\users\profile_nophoto.png" />
+    <Content Include="Content\img\wysiwyg\jquery.wysiwyg.gif" />
+    <Content Include="Content\img\wysiwyg\jquery.wysiwyg.jpg" />
+    <Content Include="Content\css\internal.css" />
+    <Content Include="editor\controls\wysiwyg.colorpicker.js" />
+    <Content Include="editor\controls\wysiwyg.image.js" />
+    <Content Include="editor\controls\wysiwyg.link.js" />
+    <Content Include="editor\controls\wysiwyg.table.js" />
+    <Content Include="editor\i18n\lang.cs.js" />
+    <Content Include="editor\i18n\lang.de.js" />
+    <Content Include="editor\i18n\lang.es.js" />
+    <Content Include="editor\i18n\lang.fr.js" />
+    <Content Include="editor\i18n\lang.it.js" />
+    <Content Include="editor\i18n\lang.ja.js" />
+    <Content Include="editor\i18n\lang.pl.js" />
+    <Content Include="editor\i18n\lang.pt_br.js" />
+    <Content Include="editor\i18n\lang.ru.js" />
+    <Content Include="editor\i18n\lang.se.js" />
+    <Content Include="editor\i18n\lang.sl.js" />
+    <Content Include="editor\jquery.autoload.js" />
+    <Content Include="editor\jquery.wysiwyg.bg.png" />
+    <Content Include="editor\jquery.wysiwyg.css" />
+    <Content Include="editor\jquery.wysiwyg.gif" />
+    <Content Include="editor\jquery.wysiwyg.jpg" />
+    <Content Include="editor\jquery.wysiwyg.js" />
+    <Content Include="editor\jquery.wysiwyg.modal.css" />
+    <Content Include="editor\jquery.wysiwyg.no-alpha.gif" />
+    <Content Include="editor\jquery.wysiwyg.old-school.css" />
+    <Content Include="editor\plugins\wysiwyg.autoload.js" />
+    <Content Include="editor\plugins\wysiwyg.fullscreen.js" />
+    <Content Include="editor\plugins\wysiwyg.i18n.js" />
+    <Content Include="editor\plugins\wysiwyg.rmFormat.js" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\css\Site.css" />
+    <Content Include="robots.txt" />
+    <Content Include="Scripts\ajaxUpload\files.xml" />
+    <Content Include="Scripts\ajaxUpload\fileuploader.js" />
+    <Content Include="Scripts\anytimec.js" />
+    <Content Include="Scripts\codemirror\codemirror.js" />
+    <Content Include="Scripts\codemirror\editor.js" />
+    <Content Include="Scripts\codemirror\parsers\parsecss.js" />
+    <Content Include="Scripts\codemirror\parsers\parsehtmlmixed.js" />
+    <Content Include="Scripts\codemirror\parsers\parsejavascript.js" />
+    <Content Include="Scripts\codemirror\parsers\parseliquid.js" />
+    <Content Include="Scripts\codemirror\parsers\parsexml.js" />
+    <Content Include="Scripts\codemirror\select.js" />
+    <Content Include="Scripts\codemirror\stringstream.js" />
+    <Content Include="Scripts\codemirror\tokenize.js" />
+    <Content Include="Scripts\codemirror\tokenizejavascript.js" />
+    <Content Include="Scripts\codemirror\undo.js" />
+    <Content Include="Scripts\codemirror\util.js" />
+    <Content Include="Scripts\core\ajax.js" />
+    <Content Include="Scripts\core\json2.js" />
+    <Content Include="Scripts\core\stacktrace.js" />
+    <Content Include="Scripts\core\util.js" />
+    <Content Include="Scripts\core\files.xml" />
+    <Content Include="Scripts\core\jgrowl.js" />
+    <Content Include="Scripts\core\jquery.alphanumeric.js" />
+    <Content Include="Scripts\core\jquery.autogrow.js" />
+    <Content Include="Scripts\core\jquery.inlineEdit.js" />
+    <Content Include="Scripts\core\jquery.lightbox-0.5.js" />
+    <Content Include="Scripts\core\jquery.prettyLoader.js" />
+    <Content Include="Scripts\core\jquery.scrollTo.js" />
+    <Content Include="Scripts\core\jquery.validate.min.js" />
+    <Content Include="Scripts\core\jquery.watermark.js" />
+    <Content Include="Scripts\date.js" />
+    <Content Include="Scripts\core\main.js" />
+    <Content Include="Scripts\extend\dragscrollable.js" />
+    <Content Include="Scripts\extend\files.xml" />
+    <Content Include="Scripts\extend\jquery.cookie.js" />
+    <Content Include="Scripts\core\jquery.limit-1.2.source.js" />
+    <Content Include="Scripts\extend\jquery.jqprint-0.3.js" />
+    <Content Include="Scripts\extend\jquery.tooltip.js" />
+    <Content Include="Scripts\gallery\jquery.galleriffic.js" />
+    <Content Include="Scripts\gallery\jquery.opacityrollover.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.base.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.celledit.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.common.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.custom.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.formedit.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.import.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.inlinedit.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.jqueryui.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.loader.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.postext.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.setcolumns.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.subgrid.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.tbltogrid.js" />
+    <Content Include="Scripts\jqgrid\debug\grid.treegrid.js" />
+    <Content Include="Scripts\jqgrid\debug\jqDnR.js" />
+    <Content Include="Scripts\jqgrid\debug\jqModal.js" />
+    <Content Include="Scripts\jqgrid\debug\jquery.fmatter.js" />
+    <Content Include="Scripts\jqgrid\debug\jquery.searchFilter.js" />
+    <Content Include="Scripts\jqgrid\debug\JsonXml.js" />
+    <Content Include="Scripts\jqgrid\debug\ui.multiselect.js" />
+    <Content Include="Scripts\jqgrid\files.xml" />
+    <Content Include="Scripts\jqgrid\grid.loader.js" />
+    <Content Include="Scripts\jqgrid\i18n\grid.locale-en.js" />
+    <Content Include="Scripts\jqgrid\jqgrid_blogs.js" />
+    <Content Include="Scripts\jqgrid\jqgrid_enrol.js" />
+    <Content Include="Scripts\jqgrid\jqgrid_exams.js" />
+    <Content Include="Scripts\jqgrid\jqgrid_users.js" />
+    <Content Include="Scripts\jqgrid\jquery.jqGrid.min.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery-1.5.1.min.js" />
+    <Content Include="Scripts\jquery-1.7.1.min.js" />
+    <Content Include="Scripts\jquery-1.7.2.min.js" />
+    <Content Include="Scripts\jquery-ui-1.7.2.custom.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.18.custom.min.js" />
+    <Content Include="Scripts\jquery.autocomplete.js" />
+    <Content Include="Scripts\jquery.scrollTo-min.js" />
+    <Content Include="Scripts\nivoslider\jquery.nivo.slider.pack.js" />
+    <Content Include="Views\about\Spirit.aspx" />
+    <Content Include="Views\about\History.aspx" />
+    <Content Include="Views\about\Index.aspx" />
+    <Content Include="Views\about\Mission.aspx" />
+    <Content Include="Views\about\People.aspx" />
+    <Content Include="Views\about\Philosophy.aspx" />
+    <Content Include="Views\about\Vision.aspx" />
+    <Content Include="Views\admin\ChangeLog.ascx" />
+    <Content Include="Views\admin\ChangeLogContent.ascx" />
+    <Content Include="Views\admin\Conduct.ascx" />
+    <Content Include="Views\classes\AdminContent.ascx" />
+    <Content Include="Views\admin\Grading.ascx" />
+    <Content Include="Views\classes\Edit.ascx" />
+    <Content Include="Views\classes\Rows.ascx" />
+    <Content Include="Views\conduct\AdminContent.ascx" />
+    <Content Include="Views\conduct\Edit.ascx" />
+    <Content Include="Views\dashboard\NavigationStudent.ascx" />
+    <Content Include="Views\dashboard\NavigationParents.ascx" />
+    <Content Include="Views\dashboard\NavigationStaff.ascx" />
+    <Content Include="Views\email\system\FeedbackVendor.ascx" />
+    <Content Include="Views\finance\alerts.ascx" />
+    <Content Include="Views\finance\groups.ascx" />
+    <Content Include="Views\finance\messaging.ascx" />
+    <Content Include="Views\finance\statistics.ascx" />
+    <Content Include="Views\schoolfees\OverdueFees.ascx" />
+    <Content Include="Views\schoolfees\Statement.ascx" />
+    <Content Include="Views\finance\Edit.ascx" />
+    <Content Include="Views\finance\Fees.ascx" />
+    <Content Include="Views\finance\FeesContent.ascx" />
+    <Content Include="Views\finance\FeesOverdue.ascx" />
+    <Content Include="Views\finance\Index.aspx" />
+    <Content Include="Views\finance\BulkUpdate.ascx" />
+    <Content Include="Views\finance\Parent.aspx" />
+    <Content Include="Views\finance\Reminder.ascx" />
+    <Content Include="Views\finance\ReminderHistory.ascx" />
+    <Content Include="Views\finance\TemplateEdit.ascx" />
+    <Content Include="Views\finance\TemplateRows.ascx" />
+    <Content Include="Views\finance\Templates.ascx" />
+    <Content Include="Views\grading\EditRuleRows.ascx" />
+    <Content Include="Views\grading\Rows.ascx" />
+    <Content Include="Views\admin\LeaveContent.ascx" />
+    <Content Include="Views\admin\Leave.ascx" />
+    <Content Include="Views\admin\SchoolDays.ascx" />
+    <Content Include="Views\admin\Index.aspx" />
+    <Content Include="Views\admin\Classes.ascx" />
+    <Content Include="Views\admin\SubjectContent.ascx" />
+    <Content Include="Views\admin\Subjects.ascx" />
+    <Content Include="Views\admin\Teachers.ascx" />
+    <Content Include="Views\admin\TeachersContent.ascx" />
+    <Content Include="Views\admin\Terms.ascx" />
+    <Content Include="Views\admin\TermsContent.ascx" />
+    <Content Include="Views\admission\FormCommon.ascx" />
+    <Content Include="Views\admission\Form.ascx" />
+    <Content Include="Views\admission\FormGuardian.ascx" />
+    <Content Include="Views\admission\FormParents.ascx" />
+    <Content Include="Views\admission\Index.aspx" />
+    <Content Include="Views\admission\siblings.ascx" />
+    <Content Include="Views\attendance\add.ascx" />
+    <Content Include="Views\attendance\Content.ascx" />
+    <Content Include="Views\attendance\admin.ascx" />
+    <Content Include="Views\attendance\Send.ascx" />
+    <Content Include="Views\attendance\Show.ascx" />
+    <Content Include="Views\blog\Add.aspx" />
+    <Content Include="Views\blog\Index.aspx" />
+    <Content Include="Views\calendar\Admin.aspx" />
+    <Content Include="Views\calendar\calendarContent.ascx" />
+    <Content Include="Views\calendar\Edit.ascx" />
+    <Content Include="Views\calendar\Index.aspx" />
+    <Content Include="Views\classes\AssignToStudents.ascx" />
+    <Content Include="Views\classes\selector.ascx" />
+    <Content Include="Views\contact\Index.aspx" />
+    <Content Include="Views\grading\Edit.ascx" />
+    <Content Include="Views\discipline\ShowContent.ascx" />
+    <Content Include="Views\admin\eca.ascx" />
+    <Content Include="Views\admin\ecaContent.ascx" />
+    <Content Include="Views\email\homework\NotificationToTeacher.ascx" />
+    <Content Include="Views\email\leave\LeaveApproval.ascx" />
+    <Content Include="Views\email\leave\LeaveUpdated.ascx" />
+    <Content Include="Views\enrolment\EditCommon.ascx" />
+    <Content Include="Views\enrolment\EditStudent.ascx" />
+    <Content Include="Views\enrolment\ModifyStudent.ascx" />
+    <Content Include="Areas\exams\Views\exams\edit.ascx" />
+    <Content Include="Areas\exams\Views\exams\Single.aspx" />
+    <Content Include="Areas\exams\Views\templates\Details.ascx" />
+    <Content Include="Areas\exams\Views\templates\SubjectRows.ascx" />
+    <Content Include="Views\feedback\Student.ascx" />
+    <Content Include="Views\feedback\Vendor.ascx" />
+    <Content Include="Views\grading\Rules.ascx" />
+    <Content Include="Views\homework\StudentRows.ascx" />
+    <Content Include="Views\homework\IndexStudent.ascx" />
+    <Content Include="Views\homework\StudentSingle.ascx" />
+    <Content Include="Views\homework\homeworkAnswers.ascx" />
+    <Content Include="Views\homework\HomeworkContent.ascx" />
+    <Content Include="Views\homework\Show.ascx" />
+    <Content Include="Views\homework\TeacherRows.ascx" />
+    <Content Include="Views\leave\NewLeave.ascx" />
+    <Content Include="Views\leave\IndexRows.ascx" />
+    <Content Include="Views\leave\EditStaff.ascx" />
+    <Content Include="Views\leave\Edit.ascx" />
+    <Content Include="Views\leave\Index.aspx" />
+    <Content Include="Views\leave\Review.ascx" />
+    <Content Include="Views\leave\StaffRows.ascx" />
+    <Content Include="Views\login\Index.aspx" />
+    <Content Include="Views\schoolfees\EditStudent.ascx" />
+    <Content Include="Views\schoolfees\ShowStudent.ascx" />
+    <Content Include="Views\schoolfees\StudentRows.ascx" />
+    <Content Include="Views\schools\EditYear.ascx" />
+    <Content Include="Views\schools\YearRows.ascx" />
+    <Content Include="Views\schools\YearsSelector.ascx" />
+    <Content Include="Views\staff\EmploymentEditRow.ascx" />
+    <Content Include="Views\staff\EmploymentRow.ascx" />
+    <Content Include="Views\staff\Show.ascx" />
+    <Content Include="Views\subjects\Edit.ascx" />
+    <Content Include="Views\subjects\TeachersEdit.ascx" />
+    <Content Include="Views\testimonial\Index.ascx" />
+    <Content Include="Views\dashboard\Parent.aspx" />
+    <Content Include="Views\dashboard\search.ascx" />
+    <Content Include="Views\discipline\Add.ascx" />
+    <Content Include="Views\discipline\Edit.ascx" />
+    <Content Include="Views\discipline\Send.ascx" />
+    <Content Include="Views\discipline\Show.ascx" />
+    <Content Include="Views\discipline\Statistics.ascx" />
+    <Content Include="Views\eca\AddStudent.ascx" />
+    <Content Include="Views\eca\EditStudent.ascx" />
+    <Content Include="Views\eca\Edit.ascx" />
+    <Content Include="Views\eca\ShowStudent.ascx" />
+    <Content Include="Views\eca\StatisticContent.ascx" />
+    <Content Include="Views\email\blog\circular.ascx" />
+    <Content Include="Views\email\student\NotificationToParent.ascx" />
+    <Content Include="Views\email\student\Attendance.ascx" />
+    <Content Include="Views\email\system\Feedback.ascx" />
+    <Content Include="Views\email\system\RegistrationNotification.ascx" />
+    <Content Include="Views\email\system\RegistrationUpdate.ascx" />
+    <Content Include="Views\email\system\Registration.ascx" />
+    <Content Include="Views\email\system\PasswordReset.ascx" />
+    <Content Include="Views\enrolment\Add.aspx" />
+    <Content Include="Views\enrolment\Edit.aspx" />
+    <Content Include="Views\enrolment\Index.aspx" />
+    <Content Include="Views\enrolment\ShowStudent.ascx" />
+    <Content Include="Views\error\Index.aspx" />
+    <Content Include="Views\enrolment\Error.aspx" />
+    <Content Include="Views\error\NoPermission.ascx" />
+    <Content Include="Views\error\NoPermission.aspx" />
+    <Content Include="Views\error\NotFound.aspx" />
+    <Content Include="Views\events\Index.ascx" />
+    <Content Include="Areas\exams\Views\templates\Add.aspx" />
+    <Content Include="Areas\exams\Views\exams\ExamContent.ascx" />
+    <Content Include="Areas\exams\Views\exams\RemarksContent.ascx" />
+    <Content Include="Areas\exams\Views\exams\ReportCard.ascx" />
+    <Content Include="Areas\exams\Views\exams\Remarks.ascx" />
+    <Content Include="Areas\exams\Views\templates\Content.ascx" />
+    <Content Include="Areas\exams\Views\templates\Index.aspx" />
+    <Content Include="Areas\exams\Views\templates\EditRow.ascx" />
+    <Content Include="Views\help\Index.aspx" />
+    <Content Include="Views\kindergarten\AfterSchool.aspx" />
+    <Content Include="Views\leavingCert\Index.ascx" />
+    <Content Include="Views\login\Password.ascx" />
+    <Content Include="Views\news\Single.aspx" />
+    <Content Include="Areas\exams\Views\exams\Add.aspx" />
+    <Content Include="Areas\exams\Views\exams\Index.aspx" />
+    <Content Include="Areas\exams\Views\exams\Show.ascx" />
+    <Content Include="Views\fees\Index.aspx" />
+    <Content Include="Views\dashboard\Index.aspx" />
+    <Content Include="Views\homework\Edit.ascx" />
+    <Content Include="Views\homework\Index.aspx" />
+    <Content Include="Views\homework\Single.ascx" />
+    <Content Include="Views\home\Index.aspx" />
+    <Content Include="Views\dashboard\Student.aspx" />
+    <Content Include="Views\international\Eca.aspx" />
+    <Content Include="Views\international\Index.aspx" />
+    <Content Include="Views\kindergarten\Index.aspx" />
+    <Content Include="Views\news\Index.aspx" />
+    <Content Include="Views\primary\Eca.aspx" />
+    <Content Include="Views\primary\Index.aspx" />
+    <Content Include="Views\resources\Index.aspx" />
+    <Content Include="Views\schedule\Index.aspx" />
+    <Content Include="Views\schedule\ScheduleContent.ascx" />
+    <Content Include="Views\schools\Eca.aspx" />
+    <Content Include="Views\schools\Index.aspx" />
+    <Content Include="Views\schools\StatisticContent.ascx" />
+    <Content Include="Views\dashboard\Statistics.aspx" />
+    <Content Include="Views\secondary\Eca.aspx" />
+    <Content Include="Views\secondary\Index.aspx" />
+    <Content Include="Views\subjects\selector.ascx" />
+    <Content Include="Views\finance\Update.ascx" />
+    <Content Include="Views\users\Add.aspx" />
+    <Content Include="Views\classes\AssignToTeachers.ascx" />
+    <Content Include="Views\uniforms\Index.aspx" />
+    <Content Include="Views\users\Children.ascx" />
+    <Content Include="Views\users\ChildrenContent.ascx" />
+    <Content Include="Views\users\Export.ascx" />
+    <Content Include="Views\users\Issues.ascx" />
+    <Content Include="Views\users\IssuesFilter.ascx" />
+    <Content Include="Views\users\Permissions.ascx" />
+    <Content Include="Views\users\SelectableBlock.ascx" />
+    <Content Include="Views\users\StaffSelectContent.ascx" />
+    <Content Include="Views\users\StaffSelect.ascx" />
+    <Content Include="Views\users\Parents.ascx" />
+    <Content Include="Views\users\ParentsContent.ascx" />
+    <Content Include="Views\users\Single.aspx" />
+    <Content Include="Views\users\SingleContent.ascx" />
+    <Content Include="Views\users\StudentSelector.ascx" />
+    <Content Include="Views\vacancies\Edit.aspx" />
+    <Content Include="Views\vacancies\Index.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\exams\Views\Shared\" />
+    <Folder Include="Content\css\watermark\" />
+    <Folder Include="Content\gallery\" />
+    <Folder Include="Content\img\icons\events\" />
+    <Folder Include="Content\img\jqueryui\" />
+    <Folder Include="editor\css\" />
+    <Folder Include="Library\Liquid\extensions\" />
+    <Folder Include="Models\file\" />
+    <Folder Include="Uploads\" />
+    <Folder Include="Views\email\finance\" />
+    <Folder Include="Views\photo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Main.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\opensource\dotliquid\src\DotLiquid\DotLiquid.csproj">
+      <Project>{CB9372CD-9C1D-47AB-92D8-702D4D68324F}</Project>
+      <Name>DotLiquid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\opensource\elmah 1.2 src\src\Solutions\2010\Elmah.csproj">
+      <Project>{C92DC151-A0BA-4A5E-A20E-620EC9C06AFF}</Project>
+      <Name>Elmah</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\opensource\lucene.net\trunk\C#\src\Lucene.Net\Lucene.Net.csproj">
+      <Project>{5D4AD9BE-1FFB-41AB-9943-25737971BF57}</Project>
+      <Name>Lucene.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\clearpixels\clearpixels.Logging\clearpixels.Logging.csproj">
+      <Project>{C5EAEA68-6654-4311-951C-577F8924640F}</Project>
+      <Name>clearpixels.Logging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\tradelr\bajula\tradelr.Crypto\tradelr.Crypto.csproj">
+      <Project>{9596BA41-36F8-4A59-ABAA-2A41F224B4C0}</Project>
+      <Name>tradelr.Crypto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ioschools.Data\ioschools.Data.csproj">
+      <Project>{D0F663B9-FDF4-45FB-928B-37D1C30A8F8C}</Project>
+      <Name>ioschools.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ioschools.DB\ioschools.DB.csproj">
+      <Project>{E7CAFBB9-D21F-4533-848F-6321C70A9999}</Project>
+      <Name>ioschools.DB</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\media\history.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Internal.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Error.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\templates\NPOITemplate.xls" />
+    <Content Include="Content\templates\ReportCardInternational.xls" />
+    <Content Include="Content\templates\ReportCardKindergarten.xls" />
+    <Content Include="Content\templates\EnrolmentTemplate.xls" />
+    <Content Include="Content\templates\LeavingCertInternational.xls" />
+    <Content Include="Content\templates\LeavingCertPrimary.xls" />
+    <Content Include="Content\templates\LeavingCertSecondary.xls" />
+    <Content Include="Content\templates\TestimonialInternational.xls" />
+    <Content Include="Content\templates\TestimonialPrimary.xls" />
+    <Content Include="Content\templates\TestimonialSecondary.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\templates\ReportCardKBSMRendah.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\templates\ReportCardKBSMAtas.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\templates\ReportCardKBSR.xls" />
+    <Content Include="Content\templates\ReportCardKSSR.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\templates\ReportCardInternationalExtraSubHeader.xls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\media\AdmissionApplicationForm2012.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\exams\Views\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\finance\StatisticsContent.ascx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target> -->
+  <Target Name="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(ProjectDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
+          <DevelopmentServerPort>33224</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:33224</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://localhost:33224</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

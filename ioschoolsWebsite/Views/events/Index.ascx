@@ -1,0 +1,15 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<ioschoolsWebsite.Models.blog.BlogSummary>>" %>
+<h2 class="bb mb10 bold">
+            Upcoming events</h2>
+            <% foreach (var entry in Model)
+{%>
+  <div class="item">
+            <div class="date">
+                <%= entry.date %>
+            </div>
+            <div class="title">
+                <%= entry.title %></div>
+        </div>
+<%} %>
+<a class="mt10" href="/calendar">view calendar</a>
+        

@@ -1,0 +1,22 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ioschoolsWebsite.Models.fees.SchoolFeeStudentEdit>" %>
+<%@ Import Namespace="ioschools.Data" %>
+<%@ Import Namespace="ioschoolsWebsite.Library.Helpers" %>
+<tr class="bg_edit" alt="<%=Model.id%>">
+    <td>
+        <div class="font_black">
+            <%=Model.name%></div>
+    </td>
+    <td class="ar">
+        <%= Html.TextBox("amount", Model.amount.ToString("n2"), new Dictionary<string, object>() { { "class", "ar" } })%>
+    </td>
+    <td class="ar">
+        <%= Html.DropDownList("status", Model.statusList) %>
+    </td>
+    <td class="ar">
+        <%=Model.duedate.ToString(Constants.DATETIME_SHORT_DATE)%>
+    </td>
+    <td class="ar">
+        <button type="button" id="buttonSave"><img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button"><img class="am" src="/Content/img/icons/cancel.png" /> cancel</button>
+    </td>
+</tr>

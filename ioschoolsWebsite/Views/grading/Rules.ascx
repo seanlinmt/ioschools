@@ -1,0 +1,32 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<ioschoolsWebsite.Models.school.json.GradingRuleJSON>>" %>
+<table id="methodruleTable" class="table_white">
+    <thead class="bold">
+        <tr>
+            <td class="w200px">
+                Mark
+            </td>
+            <td>
+                Grade
+            </td>
+            <td>
+                Grade Point
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <% foreach (var rule in Model)
+           {%>
+        <tr>
+            <td>
+                <%= rule.mark %>
+            </td>
+            <td>
+                <%= rule.grade %>
+            </td>
+            <td>
+                <%= rule.gradepoint %>
+            </td>
+        </tr>
+        <% } %>
+    </tbody>
+</table>

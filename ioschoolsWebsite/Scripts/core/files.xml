@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<files>
+    <script src="main.js"></script>
+    <script src="ajax.js"></script>  
+    <script src="jgrowl.js"></script>
+    <script src="jquery.autogrow.js"></script>
+    <script src="jquery.prettyLoader.js"></script>
+    <script src="jquery.validate.min.js"></script>
+    <script src="jquery.watermark.js"></script>
+    <script src="jquery.lightbox-0.5.js"></script>
+    <script src="jquery.scrollTo.js"></script>
+    <script src="jquery.inlineEdit.js"></script>
+    <script src="jquery.alphanumeric.js"></script>
+    <script src="jquery.limit-1.2.source.js"></script>
+    <script src="util.js"></script>
+    <script src="json2.js"></script>
+</files>

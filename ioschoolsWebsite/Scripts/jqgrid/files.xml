@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<files>
+  <script src='i18n/grid.locale-en.js'></script>
+  <script src='debug/grid.base.js'></script>
+  <script src='debug/grid.common.js'></script>
+  <script src='debug/grid.formedit.js'></script>
+  <script src='jqgrid_blogs.js'></script>
+  <script src='jqgrid_users.js'></script>
+  <script src='jqgrid_exams.js'></script>
+  <script src='jqgrid_enrol.js'></script>
+</files>

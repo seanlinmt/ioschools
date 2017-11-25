@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<files>
+    <script src="dragscrollable.js"></script>
+    <script src="jquery.cookie.js"></script>
+  <script src="jquery.tooltip.js"></script>
+    <script src="jquery.jqprint-0.3.js"></script>
+</files>

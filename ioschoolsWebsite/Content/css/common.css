@@ -1,0 +1,128 @@
+﻿/* v1.0 | 20080212 */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+
+a {
+    color:#3089C2;
+    text-decoration:underline;
+}
+
+a:hover { text-decoration:none;}
+
+body {
+	line-height: 18px;
+}
+
+ul {
+	list-style: none outside none;
+    margin-left:20px;
+}
+
+ol{
+    margin-left:20px;
+}
+
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+
+body, textarea, input, select {
+    color:#222;
+    font-size: 12px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    /*line-height:18px;*/
+    /*background:url(/Content/img/background/bg.gif) repeat-x scroll 0 0 #EBEBEB;*/
+}
+
+h1 {
+    font-size:20px;
+    color:#16326c;
+    margin-bottom:10px;
+    font-weight:normal;
+}
+
+h2 {
+    color:#235D89;
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    font-size:16px;
+    font-weight:normal;
+    line-height:1.3em;
+    padding:5px 0;
+}
+
+h3 {
+    color:#2B4C7E;
+    font-size:15px;
+    text-shadow:0 1px 0 #FFFFFF;
+    margin-bottom:10px;
+    font-weight:normal;
+}
+
+h4 {
+    font-size: 13px;
+}
+
+
+p{ 
+    line-height:20px; 
+    margin-bottom:18px;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+table td 
+{ 
+    padding: 5px 10px; 
+}
+
+table.table_grid td, table.table_grid th {
+    border: 1px solid #eee;
+    padding:4px;
+}
+
+table.table_grid th {
+    font-weight: bold;
+}
+
+table h3 {
+    margin: 0;
+}

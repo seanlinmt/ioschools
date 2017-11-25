@@ -1,0 +1,16 @@
+<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<ioschoolsWebsite.Models.leave.AdminLeave>" %>
+<tr alt="<%= Model.id %>" class="bg_edit">
+    <td>
+        <%= Html.TextBox("name", Model.name, new Dictionary<string, object>() { { "class", "w400px" } })%>
+    </td>
+    <td>
+        <%= Html.TextBox("total", Model.annualTotal, new Dictionary<string, object>() { { "class", "w75px" } })%>
+    </td>
+    <td class="ar">
+        <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+    </td>
+</tr>
