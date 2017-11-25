@@ -1,9 +1,9 @@
-#ioschools
+# ioschools
 
 ioschools, yet another better web-based school management system. 
 
 
-####Frameworks 
+#### Frameworks 
 - C#
 - jQuery
 - Microsoft ASP.NET MVC 
@@ -13,7 +13,7 @@ ioschools, yet another better web-based school management system.
 
 
 
-####Feature list
+#### Feature list
 - fuzzy search
 - student enrolment
 - SMS notification via Clickatell API
@@ -36,10 +36,10 @@ ioschools, yet another better web-based school management system.
 
 and that should be it ...
 
-####Users (that I know of anyway):
+#### Users (that I know of anyway):
 - [ Lodge Group of Schools (Malaysia)](https://www.lodgeschool.edu.my) 
 
 
-####Note
+#### Note
 I may have miss out something. Hopefully not the removal of existing login credentials ... 
 
