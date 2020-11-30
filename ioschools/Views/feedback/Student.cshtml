@@ -1,0 +1,68 @@
+﻿@model ioschools.Models.feedback.StudentFeedbackViewModel
+<h2>@Model.studentname</h2>
+<p>Please use this to submit a suggestion or feedback directly to the teacher or principal.</p>
+<form id="studentFeedbackForm" action="/feedback/student" method="post">
+<div class="form_entry">
+    <div class="form_label">
+        Select person to contact</div>
+        @Html.DropDownList("staff", Model.staffList)
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Your Message</div>
+        <textarea id="message" name="message" class="w500px"></textarea>
+</div>
+<div class="mt10">
+        <button type="button" id="buttonSave" class="ajax small">
+           <img class="am" src="/Content/img/icons/send.png" /> send</button>
+           <a href="#" onclick="dialogBox_close();return false;">cancel</a>
+    </div>
+    @Html.Hidden("id", Model.studentid)
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_inputSelectors();
+        init_autogrow('#studentFeedbackForm');
+    });
+
+    $('#buttonSave', '#studentFeedbackForm').click(function () {
+        $(this).trigger('submit');
+    });
+
+    $('#studentFeedbackForm').submit(function () {
+        var action = $(this).attr("action");
+        var serialized = $(this).serialize();
+        var ok = $('#studentFeedbackForm').validate({
+            invalidHandler: function (form, validator) {
+                $(validator.invalidElements()[0]).focus();
+            },
+            focusInvalid: false,
+            rules: {
+                message: {
+                    required: true
+                }
+            }
+        }).form();
+        if (!ok) {
+            return false;
+        }
+
+        // post form
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: serialized,
+            dataType: 'json',
+            context: $('#buttonSave', '#studentFeedbackForm'),
+            success: function (json_data) {
+                if (json_data.success) {
+                    dialogBox_close();
+                }
+                $.jGrowl(json_data.message);
+                return false;
+            }
+        });
+        return false;
+    });     // submit
+</script>
+

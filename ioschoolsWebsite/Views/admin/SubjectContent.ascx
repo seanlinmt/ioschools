@@ -1,6 +1,0 @@
-<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<IEnumerable<ioschoolsWebsite.Models.subject.viewmodels.AdminSubject>>" %>
-<% foreach (var subject in Model)
-{%>
- <tr alt="<%= subject.id %>"><td><%= subject.schoolname %></td><td><%= subject.subjectname %></td><td class="ar"><span class="jqedit">edit</span><span class="jqdelete">delete</span></td></tr> 
-<%} %>
-

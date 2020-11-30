@@ -1,0 +1,70 @@
+﻿@model IEnumerable<ioschools.Models.exam.ExamStudent>
+@if (!Model.Any())
+   {
+   <p class="mt10">No records found</p>
+ }
+   else
+   { 
+<ul>
+    @foreach (var exam in Model.OrderByDescending(x => x.date))
+       {
+    <li>
+        <div class="mt10 mb10">
+                <div class="fl"><h4 class="font_darkred">@exam.name<span class="font_grey normal smaller">
+                    @exam.date</span></h4></div>
+                <div class="fr">
+                    Total Marks: <strong>@exam.marks_total</strong>, Average Mark: <strong>@exam.marks_average</strong>
+                    @if (!string.IsNullOrEmpty(exam.marks_gpa))
+                       {
+                        , GPA: <strong>@exam.marks_gpa</strong>
+                     }
+                </div>
+                <div class="clear"></div>
+            <table class="table_grey">
+                <thead>
+                    <tr>
+                    <td class="w50px">Code</td>
+                        <td>
+                            Subject
+                        </td>
+                        <td class="w100px">
+                            Mark
+                        </td>
+                        <td class="w100px">
+                            Grade
+                        </td>
+                        <td class="w100px">
+                            Subject Average
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var mark in exam.marks)
+                       {
+                    <tr>
+                    <td>@mark.code</td>
+                        <td>
+                            @mark.subject_name
+                        </td>
+                        <td>
+                            @(mark.mark.HasValue
+                                                  ? mark.mark.ToString()
+                                                  : (mark.absent && mark.grade == null
+                                                         ? "<span title='absent'>x</span>"
+                                                         : ""))
+                        </td>
+                        <td>
+                            @mark.grade != null ? mark.grade.grade.ToUpper() : ""
+                        </td>
+                        <td>
+                            @mark.mark_average
+                        </td>
+                    </tr>
+                     }
+                </tbody>
+            </table>
+        </div>
+    </li>
+     }
+</ul>
+ } 

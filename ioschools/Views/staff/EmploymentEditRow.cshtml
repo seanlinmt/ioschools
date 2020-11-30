@@ -1,0 +1,20 @@
+﻿@model ioschools.Models.user.staff.EmploymentPeriod
+<tr alt="@Model.id" class="bg_edit">
+                <td>
+                    @Html.TextBox("employment_start_date", Model.startDate)
+                </td>
+                <td>
+                    @Html.TextBox("employment_end_date", Model.endDate)
+                </td>
+                <td>
+                    @Html.TextArea("employment_remarks", Model.remarks, new Dictionary<string, object>() { { "class", "w95p" } })
+                </td>
+                <td class="ar">
+                    <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+</td>
+            </tr>
+

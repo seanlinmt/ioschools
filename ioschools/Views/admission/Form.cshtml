@@ -1,0 +1,33 @@
+﻿@model ioschools.Models.enrolment.AdmissionViewModel
+<form id="registerForm" autocomplete="off" action="/admission/save" method="post" enctype="multipart/form-data">
+<p>Required fields are marked <label class="required">&nbsp;</label></p>
+ @Html.Partial("FormCommon", Model) 
+<h2>Details of Applicant</h2>
+<div class="form_entry">
+    <div class="form_label">
+        Your relationship to the child</div>
+        <select name="applicant_relationship" class="required">
+        <option value="mother">mother</option>
+        <option value="father">father</option>
+        <option value="guardian">guardian</option>
+        </select>
+</div>
+<div class="clear"></div>
+<ol class="lb10 mt20">
+    <li>Photocopies of the child’s birth certificate, report cards, relevant fees must be submitted to the Secretary,  National School, Tabuan Desa, Kuching</li>
+    <li>Completion of this form does not mean automatic entry  into  the School. Entry  into  the School  is
+subjected  to an assessment  to be made and on first-come-first-serve basis  in accordance with  the
+School Bye-Laws. 
+ </li>
+<li>The assessment fee must be paid before an assessment can be arranged. </li>
+<li>The  date  of  registration  on  the Waiting  List will  be  the  date  the  fully  completed  form  and  the
+relevant fees and deposits are received by  School.</li>
+    </ol>
+<div class="form_entry">
+    <input type="checkbox" id="terms" name="terms" class="required" /> <label for="terms">Yes, I certify that the information provided is accurate</label>
+</div>
+<div class="mt20">
+<button id="buttonRegister" type="submit">submit registration</button>
+</div>
+</form>
+

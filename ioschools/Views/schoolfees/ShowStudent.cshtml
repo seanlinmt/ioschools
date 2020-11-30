@@ -1,0 +1,136 @@
+﻿@model ioschools.Models.fees.viewmodel.SchoolFeeStudentViewModel
+<div class="mt10">
+<div class="fl" id="fee_year_selector_@Model.studentid">
+@if(Model.yearList.Count() != 0)
+   {
+   @Html.DropDownList("fee_year_select", Model.yearList)
+    
+   }
+</div>    
+<div class="clear"></div>
+</div>
+
+<table id="feeTable" class="table_brown">
+    <thead>
+        <tr>
+            <td>
+                Fees Payable
+            </td>
+            <td class="ar">Amount Payable, RM</td>
+            <td class="w125px ar">Payment Status</td>
+            <td class="w100px ar">
+                  Due Date
+            </td>
+            @if (Model.fees.Any(x => x.canEdit))
+               { 
+  <td class="w175px"></td>
+                } 
+            
+        </tr>
+    </thead>
+    <tbody id="fee_results_@Model.studentid">
+        @if (!Model.fees.Any())
+           {	
+        <tr>
+            <td colspan="@Model.canEdit?"5":"4"">
+                No payable fees found.
+            </td>
+        </tr>
+        }
+           else
+           {
+               @Html.Partial("StudentRows", Model.fees)
+           }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('select', '#fee_year_selector_@Model.studentid').bind('change', function () {
+        var selected = $(this).val();
+        var div = $(this).parents("div[id^='fees_']");
+        $(this).getx('/schoolfees/showstudent/', { year: selected, studentid: @Model.studentid }, function (result) {
+            $(div).html(result);
+        });
+    });
+
+    @if(Model.canEdit){ 
+    function fee_initeditrow(row) {
+        init_inputSelectors(row);
+        $('#amount', row).numeric({allow: ',.'});
+    }
+    
+    $('.jqdelete', '#feeTable').die().live('click', function() {
+        var ok = window.confirm("Are you sure? This will delete this outstanding fee and remove it from related reminders.");
+        if(!ok) {
+            return false;
+        }
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).post('/schoolfees/deletestudent/' + id, function(json_result) {
+            if (json_result.success) {
+                $(row).fadeOut(function() {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+        return false;
+    });
+
+    $('.jqedit', '#feeTable').die().live('click', function() {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var feeid = $('#feeid', row).val();
+        $(this).getx('/schoolfees/editstudent/' + id, { feeid: feeid, studentid: @Model.studentid}, function(result) {
+            $(row).fadeOut('fast', function() {
+                row.replaceWith($(result));
+                fee_initeditrow(row);
+            });
+        });
+        return false;
+    });
+    
+    $('#buttonSave', '#feeTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var amount = $('#amount', row).val();
+        if (amount == '') {
+            $.jGrowl('Please specify an amount');
+            return;
+        }
+
+        var id = $(row).attr('alt');
+
+        var params = {
+                status: $('#status', row).val(),
+                feeid: $('#feeid', row).val(),
+                amount: amount,
+                studentid: @Model.studentid
+            };
+
+        $.post('/schoolfees/update/' + id, params, function(json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function() {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+    });
+
+    $('#buttonCancel', '#feeTable').die().live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var feeid = $('#feeid', row).val();
+
+        $(this).post('/schoolfees/studentrows/' + id, { feeid: feeid, studentid: @Model.studentid }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function() {
+                    row.replaceWith($(json_result.data));
+                });
+            } else {
+                $.jGrowl(json_result.message);
+            }
+        });
+    });
+    } 
+</script>
+

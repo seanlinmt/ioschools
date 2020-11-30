@@ -1,0 +1,364 @@
+﻿@model ioschools.Data.User.Permission
+@using ioschools.Data.User
+<div class="info">
+This section is only visible to users with <strong>Edit Staff Details</strong> permission.
+<p class="mt10 boldv font_red">For permission changes to take effect, user will need to sign out and then sign in again.</p>
+</div>
+<table id="permissionsTable" class="table_grid mt10">
+    <tr>
+        <td colspan="2" class="bold">
+            Attendance
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create attendance entry
+        </td>
+        <td>
+            @Html.CheckBox("ATTENDANCE_CREATE", Model.HasFlag(Permission.ATTENDANCE_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Notify parents
+        </td>
+        <td>
+            @Html.CheckBox("ATTENDANCE_NOTIFY", Model.HasFlag(Permission.ATTENDANCE_NOTIFY))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            School Calendar
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Update school calendar
+        </td>
+        <td>
+            @Html.CheckBox("CALENDAR_ADMIN", Model.HasFlag(Permission.CALENDAR_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Conduct
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Manage conduct types and edit conduct entries of others
+        </td>
+        <td>
+            @Html.CheckBox("CONDUCT_ADMIN", Model.HasFlag(Permission.CONDUCT_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create conduct entry
+        </td>
+        <td>
+            @Html.CheckBox("CONDUCT_CREATE", Model.HasFlag(Permission.CONDUCT_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Notify parents
+        </td>
+        <td>
+            @Html.CheckBox("CONDUCT_NOTIFY", Model.HasFlag(Permission.CONDUCT_NOTIFY))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Extra Curricular Activities
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Manage ECA types and edit ECA entries of others
+        </td>
+        <td>
+            @Html.CheckBox("ECA_ADMIN", Model.HasFlag(Permission.ECA_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create and update own created ECA entries
+        </td>
+        <td>
+            @Html.CheckBox("ECA_CREATE", Model.HasFlag(Permission.ECA_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Enrolment
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Update, delete and search for enrolments
+        </td>
+        <td>
+            @Html.CheckBox("ENROL_ADMIN", Model.HasFlag(Permission.ENROL_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Enrol students manually
+        </td>
+        <td>
+            @Html.CheckBox("ENROL_CREATE", Model.HasFlag(Permission.ENROL_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Exams
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Manage all exam records, templates and grading methods
+        </td>
+        <td>
+            @Html.CheckBox("EXAM_ADMIN", Model.HasFlag(Permission.EXAM_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create exam records and templates
+        </td>
+        <td>
+            @Html.CheckBox("EXAM_CREATE", Model.HasFlag(Permission.EXAM_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Edit grades in exam records and edit own exam templates
+        </td>
+        <td>
+            @Html.CheckBox("EXAM_EDIT", Model.HasFlag(Permission.EXAM_EDIT))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            View contents of exam records and templates
+        </td>
+        <td>
+            @Html.CheckBox("EXAM_VIEW", Model.HasFlag(Permission.EXAM_VIEW))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Fees
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Manage various types of payable fees and configure related settings
+        </td>
+        <td>
+            @Html.CheckBox("FEES_ADMIN", Model.HasFlag(Permission.FEES_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Update Fee Status of students
+        </td>
+        <td>
+            @Html.CheckBox("FEES_UPDATE_STATUS", Model.HasFlag(Permission.FEES_UPDATE_STATUS))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Homeworks
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create homeworks for students
+        </td>
+        <td>
+            @Html.CheckBox("HOMEWORK_CREATE", Model.HasFlag(Permission.HOMEWORK_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Leave
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Manage and assign the various types of staff leave. Apply leave for others.
+        </td>
+        <td>
+            @Html.CheckBox("LEAVE_ADMIN", Model.HasFlag(Permission.LEAVE_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Review leave applications
+        </td>
+        <td>
+            @Html.CheckBox("LEAVE_REVIEW", Model.HasFlag(Permission.LEAVE_REVIEW))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Apply for leave
+        </td>
+        <td>
+            @Html.CheckBox("LEAVE_APPLY", Model.HasFlag(Permission.LEAVE_APPLY))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            News
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create, update and manage all news articles
+        </td>
+        <td>
+            @Html.CheckBox("NEWS_ADMIN", Model.HasFlag(Permission.NEWS_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create news entry
+        </td>
+        <td>
+            @Html.CheckBox("NEWS_CREATE", Model.HasFlag(Permission.NEWS_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Email circulars to students, parents or staff
+        </td>
+        <td>
+            @Html.CheckBox("NEWS_BROADCAST", Model.HasFlag(Permission.NEWS_BROADCAST))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            System
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Access System Configuration page for configuring and managing various settings
+        </td>
+        <td>
+            @Html.CheckBox("SETTINGS_ADMIN", Model.HasFlag(Permission.SETTINGS_ADMIN))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            Transcripts
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Create student transcripts
+        </td>
+        <td>
+            @Html.CheckBox("TRANSCRIPTS_CREATE", Model.HasFlag(Permission.TRANSCRIPTS_CREATE))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Edit and update related information for student transcripts
+        </td>
+        <td>
+            @Html.CheckBox("TRANSCRIPTS_EDIT", Model.HasFlag(Permission.TRANSCRIPTS_EDIT))
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="bold">
+            User Database
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Add new users
+        </td>
+        <td>
+            @Html.CheckBox("USERS_CREATE", Model.HasFlag(Permission.USERS_CREATE))
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            View student profiles
+        </td>
+        <td>
+            @Html.CheckBox("USERS_VIEW_STUDENTS", Model.HasFlag(Permission.USERS_VIEW_STUDENTS))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            View and edit student profiles
+        </td>
+        <td>
+            @Html.CheckBox("USERS_EDIT_STUDENTS", Model.HasFlag(Permission.USERS_EDIT_STUDENTS))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            View parent profiles
+        </td>
+        <td>
+            @Html.CheckBox("USERS_VIEW_PARENTS", Model.HasFlag(Permission.USERS_VIEW_PARENTS))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            View and edit parent profiles
+        </td>
+        <td>
+            @Html.CheckBox("USERS_EDIT_PARENTS", Model.HasFlag(Permission.USERS_EDIT_PARENTS))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            View staff profiles
+        </td>
+        <td>
+            @Html.CheckBox("USERS_VIEW_STAFF", Model.HasFlag(Permission.USERS_VIEW_STAFF))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Edit staff profile, details and permissions
+        </td>
+        <td>
+            @Html.CheckBox("USERS_EDIT_STAFF", Model.HasFlag(Permission.USERS_EDIT_STAFF))
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Edit own profile
+        </td>
+        <td>
+            @Html.CheckBox("USERS_EDIT_OWN", Model.HasFlag(Permission.USERS_EDIT_OWN))
+        </td>
+    </tr>
+    
+    
+    
+    <tr>
+        <td colspan="2" class="bold">
+            Website
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Edit website content
+        </td>
+        <td>
+            @Html.CheckBox("WEBSITE_EDIT", Model.HasFlag(Permission.WEBSITE_EDIT))
+        </td>
+    </tr>
+    
+</table>
+

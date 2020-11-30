@@ -1,0 +1,626 @@
+﻿@{
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+
+@model ioschools.Models.exam.viewmodels.ExamViewModel
+
+@using ioschools.Data.User
+@using ioschools.Library
+@section TitleContent {
+
+    @Model.exam.name
+
+}
+
+<div class="mt10">
+    <div class="fl">
+        <h2>
+            <a href="/exams">Exams</a> <span class="font_grey">></span>
+            @Model.exam.name
+            <span class="font_grey smaller normal">
+                @Model.exam.date
+            </span>
+        </h2>
+    </div>
+    <div class="fr">
+        <div class="@Model.iscreator?" inlineedit ":" " w500px">
+            @Model.description.ToHtmlBreak()
+        </div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+<div id="exam_tabs" class="tabs_clear">
+    <ul class="hidden">
+        <li><a href="#marks">Results</a></li>
+        <li><a href="#stats">Statistics</a></li>
+        <li><a href="#subjects">Settings</a></li>
+    </ul>
+    <div id="marks" class="hidden">
+        @Html.Partial("edit", Model)
+    </div>
+    <div id="stats" class="hidden">
+        <table id="statsTable" class="table_grid mt10">
+            <thead>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    @foreach (var entry in Model.class_names)
+                    {
+                    <th class="ac" colspan="2">
+                        @entry
+                    </th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @{ foreach (var subject in Model.subjects)
+                {
+                var count = 0;
+                var stats = Model.stats[subject.name];
+                foreach (var gentry in Model.grades)
+                {
+                var grade = gentry;
+
+                <tr>
+                    @if (count == 0)
+                    {
+                    <th class="al">
+                        @subject.name
+                    </th>
+                    <td>
+                        @grade
+                    </td>
+
+                    }
+                    else
+                    {
+                    <td>
+                    </td>
+                    <td>
+                        @grade
+                    </td>
+                    }
+                    count++;
+                    foreach (var entry in Model.class_names)
+                    {
+                    var classname = entry;
+                    var stat = stats.SingleOrDefault(x => x.class_name == classname && x.grade == grade);
+
+                    <td class="ar">
+                        @stat != null? stat.count.ToString():""
+                    </td>
+                    <td class="ar">
+                        @stat != null? stat.percentage:""
+                    </td>
+                    }
+                </tr>
+                } }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div id="subjects" class="hidden pt10">
+        <div class="info">Subjects can be dragged and dropped into new positions to change the order of appearance in Report Cards.</div>
+        <form id="examSettingsForm" action="/exams/settings/@Model.exam.id" method="POST">
+            <div class="form_entry">
+                <div class="form_label">
+                    <label>
+                        Subject Maximum Mark
+                    </label>
+                </div>
+                @Html.TextBox("maxMark", Model.exam.maxMark)
+            </div>
+            <div class="form_entry">
+                <div class="form_label">
+                    <label>
+                        Restrict Access
+                    </label>
+                    <div class="tip">
+                        Assign a School Subject to the Exam Subject to limit editing of exam results to ONLY assigned subject teachers.
+                    </div>
+                </div>
+                <table id="subjectTable" class="table_brown">
+                    <thead>
+                        <tr>
+                            <td>
+                                Exam Subject
+                            </td>
+                            <td>
+                                School Subject
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var subject in Model.examsubjects)
+                        {
+                        <tr id="subject_@subject.id">
+                            <td>
+                                <span class="hover_move">@subject.examsubjectname</span>
+                                @Html.Hidden("subjectid", subject.id)
+                            </td>
+                            <td>
+                                @Html.DropDownList("subject", subject.subjects)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="mt10">
+                    <button id="buttonUpdateSettings" type="button" class="large">
+                        <img class="am" src="/Content/img/icons/save.png" />
+                        Update Settings
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    // array of subjectid, studentid, mark
+    var maxMark = @Model.exam.maxMark;
+    var failMark = 40;
+    var changedValues = [];
+    var subjectIDs = [];
+    var subjectNames = [];
+    var headerheight = 0;
+    var CELL_WIDTH = 33;
+    var SCROLLBAR_WIDTH = 28;
+    var HEADER_PADDING = 20;
+    var totalRows, totalColumns;
+    var doscroll = true;
+
+    var fixHelper = function (e, ui) {
+        ui.children().each(function () {
+            $(this).width($(this).width());
+        });
+        return ui;
+    };
+
+    function initsort() {
+        var templateid = $('#id').val();
+        if (templateid != '') {
+            $("#subjectTable tbody").sortable({
+                helper: fixHelper,
+                update: function () {
+                    var order = $('#subjectTable tbody').sortable('serialize');
+                    $.post('/exams/ordersubject/@Model.exam.id', { ids: order }, function (json_result) {
+                        $.jGrowl(json_result.message);
+                    }, 'json');
+                }
+            }).disableSelection();
+        }
+    };
+
+    $(document).ready(function () {
+        $('#exam_tabs').tabs();
+        $("td:contains('X')", "#statsTable > tbody > tr").each(function () {
+            $(this).parent().addClass('bb');
+        });
+        ioschools.util.setNavigation('#nexams', 'selected_link');
+        //init_inputSelectors();
+        $('#marks').trackUnsavedChanges('#buttonSave');
+
+        totalRows = $('tbody tr', '#exam_single_table_body').length;
+        totalColumns = $('tr:first > td', '#exam_single_table_header').length;
+
+        for (var i = 1; i < totalColumns; i++) {
+            var hcell = $('tbody td:eq(' + i + ')', '#exam_single_table_header');
+            var height = $('span', hcell).width();
+            //console.log(height);
+            // need to get tallest cell
+            if (height >= headerheight) {
+                headerheight = height;
+            }
+        }
+
+        if ($('#exam_header_container').height() > (headerheight + HEADER_PADDING + 1)) {
+            headerheight = $('#exam_header_container').height() - HEADER_PADDING - 1;
+        }
+
+        // adjust header height
+        $('tbody td:first', '#exam_single_table_header').height(headerheight + HEADER_PADDING);
+
+        // set table width
+        var actualtable_width = $('tr:first', '#exam_single_table_body').outerWidth();
+        var totalmarkcol_width = CELL_WIDTH * (totalColumns - 1);
+
+        var availablewidth = $('#exam_body_container').width();
+
+        var firstcolwidth;
+        if ((actualtable_width + SCROLLBAR_WIDTH) <= 990) {
+            firstcolwidth = availablewidth - totalmarkcol_width - SCROLLBAR_WIDTH;
+        } else {
+            firstcolwidth = $('tr:eq(1) > td:first ', '#exam_single_table_body').outerWidth();
+            actualtable_width = firstcolwidth + totalmarkcol_width + SCROLLBAR_WIDTH;
+
+            // check window width
+            var windowwidth = $(window).width();
+            //var windowwidth = 800;
+            if (actualtable_width > windowwidth) {
+                actualtable_width = windowwidth;
+                $('.scrollableContainerHolder').css("overflow", "auto");
+                // set header width
+                if ($.browser.msie) {
+                    $('#exam_single_table_header').width($('#exam_single_table_body').width());
+                }
+            }
+            $('#main > .wrapper').width(actualtable_width);
+
+        }
+        $('tr:eq(1) > td:first > div', '#exam_single_table_body ').width(firstcolwidth);
+        $('tr:first > td:first > span', '#exam_single_table_header').width(firstcolwidth);
+
+        // IE need to set td
+        $('tr:eq(1) > td:first ', '#exam_single_table_body ').width(firstcolwidth);
+        $('tr:first > td:first ', '#exam_single_table_header').width(firstcolwidth);
+
+        // rotate headers
+        if ($.browser.msie && parseFloat($.browser.version) < 9) {
+            for (var l = 1; l < totalColumns; l++) {
+                var hc = $('tr:first > td:eq(' + l + ')', '#exam_single_table_header');
+
+                $('span', hc).css({
+                    "background-color": "#fff",
+                    //width: CELL_WIDTH - 2,
+                    position: 'absolute'
+                }).removeClass('font_white');
+
+                $(hc).css({
+                    "padding-top": "5px",
+                    width: CELL_WIDTH - 1
+                });
+
+                $(hc).css({
+                    "zoom": "1",
+                    "-ms-writing-mode": "tb-rl",
+                    "writing-mode": "tb-rl",
+                    "vertical-align": "top",
+                    filter: "flipv fliph"
+                });
+
+            }
+            doscroll = false;
+        } else {
+            var t_transform = "translate(32px,-6px) rotate(-90deg)";
+
+            var t_origin = "bottom left";
+            for (var k = 1; k < totalColumns; k++) {
+                var hcell = $('tr:first > td:eq(' + k + ')', '#exam_single_table_header');
+
+                $(hcell).css({
+                    "-moz-transform-origin": t_origin,
+                    "-moz-transform": t_transform,
+                    "-o-transform-origin": t_origin,
+                    "-o-transform": t_transform,
+                    "-webkit-transform-origin": t_origin,
+                    "-webkit-transform": t_transform,
+                    "ms-transform-origin": t_origin,
+                    "ms-transform": t_transform,
+                    "transform-origin": t_origin,
+                    "transform": t_transform
+                });
+                $('span', hcell).removeClass('font_white').width(CELL_WIDTH - 1);
+                $(hcell).width(CELL_WIDTH);
+            }
+        }
+
+
+
+        // set height of tbody
+        SetResultPanelHeight();
+
+
+        // populate arrays
+        var subjectrows = $('tbody td:first', '#exam_single_table_header').nextAll();
+        $.each(subjectrows, function (j) {
+            var id = $(this).attr('alt');
+            var name = $.trim($(this).text());
+            subjectIDs.push(id);
+            subjectNames.push(name);
+            if (j == (subjectrows.length - 1)) {
+                $('#buttonSave').attr('disabled', false);
+            }
+        });
+
+        // color alt rows
+        $('tbody > tr[alt]:odd', '#exam_single_table_body').css("background-color", "#f9f9f9");
+
+        $('input[type=text]', '#exam_single_table_body').numeric({ allow: 'xvgsniabcdefu*+-' });
+
+        // color marks as red if below 40
+        $('input[type=text]', '#exam_single_table_body').each(function () {
+            var mark = parseInt($(this).val(), 10);
+            handleExamMark(this, mark);
+        });
+
+        if (doscroll) {
+            $('#exam_header_container').animate({ scrollTop: 300 }, "slow");
+        }
+
+        // init sort
+        initsort();
+
+        // synchronise scroll
+        $('#exam_header_container').scroll(function () {
+            var length = $(this).scrollLeft();
+            $('#exam_body_container').scrollLeft(length);
+        });
+        $('#exam_body_container').scroll(function () {
+            var length = $(this).scrollLeft();
+            $('#exam_header_container').scrollLeft(length);
+        });
+
+        // description editor
+        $('.inlineedit').inlineEdit({
+            control: "textarea",
+            limit: 500,
+            placeholder: 'Click here to add a description (only editable by you).',
+            save: function (e, data) {
+                var ok = window.confirm('Are you sure?');
+                var editor = this;
+                var oldvalue = $(editor).data('oldvalue.inlineedit');
+                if (!ok) {
+                    return false;
+                }
+                var params = {
+                    id: @Model.exam.id,
+                remarks: data.value
+            };
+            $.post('/exams/savedescription', params, function (json_result) {
+                $.jGrowl(json_result.message);
+                if (!json_result.success) {
+                    $(editor).data('value.inlineedit', oldvalue);
+                    $(editor).html(oldvalue);
+                }
+            });
+
+            return true;
+        }
+        });
+
+        }); // ready
+
+    $('#buttonUpdateSettings').click(function () {
+        var ok = $('#examSettingsForm').validate({
+            invalidHandler: function (form, validator) {
+                $(validator.invalidElements()[0]).focus();
+            },
+            focusInvalid: false,
+            rules: {
+                maxMark: {
+                    required: true
+                }
+            }
+        }).form();
+        if (!ok) {
+            return false;
+        }
+
+        var action = $('#examSettingsForm').attr("action");
+        var serialized = $('#examSettingsForm').serialize();
+
+        // post form
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: serialized,
+            context: this,
+            dataType: 'json',
+            success: function (json_data) {
+                $.jGrowl(json_data.message);
+            }
+        });
+
+        return false;
+    });
+
+    $('#exportExam').click(function () {
+        $('#examResultsForm').trigger('submit');
+    });
+
+    $('input[type=text]', '#exam_single_table_body').live('blur.dirty', function () {
+        var oldval = $(this).next().val();
+        var newval = $(this).val();
+        if (oldval != newval) {
+            $(this).parent().addClass('dirty');
+        }
+        else {
+            $(this).parent().removeClass('dirty');
+        }
+        var mark = parseInt($(this).val(), 10);
+        handleExamMark(this, mark);
+    });
+
+    $('input[type=text]', '#exam_single_table_body').live('keyup', function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code != 13) {
+            return;
+        }
+        $(this).trigger('blur.dirty');
+        var row = $(this).parents('tr');
+        var cell = $(this).parents('td');
+        var rowindex = $('tbody > tr', '#exam_single_table_body').index(row);
+        var colindex = $('td', row).index(cell);
+        var next = $(row).next();
+        $('td:eq(' + colindex + ') > input', next).focus();
+    });
+
+    // show details on hover
+    $('td', '#exam_single_table_body > tbody').mouseenter(function () {
+        var row = $(this).parents('tr');
+        var colindex = $('td', row).index(this);
+        if (colindex == 0) {
+            return false;
+        }
+        var student = $.trim($('td:first', row).text());
+        var subject = subjectNames[colindex - 1];
+        $(this).attr('title', student + " - " + subject);
+        // init tooltip
+        $(this).tooltip({
+            track: true,
+            delay: 0,
+            showURL: false,
+            showBody: " - ",
+            fade: 0
+        });
+    });
+
+    function handleExamMark(cell, mark) {
+        if (!isNaN(mark)) {
+            // reset
+            $(cell).removeClass('font_white').removeClass('bg_red').attr('title', '');
+
+            // handle
+            if (mark < failMark) {
+                $(cell).addClass('font_red');
+            }
+            else {
+                $(cell).removeClass('font_red');
+            }
+
+            if (mark > maxMark) {
+                $(cell).addClass('font_white').addClass('bg_red').attr('title', 'Maximum mark exceeded');
+            }
+
+            $(cell).removeClass('al');
+        }
+        else {
+            $(cell).addClass('al');
+        }
+    };
+
+    // autoresize display
+    function SetResultPanelHeight() {
+        var availableHeight = GetAvailableHeight('#exam_single_table_body');
+        $('#exam_single_table_body').height(availableHeight); // take into account borders or there is some padding somewhere
+
+        // need to set div height for IE too
+        $('#exam_body_container').height(availableHeight);
+    };
+
+    window.onresize = function () { SetResultPanelHeight(); };
+
+
+    function GetChangedSubjectNames(array) {
+        var ids = [];
+        for (var i = 0; i < array.length; i++) {
+            var o = array[i];
+            for (var j = 0; j < o.marks.length; j++) {
+                var subjectid = o.marks[j].subjectid;
+                if (ids.indexOf(subjectid) == -1) {
+                    ids.push(subjectid);
+                }
+            }
+        }
+        var names = [];
+        for (var k = 0; k < ids.length; k++) {
+            var name = $('tbody td[alt="' + ids[k] + '"]', '#exam_single_table_header').text();
+            names.push($.trim(name));
+        }
+        return names;
+    };
+
+    function insertNewMark(obj, array) {
+        if (obj.markid == "null") {
+            obj.markid = null;
+        }
+        var o = {
+            id: obj.id,
+            marks: [{ subjectid: obj.subjectid, mark: obj.mark, id: obj.markid }]
+        };
+        array.push(o);
+        array.sort(function (a, b) { return a.id - b.id; });
+        return array;
+    };
+
+
+
+
+    // handle save
+
+    $('#buttonSave').click(function () {
+        $('#updateMarkForm').trigger('submit');
+    });
+
+    $('#updateMarkForm').submit(function () {
+        var rows = $('tr[alt]', '#exam_single_table_body');
+        $.each(rows, function (i, val) {
+            var studentid = $(this).attr('alt');
+            var cells = $('td:eq(0)', this).nextAll();
+            $.each(cells, function (j) {
+                if ($(this).hasClass('dirty')) {
+                    var input = $('input[type=text]', this);
+                    var oldval = $(input).next().val();
+                    var newval = $(input).val();
+                    var markid = $(this).attr('alt');
+                    var subjectid = subjectIDs[j];
+
+                    var entry = {
+                        id: studentid,
+                        subjectid: subjectid,
+                        mark: newval,
+                        markid: markid
+                    };
+
+                    var exist_index = changedValues.binarySearch(entry, function (a, b) { return a.id - b.id; });
+                    if (oldval != newval) {
+                        if (exist_index == -1) {
+                            insertNewMark(entry, changedValues);
+                        } else {
+                            var existing = changedValues[exist_index];
+                            var mark = { subjectid: subjectid, mark: newval, id: markid };
+                            var mark_index = existing.marks.search(mark, function (a, b) { return a.subjectid - b.subjectid; });
+                            if (mark_index == -1) {
+                                existing.marks.push(mark);
+                            } else {
+                                existing.marks[mark_index] = mark;
+                            }
+                            changedValues[exist_index] = existing;
+                        }
+                    }
+                }
+
+            });
+        });
+
+        // confirm with user
+        var subjects = GetChangedSubjectNames(changedValues);
+        if (subjects.length == 0) {
+            $.jGrowl('No marks to update');
+            return false;
+        }
+        var ok = window.confirm('Save changes to the following ' + subjects.length + ' subject(s): ' + subjects.join(",") + '?');
+        if (!ok) {
+            return false;
+        }
+
+        var action = $(this).attr('action');
+
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: action,
+            dataType: "json",
+            context: $('#buttonSave'),
+            data: JSON.stringify(changedValues),
+            success: function (json_result) {
+                if (json_result.success) {
+                    changedValues.length = 0;
+                    $('td', '#exam_single_table_body').removeClass('dirty');
+                }
+                $.jGrowl(json_result.message);
+            }
+        });
+        return false;
+    });
+
+</script>
+
+@section ExtraHeader {
+
+
+}
+

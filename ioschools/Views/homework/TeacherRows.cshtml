@@ -1,0 +1,7 @@
+﻿@model IEnumerable<ioschools.Models.homework.Homework>
+@foreach (var homework in Model)
+{
+     @Html.Partial("~/Views/homework/single.cshtml", homework) 
+    
+}
+

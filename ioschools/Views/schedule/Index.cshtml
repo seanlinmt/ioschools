@@ -1,0 +1,17 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@section TitleContent {
+Schedule
+}
+
+<div id="content_result">
+@{ Html.RenderAction("ScheduleContent");}
+<script type="text/javascript">
+    $(document).ready(function () {
+        ioschools.util.setNavigation('#nschedule', 'selected');
+    });
+</script>
+</div>
+
+

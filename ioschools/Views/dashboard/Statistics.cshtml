@@ -1,0 +1,246 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.stats.StatsViewModel
+
+@section TitleContent {
+
+    Statistics
+}
+@section ExtraHeader {
+
+
+}
+
+    <div id="content_result" class="mt10">
+        <h2>Statistics</h2>
+        <p>Student Demographics, ECA and Conduct Statistics</p>
+        <div class="content_filter">
+            <div class="ba r4 p10 mt5">
+                <h3>
+                    Demographics</h3>
+                <div id="schoolList" class="filter mt10">
+                <div class="form_entry">
+                    <div class="form_label">
+                        Type
+                    </div>
+                    <select id="type">
+                    <option value="student">Student</option>
+                    <option value="eca">ECA</option>
+                    </select>
+                    </div>
+                    <div class="form_entry">
+                    <div class="form_label">
+                        School
+                    </div>
+                    <select id="school">
+                        <option value=''>Select School</option>
+                        <option value="Kindergarten">Kindergarten</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Secondary">Secondary</option>
+                        <option value="International">International</option>
+                    </select>
+                    </div>
+                    <div class="form_entry">
+                    <div class="form_label">
+                        Year
+                    </div>
+                    @Html.TextBox("year", Model.currentYear, new Dictionary<string, object>(){{"class","w125px"}})
+                    </div>
+                </div>
+                <button id="studentStats" type="button">
+                    show</button>
+            </div>
+            <div class="ba r4 p10 mt10">
+                <h3>
+                    Student Conduct</h3>
+                <form id="conductForm" action="/discipline/statistics" method="post">
+                <div class="form_entry">
+                    <div class="form_label">
+                        School
+                    </div>
+                    <select id="conduct_school" name="school">
+                        <option value=''>Select School</option>
+                        <option value="Kindergarten">Kindergarten</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Secondary">Secondary</option>
+                        <option value="International">International</option>
+                    </select>
+                </div>
+                <div class="form_entry">
+                    <div class="form_label">
+                        From</div>
+                    <select id="from_day" name="from_day">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                        <option>21</option>
+                        <option>22</option>
+                        <option>23</option>
+                        <option>24</option>
+                        <option>25</option>
+                        <option>26</option>
+                        <option>27</option>
+                        <option>28</option>
+                        <option>29</option>
+                        <option>30</option>
+                        <option>31</option>
+                    </select>
+                    <select id="from_month" name="from_month">
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">May</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                    @Html.DropDownList("from_year", Model.from_year)
+                </div>
+                <div class="form_entry">
+                    <div class="form_label">
+                        To</div>
+                    <select id="to_day" name="to_day">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10</option>
+                        <option>11</option>
+                        <option>12</option>
+                        <option>13</option>
+                        <option>14</option>
+                        <option>15</option>
+                        <option>16</option>
+                        <option>17</option>
+                        <option>18</option>
+                        <option>19</option>
+                        <option>20</option>
+                        <option>21</option>
+                        <option>22</option>
+                        <option>23</option>
+                        <option>24</option>
+                        <option>25</option>
+                        <option>26</option>
+                        <option>27</option>
+                        <option>28</option>
+                        <option>29</option>
+                        <option>30</option>
+                        <option>31</option>
+                    </select>
+                    <select id="to_month" name="to_month">
+                        <option value="1">Jan</option>
+                        <option value="2">Feb</option>
+                        <option value="3">Mar</option>
+                        <option value="4">Apr</option>
+                        <option value="5">May</option>
+                        <option value="6">Jun</option>
+                        <option value="7">Jul</option>
+                        <option value="8">Aug</option>
+                        <option value="9">Sep</option>
+                        <option value="10">Oct</option>
+                        <option value="11">Nov</option>
+                        <option value="12">Dec</option>
+                    </select>
+                    @Html.DropDownList("to_year", Model.to_year)
+                </div>
+                <button id="studentConduct" type="button">
+                    show</button>
+                </form>
+            </div>
+        </div>
+        <div class="main_columnright">
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                ioschools.util.setNavigation('#nhome', 'selected_link');
+                pageInit();
+                $('#year', '#schoolList').numeric();
+            });
+
+            function pageInit() {
+                // bind side filter click events
+                $('#studentStats').bind("click", function () {
+                    var selected = $('#school', '#schoolList').val();
+                    if (selected == '') {
+                        $.jGrowl('Please select target school');
+                        return;
+                    }
+
+                    var year = $('#year', '#schoolList').val();
+                    if (year == '') {
+                        $.jGrowl('Please enter year');
+                        return;
+                    }
+
+                    var type = $('#type', '#schoolList').val();
+                    var targetAction = "";
+                    switch (type) {
+                        case "student":
+                            targetAction = '/schools/statisticcontent/';
+                            break;
+                        case "eca":
+                            targetAction = '/eca/statisticcontent/';
+                            break;
+                        default:
+                            $.jGrowl('Unknown type');
+                    }
+
+                    $(this).post(targetAction + selected, { year: year }, function (result) {
+                        $('.main_columnright').html(result);
+                    });
+                });
+
+                $('#studentConduct').click(function () {
+                    var school = $('#conduct_school').val();
+                    if (school == '') {
+                        $.jGrowl('Please select target school');
+                        return false;
+                    }
+
+                    $('#conductForm').trigger('submit');
+                });
+            };
+
+            $('#conductForm').submit(function () {
+                var action = $(this).attr("action");
+                var serialized = $(this).serialize();
+
+                // post form
+                $('#studentConduct').post(action, serialized, function (result) {
+                    $('.main_columnright').html(result);
+                });
+                return false;
+            });
+
+        </script>
+    </div>
+
+

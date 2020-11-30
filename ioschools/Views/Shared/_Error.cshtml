@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="icon" href="/Content/img/favicon.png" type="image/png" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="shortcut icon" href="/Content/img/favicon.png" type="image/png" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@RenderSection("TitleContent")</title>
+    <link href="/Content/css/common.css?v=1" rel="stylesheet" type="text/css" />
+    <link href="/Content/css/Site.css?v=7" rel="stylesheet" type="text/css" />
+    @RenderSection("ExtraHeader")
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="navigation">
+                <div class="wrapper">
+                    <h1 class="logosmall"><a href="/" target="_blank" class="font_white"> Information System</a></h1>
+                </div>
+            </div>
+        </div>
+        <div id="main">
+            <div class="wrapper">
+                @RenderBody()
+                <div class="clear">
+                </div>
+                <p class="mt80">« <a href="#" onclick="window.history.back();return false;">go back</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

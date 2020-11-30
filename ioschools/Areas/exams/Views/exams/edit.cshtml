@@ -1,0 +1,68 @@
+﻿@model ioschools.Models.exam.viewmodels.ExamViewModel
+<div id="exam_container">
+    <div>
+    <div class="fl mt10">
+        <button id="exportExam" type="button" title="export marks to excel" class="small ajax">export results</button>
+        </div>
+        <div class="fr">
+        <form id="examResultsForm" method="post" action="/exams/export" class="mt10">
+        @Html.Hidden("id", Model.exam.id)
+        <span class="tip inline-block">TIP: Use <span class="font_red">X</span> for <span class="font_red">absent</span> students.</span>
+    
+         <button type="button" id="buttonSave" class="ajax large" disabled="disabled">
+           <img class="am" src="/Content/img/icons/save.png" /> save</button>
+        </form>
+        </div>
+        <div class="clear"></div>
+        </div>
+             <div id="exam_header_container" class="scrollableContainerHolder mt10" style="height: 200px">
+    <table id="exam_single_table_header" alt="@Model.exam.id">
+        <tbody>
+            <tr>
+                <td style="padding:0 3px">
+                    <span>&nbsp;</span>
+                </td>
+                @foreach (var subject in Model.exam.subjects)
+                   {
+                <td alt="@subject.id">
+                    <span class="font_white">@subject.name</span>
+                </td>
+                } 
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    <form id="updateMarkForm" action="/exams/update/@Model.exam.id" method="POST" autocomplete="off">
+    <div id="exam_body_container" class="scrollableContainerHolder">
+    <table id="exam_single_table_body">
+        <tbody>
+            @foreach (var section in Model.exam.sections)
+               {
+            <tr>
+                <td colspan="@Model.exam.subjects.Count() + 1" class="bold bg_lightgrey" style="padding:0 3px">
+                    @section.class_name
+                </td>
+            </tr>
+            @foreach (var studentmark in section.marks)
+               {
+            <tr alt="@studentmark.student.id">
+                <td title="@studentmark.student.name" style="padding:0 3px">
+                    <div>@studentmark.student.name</div>
+                </td>
+                @foreach (var mark in studentmark.marks)
+                   {
+                <td alt="@mark.id">
+                <input type="text" value="@mark.name" name="mark_current" autocomplete="off" />
+                <input type="hidden" value="@mark.name" name="mark_old" autocomplete="off" />        
+                </td>
+                } 
+            </tr>
+            } 
+            } 
+        </tbody>
+    </table>
+    </div>
+    <div class="clear"></div>
+    </form>
+    </div>
+

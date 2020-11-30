@@ -1,0 +1,177 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.leave.LeaveViewModel
+
+@section TitleContent {
+
+	Leave
+
+}
+
+
+    <div id="leave_container">
+<h2 class="mt10">
+    @Model.staffname Leave Details</h2>
+<div class="content_filter mt20">
+            <div class="mt10">
+                @Html.DropDownList("year", Model.yearList)
+            </div>
+            <div class="mt10">
+                <button type="button" class="button" id="buttonList">List</button>
+            </div>
+</div>
+<div class="main_columnright">
+    <table class="table_blue">
+        <thead>
+            <tr><td>Current Leave</td><td>Annual Total</td><td>Remaining</td><td>Taken</td></tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.leaves)
+               {
+  <tr><td>@entry.name</td><td>@entry.annualTotal</td><td>@entry.remaining</td><td>@entry.taken</td></tr>
+               } 
+        </tbody>
+    </table>
+    @if (Model.canApplyLeave)
+       { 
+    <button id="leave_add" type="button">
+            <img class="am" src="/Content/img/icons/plus.png" />
+            apply leave</button>
+             } 
+    <table id="leaveTable" class="table_grey mb20">
+        <thead>
+            <tr><td class="w25px">ID</td><td>Leave Details</td><td class="w50px">Days</td><td class="w100px"></td></tr>
+        </thead>
+        <tbody>
+             @Html.Partial("IndexRows", Model.takenleaves) 
+        </tbody>
+    </table>
+            
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        ioschools.util.setNavigation('#nadmin', 'selected_link');
+    });
+
+    function leaves_initedit(row) {
+        $("#start_date", row).datepicker(
+            {
+                dateFormat: 'D, d M yy'
+            });
+
+        $("#start_date", row).attr('readonly', 'readonly');
+        $("#end_date", row).datepicker(
+            {
+                dateFormat: 'D, d M yy'
+            });
+
+        $("#end_date", row).attr('readonly', 'readonly');
+        init_autogrow(row);
+        init_inputSelectors();
+        $("#description", row).limit(1000);
+    }
+
+
+    $('#leave_add').bind('click', function () {
+        $(this).getx('/leave/apply/@Model.staffid', function (result) {
+            $('#leave_add').after(result);
+            leaves_initedit($('tbody > tr:first', '#newLeaveTable'));
+        });
+    });
+
+    $('#buttonList','#leave_container').bind('click', function() {
+        var year = $('#year', '#leave_container').val();
+        
+        $('tbody', '#leaveTable').showLoadingBlock(true);
+        $(this).getx('/leave/indexrows/', {year: year, staffid: @Model.staffid }, function (result) {
+            $('tbody', '#leaveTable').html(result);
+        });
+    });
+
+    $('#buttonSave', '#newLeaveTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var type = $('#type', row).val();
+        var startDate = $('#start_date', row).val();
+        var startTime = $('#start_time', row).val();
+        var endDate = $('#end_date', row).val();
+        var endTime = $('#end_time', row).val();
+        var description = $('#description', row).val();
+        if (startDate == '' || endDate == '') {
+            $.jGrowl('You must specify a start date and an end date');
+            return;
+        }
+        if ($('#end_date', row).datepicker('getDate').getTime() <  $('#start_date', row).datepicker('getDate').getTime()){
+            $.jGrowl('Last day is earlier than first day');
+            return;
+        }
+
+        if ($('#end_date', row).datepicker('getDate').getTime() ==  $('#start_date', row).datepicker('getDate').getTime() &&
+            startTime == endTime) {
+            $.jGrowl('You have specified the same start and end time');
+            return;
+        }
+
+        $(this).post('/leave/days/', { start: startDate, end: endDate, start_time: startTime, end_time: endTime }, function(json_result) {
+            if (json_result.success) {
+                if (json_result.data == 0) {
+                    $.jGrowl('No need to apply leave for those days');
+                    return;
+                }
+                var ok = window.confirm('Apply for ' + json_result.data + (json_result.data == 1?' day?':' days?'));
+                if (!ok) {
+                    return;
+                }
+
+                $('#buttonSave', '#leaveTable').post('/leave/saveindex/' + id, {
+                        type: type,
+                        start: startDate,
+                        end: endDate,
+                        description: description,
+                        staffid: @Model.staffid,
+                        start_time: startTime, 
+                        end_time: endTime
+                    }, function(json_result) {
+                        if (json_result.success) {
+                            $('tbody', '#leaveTable').prepend(json_result.data);
+                            $('#newLeaveTable').remove();
+                        }
+                        $.jGrowl(json_result.message);
+                    });
+            }
+        });
+    });
+
+    $('.jqedit', '#leaveTable').live('click', function() {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        dialogBox_open("/leave/review/" + id, 'Review Leave Application', 600);
+    });
+    
+
+    // cancel/delete leave
+    $('.jqdelete', '#leaveTable').live('click', function() {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var ok = window.confirm('Cancel your leave application?');
+        if (!ok) {
+            return;
+        }
+
+        $(this).post('/leave/cancel/' + id, function(json_result) {
+            if (json_result.success) {
+                if (json_result.data != '') {
+                    $(row).fadeOut('fast', function() {
+                        row.replaceWith($(json_result.data));
+                    });
+                }
+            } 
+            $.jGrowl(json_result.message);
+        });
+    });
+
+</script>
+
+

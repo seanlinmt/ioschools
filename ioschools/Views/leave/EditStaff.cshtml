@@ -1,0 +1,17 @@
+﻿@model ioschools.Models.leave.StaffLeave
+<tr alt="@Model.id" class="bg_edit">
+    <td>
+        @Html.DropDownList("type", Model.typeList)
+    </td>
+    <td>
+        @Html.TextBox("annualTotal", Model.annualTotal)
+    </td>
+    <td>
+         @Html.TextBox("left", Model.remaining)
+    </td>
+    <td>@Model.taken</td>
+    <td class="ar">
+        <button type="button" id="buttonSave"><img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button"><img class="am" src="/Content/img/icons/cancel.png" /> cancel</button>
+    </td>
+</tr>

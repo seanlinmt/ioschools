@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ioschools.Models.school.json.GradingJSON>
+@foreach (var entry in Model)
+   {
+<tr alt="@entry.id">
+    <td>
+        @entry.name
+    </td>
+    <td><a href="#" class="showRules">show rules</a>
+    <div class="mt10" id="rules_container"></div>
+    </td>
+    <td class="ar">
+        <span class="jqedit">edit</span>
+        <span class="jqdelete deletemethod">delete</span>
+    </td>
+</tr>
+   } 
+
+

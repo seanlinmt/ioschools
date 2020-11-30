@@ -1,0 +1,113 @@
+﻿@model System.Collections.Generic.IEnumerable<SelectListItem>
+<div id="fee_container">
+<div class="content_filter">
+<div class="filter mt20">
+        <h4 class="acc">
+            School</h4>
+        @Html.DropDownList("schoolList", Model)
+    </div>
+    <div class="mt10">
+    <button id="buttonSearch" type="button">List Fees</button>
+    </div>
+</div>
+<div class="main_columnright">
+    <div class="mt10 mb10">
+        <button id="feeAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add new fee</button>
+    </div>
+<table id="feeTable" class="table_grey">
+<thead>
+<tr><td class="w100px">School</td><td>Fee Name</td><td class="w125px ar">Default Amount, RM</td><td class="w175px"></td></tr>
+</thead>
+<tbody>
+
+</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+    function fee_initeditfeerow(row) {
+        $('#name', row).limit(200);
+        $('#amount', row).numeric({ allow: ',.' });
+        init_inputSelectors(row);
+    }
+
+    $('#buttonSearch', '#fee_container').bind('click', function () {
+        var school = $('#schoolList', '#fee_container').val();
+        if (school == '') {
+            return;
+        }
+        $('tbody','#fee_container').showLoadingBlock(true);
+        $(this).getx('/finance/feescontent/' + school, function (result) {
+            $('tbody', '#fee_container').html(result);
+        }, 'html');
+    });
+
+    $('#feeAdd').click(function () {
+        $(this).getx('/finance/add', function (result) {
+            $('tbody', '#fee_container').prepend(result);
+            fee_initeditfeerow($('tr:first', '#fee_container'));
+        });
+        return false;
+    });
+
+    $('.jqedit', '#fee_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/finance/edit/' + id, function (result) {
+            row.replaceWith($(result));
+            fee_initeditfeerow(row);
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#fee_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/finance/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+
+        return false;
+    });
+
+    $('#buttonSave', '#fee_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var school = $('#schools', row).val();
+        var name = $('#name', row).val();
+        var amount = $('#amount', row).val();
+        var id = $(row).attr('alt');
+        $(this).post('/finance/save/' + id, { schoolid: school, name: name, amount: amount }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+        return false;
+    });
+
+    $('#buttonCancel', '#fee_container').live('click', function () {
+        var school = $('#schoolList', '#fee_container').val();
+        if (school == '') {
+            $('tbody', '#fee_container').html('');
+            return;
+        }
+
+        $('tbody', '#fee_container').showLoadingBlock(true);
+        $(this).post('/finance/feescontent/' + school, function (result) {
+            $('tbody', '#fee_container').html(result);
+        }, 'html');
+        return;
+    });
+
+</script>

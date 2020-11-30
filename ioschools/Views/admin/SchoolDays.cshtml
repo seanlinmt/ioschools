@@ -1,0 +1,19 @@
+﻿@model ioschools.Models.school.SchoolTermsViewModel
+<table class="schooldaysTable table_grey mb20" alt="@Model.schoolid">
+<thead>
+    <tr><td colspan="4"><h3>@Model.schoolname</h3></td></tr>
+<tr><td class="w175px">Term</td><td>Start</td><td>End</td><td>Total School Days</td></tr>
+</thead>
+<tbody>
+@foreach (var entry in Model.terms){
+<tr>
+<td>@entry.term@Html.Hidden("term_id", entry.termid)</td>
+<td>@Html.DropDownList("term_start_day", entry.startDayList)@Html.DropDownList("term_start_month", entry.startMonthList)</td>
+<td>@Html.DropDownList("term_end_day", entry.endDayList)@Html.DropDownList("term_end_month", entry.endMonthList)</td>
+<td>@Html.TextBox("term_days", entry.schooldays)@Html.Hidden("entry_id", entry.id)</td>
+</tr>
+} 
+</tbody>
+</table>
+
+

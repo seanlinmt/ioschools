@@ -1,0 +1,50 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.user.student.GuardianViewModel
+@section TitleContent {
+ Information System
+}
+@section ExtraHeader {
+
+}
+
+<div id="content_result">
+@if (!Model.students.Any())
+  {
+  <p class="mt10">No children enrolled.</p>
+
+    }
+  else
+  {
+  <div id="children_tabs">
+    <ul class="hidden">
+    @foreach (var child in Model.students){
+        <li><a href="#@child.id_child">@child.name</a></li>
+        }
+    </ul>
+    @foreach (var child in Model.students){
+    <div id="@child.id_child" class="hidden">
+        @if (child.enrolments != null && 
+               child.enrolments.Count() != 0 && 
+               child.enrolments.Any(x => x.status.Contains("accepted")))
+           {
+           <div class="mt10 mb10">
+        <button type="button" onclick="dialogBox_open('/feedback/student/@child.id','Contact School', 600);"><img class="am" src="/Content/img/icons/send.png" /> contact teacher or principal</button>
+   </div>
+     } 
+     @Html.Partial("~/Views/Users/SingleContent.cshtml",child) 
+    </div>
+    }
+    </div>
+  
+  }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ioschools.util.setNavigation('#nhome', 'selected_dark');
+        $('#children_tabs').tabs();
+    });
+</script>
+
+

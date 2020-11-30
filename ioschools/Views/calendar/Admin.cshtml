@@ -1,0 +1,133 @@
+﻿
+@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.calendar.admin.CalendarAdminViewModel
+
+@section TitleContent {
+
+	Calendar Administration
+
+}
+
+
+    <div class="mt10">
+    <div class="breadcrumb"><a href="/admin">Admin</a> > Calendar Administration</div>
+<h2>Calendar Administration</h2>
+<p>Calendar months prior to the current month will not be shown to the public. Public holidays will be excluded for leave applications.</p>
+<div class="content_filter">
+<div class="filter mt20">
+        <h4 class="acc">
+            Filter by year</h4>
+            @Html.DropDownList("yearList", Model.yearList)
+    </div>
+</div>
+<div class="main_columnright">
+    <div class="mt10 mb10">
+        <button id="calendarAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add calendar entry</button>
+        <button id="calendarImport" type="button"><img class="am" src="/Content/img/icons/plus.png" /> import from excel</button>
+    </div>
+<table id="calendarTable" class="table_grey">
+<thead>
+<tr><td class="w150px">Date</td><td>Description</td><td>Public Holiday?</td><td class="w175px"></td></tr>
+</thead>
+<tbody id="calendar_content">
+ @Html.Partial("calendarContent", Model.entries)
+</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ioschools.util.setNavigation('#nadmin', 'selected_link');
+    });
+
+    $('#yearList').bind('change', function () {
+        $(this).post('/calendar/calendarContent/' + $(this).val(), function(result) {
+            $('#calendar_content').html(result);
+        });
+    });
+
+    $('#calendarImport').click(function () {
+        $.jGrowl('Feature not available');
+        $.post('/error/log/', { message: 'Calendar import clicked', loaded: ioschools.pageloaded });
+    });
+
+    $('#calendarAdd').click(function () {
+        $(this).getx('/calendar/edit', function (result) {
+            $('tbody', '#calendarTable').prepend(result);
+            init_inputSelectors('#calendarTable');
+            $("#date", '#calendarTable').datepicker(
+                {
+                    dateFormat: 'd M yy'
+                });
+            $("#date", '#calendarTable').attr('readonly', 'readonly');
+            $("#description", '#calendarTable').limit(500);
+        });
+        return false;
+    });
+
+    $('.jqedit').live('click', function () {
+        var row = $(this).parents('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/calendar/edit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                $(row).after(result);
+                init_inputSelectors('#calendarTable');
+                $("#date", '#calendarTable').datepicker(
+                {
+                    dateFormat: 'd M yy'
+                });
+                $("#date", '#calendarTable').attr('readonly', 'readonly');
+                $("#description", '#calendarTable').limit(500);
+                $(this).remove();
+            });
+        });
+        
+        return false;
+    });
+
+    $('.jqdelete').live('click', function () {
+        var row = $(this).parents('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/calendar/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+
+        return false;
+    });
+
+    $('#buttonSave').die().live('click', function () {
+        var row = $(this).parents('tr');
+        var date = $('#date', row).val();
+        var details = $('#description', row).val();
+        var holiday = $('#holiday', row).val();
+        var id = $(row).attr('alt');
+        $(this).post('/calendar/save/' + id, { date: date, details: details, holiday: holiday }, function (json_result) {
+            if (json_result.success) {
+                window.location = '/calendar/admin';
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+        return false;
+    });
+
+    $('#buttonCancel').die().live('click', function () {
+        window.location = '/calendar/admin';
+        return false;
+    });
+
+</script>
+
+
+@section ExtraHeader {
+
+
+}
+

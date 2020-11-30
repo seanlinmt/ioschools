@@ -1,0 +1,110 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.user.UserViewModel
+
+@using ioschools.Data.User
+@section TitleContent {
+
+    @Model.usr.name
+}
+@section ExtraHeader {
+
+
+}
+
+    @{ Html.RenderAction("Issues", new { id = Model.usr.id }); }
+<div class="mt10">
+<div class="ar">
+@if (Model.usr.usergroup == UserGroup.STUDENT && Model.userauth.perms.HasFlag(Permission.TRANSCRIPTS_CREATE)){
+        <button id="buttonReportCard" type="button"><img class="am" src="/Content/img/icons/document.png" /> report card</button>
+            <button id="buttonCert" type="button"><img class="am" src="/Content/img/icons/document.png" /> cert</button>
+            <button id="buttonTestimonial" type="button"><img class="am" src="/Content/img/icons/document.png" /> testimonial</button>
+        }
+    @if (Model.usr.canModify)
+   { 
+   <button id="buttonEmailPass" class="ajax" type="button">
+            <img class="am" src="/Content/img/icons/send.png" />
+            resend login details</button>
+        <button id="buttonEdit" type="button">
+            <img class="am" src="/Content/img/icons/edit.png" />
+            edit</button>
+    } 
+</div>
+    <div class="fr">
+        @if (Model.usr.canGoToNext)
+   { 
+    <div class="ar mb10 mt10">
+        <a href="/users/@Model.usr.nextStudentInClassID">next student in class »</a>
+    </div>
+    } 
+    
+    </div>
+    <div class="fl mb20">
+    <h2>
+        @Model.usr.designation
+        @Model.usr.name
+        </h2>
+            <div>
+            <span class="font_grey">
+            @Model.usr.schoolname @Model.usr.usergroup</span>
+            </div>
+    </div>
+    <div class="clear"></div>
+    </div>
+    
+    @Html.Hidden("studentid", Model.usr.id)
+     @Html.Partial("~/Views/Users/SingleContent.cshtml",Model.usr) 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ioschools.util.setNavigation('#nhome', 'selected_link');
+            var userid = $('#studentid').val();
+            @if (Model.usr.canModify){
+            
+            $('#buttonEdit').click(function () {
+                window.location = '/users/edit/' + userid;
+            });
+
+            $('#buttonEmailPass').click(function(){
+                var ok = window.confirm('Are you sure? This will reset the account password and email this user a new password');
+                if (!ok) {
+                    return false;
+                }
+
+                $(this).post('/login/reset/' + userid, null, function(json_result){
+                    $.jGrowl(json_result.message);
+                });
+                
+                return false;
+            });
+
+            $('input[type="checkbox"]', '#permissionsTable').click(function() {
+                var checked = $(this).is(':checked');
+                var self = this;
+                $(self).post('/users/permissions/' + userid, { name: $(this).attr('id'), perm: checked }, function(json_result) {
+                    if (!json_result.success) {
+                        if (checked) {
+                            $(self).attr('checked', false);
+                        } else {
+                            $(self).attr('checked', true);
+                        }
+                    }
+                    $.jGrowl(json_result.message);
+                });
+            });
+
+             }
+            $('#buttonReportCard').click(function () {
+                dialogBox_open('/exams/reportcard/' + userid, 'Report Card Details', 650);
+            });
+            $('#buttonCert').click(function () {
+                dialogBox_open('/leavingcert/' + userid, 'Leaving Cert Details', 650);
+            });
+            $('#buttonTestimonial').click(function () {
+                dialogBox_open('/testimonial/' + userid, 'Testimonial Details', 700);
+            });
+        });
+    </script>
+    
+
+

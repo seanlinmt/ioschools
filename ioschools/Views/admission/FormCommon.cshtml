@@ -1,0 +1,307 @@
+﻿@model ioschools.Models.enrolment.AdmissionViewModel
+@using ioschools.Library.Extensions
+<h2>Child's Personal Particulars</h2>
+<div class="form_entry">
+    <input type="radio" checked="checked" id="child_male" name="child_sex" value="male" /><label for="child_male">male</label>
+    <input type="radio" id="child_female" name="child_sex" value="female" /><label for="child_female">female</label>
+</div>
+<div class="fl">
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Admission In Year</label></div>
+    @Html.TextBox("enrol_year", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+<div class="form_label"><label class="required">Admission in School</label></div>
+@Html.DropDownList("school", Model.schools, new Dictionary<string, object>(){{"class", "required"}})
+</div>
+<div class="fl form_entry">
+<div class="form_label"><label class="required">School Year</label></div>
+<select id="year" name="year" class="required w150px_min">
+</select>
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Full Name</label></div>
+    @Html.TextBox("child_name", "", new Dictionary<string, object> { { "class", "required w400px" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Race</div>
+    @Html.TextBox("child_race")
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Dialect</div>
+    @Html.TextBox("child_dialect")
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        Religion</div>
+    @Html.TextBox("child_religion")
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    @Html.CheckBox("child_bumi") <label for="chil_bumi">Bumiputra</label>
+</div>
+<div class="fl mr10">
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Date of Birth</label></div>
+    <select id="child_dob_day" name="child_dob_day" class="required">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+    <option>6</option>
+    <option>7</option>
+    <option>8</option>
+    <option>9</option>
+    <option>10</option>
+    <option>11</option>
+    <option>12</option>
+    <option>13</option>
+    <option>14</option>
+    <option>15</option>
+    <option>16</option>
+    <option>17</option>
+    <option>18</option>
+    <option>19</option>
+    <option>20</option>
+    <option>21</option>
+    <option>22</option>
+    <option>23</option>
+    <option>24</option>
+    <option>25</option>
+    <option>26</option>
+    <option>27</option>
+    <option>28</option>
+    <option>29</option>
+    <option>30</option>
+    <option>31</option>
+    </select>
+    <select id="child_dob_month" name="child_dob_month" class="required">
+    <option value="1">Jan</option>
+    <option value="2">Feb</option>
+    <option value="3">Mar</option>
+    <option value="4">Apr</option>
+    <option value="5">May</option>
+    <option value="6">Jun</option>
+    <option value="7">Jul</option>
+    <option value="8">Aug</option>
+    <option value="9">Sep</option>
+    <option value="10">Oct</option>
+    <option value="11">Nov</option>
+    <option value="12">Dec</option>
+    </select>
+    @Html.SelectYear("child_dob_year", 25)
+</div>
+</div>
+<div class="fl mr10">
+<div class="form_entry w175px">
+    <div class="form_label">
+        <label class="required">Place of Birth</label></div>
+    @Html.TextBox("child_pob", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Citizenship</label></div>
+    @Html.TextBox("child_citizenship", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">NRIC / Passport</label></div>
+    @Html.TextBox("child_passportnric", "", new Dictionary<string, object> { { "class", "required unique" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Birth Certificate No.</label></div>
+    @Html.TextBox("child_birthcertno", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Local Address</label></div>
+        <textarea id="child_address" name="child_address" class="w500px required"></textarea>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Upload student photograph</div>
+    <input type="file" name="child_photo" id="child_photo" />
+</div>
+</div>
+<div class="clear"></div>
+<h2>Educational Background and Other Particulars</h2>
+<div class="form_entry">
+    <div class="form_label">
+        Name and Address of last School / Nursery / Play group attended</div>
+    <textarea id="child_previous_school" name="child_previous_school" class="w500px"></textarea>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Upload child's most recent report</div>
+    <input type="file" id="child_report" name="child_report" />
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Previous class attended / Date of admission</div>
+    @Html.TextBox("child_previous_class")
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Date of leaving and reason for leaving</div>
+    <textarea id="child_leaving_reason" name="child_leaving_reason" class="w500px"></textarea>
+</div>
+<div class="form_entry">
+@Html.CheckBox("child_handicap") <label for="child_handicap">Has a physical handicap or medical problem</label>
+</div>
+<div class="form_entry">
+@Html.CheckBox("child_learning_problems") <label for="child_learning_problems">Has learning difficulties</label>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Please give details if any of the above was checked</div>
+    <textarea id="child_disability_details" name="child_disability_details" class="w500px"></textarea>
+</div>
+<h2>Other Siblings In / Registered With  School</h2>
+<table id="siblingsTable" class="table_grey">
+<thead>
+<tr><td>Full Name</td><td>NRIC<sup> *</sup></td><td></td></tr>
+</thead>
+<tbody>
+ @Html.Partial("~/Views/admission/siblings.cshtml") 
+</tbody>
+<tfoot>
+<tr><td colspan="3"><a id="addSibling" href="#" class="icon_add">add sibling</a></td></tr>
+</tfoot>
+</table>
+<p class="tip"><sup>*</sup> For international students, please use passport number</p>
+<div class="form_entry pt10">
+<h2>Parents / Guardian Details</h2>
+</div>
+<div id="guardian_content">
+ @Html.Partial("~/Views/admission/FormParents.cshtml", Model)
+ @Html.Partial("~/Views/admission/FormGuardian.cshtml", Model)
+</div>
+<script type="text/javascript">
+    $('.hover_delete', '#siblingsTable').die().live('click', function(){
+        $(this).parents('tr').fadeOut('fast', function(){
+            $(this).remove();
+        });
+        return false;
+    });
+
+    $('#sibling_school').die().live('change', function () {
+        var row = $(this).parents('tr');
+        $('#sibling_class', row).html('');
+        $(this).getx('/schools/classes/' + $(this).val(), function (json_result) {
+            if (json_result.success) {
+                $('#sibling_class', row).html('<option value="">select class</option>');
+                $.each(json_result.data, function () {
+                    var option = ["<option value='", this.id, "'>", this.name, "</option>"];
+                    $('#sibling_class', row).append(option.join(''));
+                });
+            }
+            else {
+                $.jGrowl(json_result.message);
+            }
+        }, 'json');
+    });
+
+    $('#school', '#registerForm').bind('change', function () {
+        $('#year').html('');
+        var id = $(this).val();
+        if (id == '') {
+            return false;
+        }
+        $(this).post('/schools/years/' + id, null, function (json_result) {
+            if (json_result.success) {
+                $('#year').html('<option value="">select year</option>');
+                $.each(json_result.data, function () {
+                    var option = ["<option value='", this.id, "'>", this.name, "</option>"];
+                    $('#year').append(option.join(''));
+                });
+            }
+            else {
+                $.jGrowl(json_result.message);
+            }
+        }, 'json');
+    });
+
+    $(document).ready(function () {
+        init_autogrow('#registerForm');
+
+        $.validator.addMethod('required_group', function (value, element, options) {
+            numberRequired = options[0];
+            selector = options[1];
+            var validOrNot = $(selector, element.form).filter(function () {
+                return $(this).val();
+            }).length >= numberRequired;
+
+            if (!$(element).data('being_validated')) {
+                var fields = $(selector, element.form);
+                fields.data('being_validated', true);
+                $(element.form).valid();
+                fields.data('being_validated', false);
+            }
+            return validOrNot;
+        }, jQuery.format("Please fill out at least {0} of these fields."));
+
+        $.validator.addMethod('unique', function (value, element) {
+            var parentForm = $(element).closest('form');
+            var timeRepeated = 0;
+            $(parentForm.find('.unique')).each(function () {
+                if ($(this).val() === value && $(this).val() != "") {
+                    timeRepeated++;
+                }
+            });
+            if (timeRepeated === 1 || timeRepeated === 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }, jQuery.format("You have entered a duplicate value."));
+
+        $.validator.addClassRules('required_group', {
+            required_group: [1, '.required_group'],
+            email: true
+        });
+
+        $.validator.addClassRules('unique', {
+            unique: { unique: true }
+        });
+
+        $('#registerForm').validate({
+            rules: {
+                child_photo: {
+                    accept: "jpg|png|gif|jpeg"
+                }
+            },
+            messages: {
+                child_photo: {
+                    accept: "Please select a valid image file"
+                }
+            }
+        });
+
+        // limit values
+        $('#child_address,#guardian_address,#parent1_address,#parent2_address,#guardian_employer,#parent1_employer,#parent2_employer').limit(200);
+        $('#enrol_year,#sibling_nric').numeric();
+        $('#child_dialect').alphanumeric();
+        $('#child_pob').limit(50);
+
+        $('#addSibling').click(function () {
+            $(this).getx('/admission/siblings', function (result) {
+                $('tbody', '#siblingsTable').append(result);
+                $('#sibling_nric', '#siblingsTable').numeric();
+                init_inputSelectors('#siblingsTable');
+            });
+            return false;
+        });
+    });
+</script>

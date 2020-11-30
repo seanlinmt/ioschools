@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SelectListItem>
+
+<div id="stats_container" class="mt10">
+    <div class="content_filter">
+        <div class="filter">
+            <h4 class="acc">
+                School</h4>
+            @Html.DropDownList("schoolList", Model, new Dictionary<string, object>() {{"autocomplete", "off"}})
+        </div>
+        <div class="filter mt20">
+            <h4 class="acc">
+                Year</h4>
+            @Html.TextBox("year", DateTime.Now.Year)
+        </div>
+        <div class="mt10">
+            <button id="buttonSearch" type="button" class="green">Show Stats</button>
+        </div>
+    </div>
+    <div class="main_columnright">
+        
+    </div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+
+    $('#buttonSearch', '#stats_container').bind('click', function () {
+        var school = $('#schoolList', '#stats_container').val();
+        var year = $('#year', '#stats_container').val();
+        if (school == '' || year == '') {
+            return;
+        }
+        $('.main_columnright', '#stats_container').showLoadingBlock(true);
+        $(this).post('/finance/statisticscontent', { school: school, year: year }, function (result) {
+            $('.main_columnright', '#stats_container').html(result);
+        }, 'html');
+    });
+</script>

@@ -1,0 +1,86 @@
+﻿@model ioschools.Models.school.AdminSchoolTermsViewModel
+<div id="term_container">
+<h2 class="mt10">School Terms</h2>
+<p>Define school days that will be used to determine overall student attendance</p>
+<div class="content_filter">
+<div class="form_entry">
+            <div class="form_label">
+                Year</div>
+            @Html.DropDownList("school_year", Model.yearList, new Dictionary<string, object>(){{"autocomplete", "off"}})
+        </div>
+        <button id="schooldays_show" type="button">
+            show</button>
+</div>
+<div class="main_columnright pb50">
+    <form id="schoolDaysSaveForm" action="/admin/TermsSave" method="POST" autocomplete="off">
+  @Html.Partial("TermsContent", Model.terms) 
+  </form>
+  <div class="mt10">
+<button id="schooldays_save" type="button" class="large"><img class="am" src="/Content/img/icons/save.png" /> update</button>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+    });
+
+    $('#schooldays_show').click(function () {
+        var year = $('#school_year','#term_container').val();
+
+        $('#schoolDaysSaveForm').showLoadingBlock(true);
+        
+        $('#schooldays_show').getx('/admin/termscontent', {year: year}, function (result) {
+            $('#schoolDaysSaveForm').html(result);
+        });
+
+        return false;
+    });
+
+    $('#schooldays_save').click(function () {
+        $('#schoolDaysSaveForm').trigger('submit');
+    });
+
+    $('#schoolDaysSaveForm').submit(function () {
+        var action = $(this).attr("action");
+        var schools = [];
+
+        $('.schooldaysTable', '#term_container').each(function () {
+            var school = {
+                id: $(this).attr('alt'),
+                year: $('#school_year', '#term_container').val(),
+                terms: []
+            };
+            $('tbody > tr', this).each(function () {
+                var term = {
+                    termid: $('#term_id', this).val(),
+                    startday: $('#term_start_day', this).val(),
+                    startmonth: $('#term_start_month', this).val(),
+                    endday: $('#term_end_day', this).val(),
+                    endmonth: $('#term_end_month', this).val(),
+                    entryid: $('#entry_id', this).val(),
+                    total: $('#term_days', this).val()
+                };
+                school.terms.push(term);
+            });
+            schools.push(school);
+        });
+
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: action,
+            data: JSON.stringify(schools),
+            context: $('#schooldays_save'),
+            dataType: 'json',
+            success: function (json_result) {
+                if (json_result.success) {
+                    window.location.reload();
+                }
+                $.jGrowl(json_result.message);
+            }
+        });
+
+        return false;
+    });
+</script>

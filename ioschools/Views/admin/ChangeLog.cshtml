@@ -1,0 +1,15 @@
+﻿@model ioschools.Models.admin.ChangeLogViewModel
+@if (Model.changelogs.Count() == 0){	
+  <p class="mt10">No entries found.</p>
+}else{ 
+
+<table id="changelogTable" class="table_brown">
+<thead>
+<tr><td class="w100px">Date</td><td class="w100px">User</td><td>Changes <span class="fr">@Model.total entries</span></td></tr>
+</thead>
+<tbody>
+ @Html.Partial("ChangeLogContent", Model.changelogs)
+</tbody>
+<tfoot><tr><td colspan="3" class="ar"><a id="log_more" href="#">more</a></td></tr></tfoot>
+</table>
+ } 

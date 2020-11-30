@@ -1,0 +1,83 @@
+﻿
+<div id="selector_subjects" class="pt10 mb20 hidden">
+<h3>Subjects</h3>
+<input id="selector_subjects_all" type="checkbox" /><label for="selector_subjects_all">select all</label>
+<div id="selector_subjects_result">
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+    var selector_subjects = [];
+
+    function addAllSelectedSubject() {
+        clearAllSelectedSubject();
+        var blocks = $('.blockSelectable', '#selector_subjects_result');
+        $.each(blocks, function () {
+            var id = $(this).attr('alt');
+            selector_subjects.push(id);
+        });
+    }
+
+    function clearAllSelectedSubject() {
+        selector_subjects = [];
+    }
+
+    function addSelectedSubject(val) {
+        var exist = false;
+        var i = 0;
+        while (i < selector_subjects.length && !exist) {
+            if (selector_subjects[i] == val) {
+                exist = true;
+            }
+            i++;
+        }
+        if (!exist) {
+            selector_subjects.push(val);
+        }
+    }
+
+    function removeSelectedSubject(val) {
+        var index = -1;
+        var exist = false;
+        var i = 0;
+        while (i < selector_subjects.length && !exist) {
+            if (selector_subjects[i] == val) {
+                index = i;
+                exist = true;
+            }
+            i++;
+        }
+        if (index != -1) {
+            selector_subjects.splice(index, 1);
+        }
+    }
+
+    $('.blockSelectable', '#selector_subjects_result').die().live('click', function () {
+        var id = $(this).attr('alt');
+        if (!$(this).hasClass('selected')) {
+            // add selected
+            $(this).animate({ backgroundColor: "#B7D1EC", color: "#ffffff" }, 800).addClass('selected');
+            addSelectedSubject(id);
+        }
+        else {
+            // remove selected
+            $(this).animate({ backgroundColor: "#ffffff", color: "#000000" }, 800).removeClass('selected');
+            removeSelectedSubject(id);
+        }
+        return false;
+    });
+
+    $('#selector_subjects_all').click(function () {
+        var checked = $(this).is(':checked');
+        $('.blockSelectable', '#selector_subjects_result').each(function () {
+            if (checked) {
+                $(this).css({ backgroundColor: "#B7D1EC", color: "#ffffff" }).addClass('selected');
+                addAllSelectedSubject();
+            }
+            else {
+                $(this).css({ backgroundColor: "#ffffff", color: "#000000" }).removeClass('selected');
+                clearAllSelectedSubject();
+            }
+        });
+    });
+</script>
+</div>

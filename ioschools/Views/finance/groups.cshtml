@@ -1,0 +1,28 @@
+﻿@model System.Collections.Generic.IEnumerable<System.Web.Mvc.SelectListItem>
+
+<div id="group_container">
+    <div class="info">Group fees together to quickly assign multiple fees to students</div>
+<div class="content_filter">
+<div class="filter mt20">
+        <h4 class="acc">
+            School</h4>
+        @Html.DropDownList("schoolList", Model)
+    </div>
+    <div class="mt10">
+    <button id="buttonSearch" type="button">List Groups</button>
+    </div>
+</div>
+<div class="main_columnright">
+    <div class="mt10 mb10">
+        <button id="groupAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add new group</button>
+    </div>
+<table class="table_grey">
+<thead>
+<tr><td>Group Name</td><td>Fee Names</td></tr>
+</thead>
+<tbody>
+
+</tbody>
+</table>
+</div>
+</div>

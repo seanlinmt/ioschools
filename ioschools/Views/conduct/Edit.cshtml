@@ -1,0 +1,26 @@
+﻿@model ioschools.Models.discipline.Conduct
+<tr alt="@Model.id" class="bg_edit">
+    <td>
+        @Html.TextBox("name", Model.name, new Dictionary<string, object>(){{"class","w300px"}})
+    </td>
+    <td>
+        <select id="merit" name="merit">
+            <option @Model.isdemerit?"selected='selected'":"" value="True">DEMERIT</option>
+            <option @!Model.isdemerit?"selected='selected'":"" value="False">MERIT</option>
+        </select>
+    </td>
+    <td>
+        @Html.TextBox("min", Model.min)
+    </td>
+    <td>
+        @Html.TextBox("max", Model.max)
+    </td>
+    <td class="ar">
+        <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+    </td>
+</tr>
+

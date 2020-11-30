@@ -1,0 +1,188 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.homework.viewmodels.HomeworkViewModel
+@using ioschools.Library.Helpers
+@section TitleContent {
+Homework
+}
+@section ExtraHeader {
+
+
+}
+
+<h2 class="mt10">
+    Homework</h2>
+    <p>Homeworks can be created for subjects pre-assigned by the school admin. Please contact the current school admin if your teaching subjects do not appear.</p>
+<div class="content_filter mt20">
+    
+            <div class="mt10">
+                @Html.DropDownList("homework_subject", Model.subjects)
+            </div>
+            <div class="mt10">
+                @Html.TextBox("year", DateTime.Now.Year)
+            </div>
+            <div class="mt10">
+                <button type="button" class="button" id="buttonList">List Homeworks</button>
+            </div>
+</div>
+<div class="main_columnright">
+    <div class="fr w200px ar">
+        <a href="#" onclick="$('#space_table').slideToggle();return false;" class="icon_disk">
+            Disk Space Information</a>
+            <table id="space_table" class="hidden">
+            <tr>
+                <td>
+                    Used
+                </td>
+                <td>
+                    @Model.DiskspaceUsed != 0 ? (Model.DiskspaceUsed / 1000000).ToString("f2") + "MB" : ""
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Remaining
+                </td>
+                <td>
+                    @Model.DiskspaceLeft != 0 ? (Model.DiskspaceLeft / 1000000).ToString("f2") + "MB": ""
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="clear_right"></div>
+    <button id="subject_add" type="button">
+            <img class="am" src="/Content/img/icons/plus.png" />
+            create homework</button>
+    <table id="homeworkTable" class="table_grey">
+        <thead>
+            <tr><td colspan="2">Homeworks</td></tr>
+        </thead>
+        <tbody>
+             @Html.Partial("TeacherRows", Model.homeworks) 
+        </tbody>
+    </table>
+            
+</div>    
+    @Html.JavascriptInclude("/Scripts/ajaxUpload/fileuploader.js")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ioschools.util.setNavigation('#nadmin', 'selected_link');
+        });
+
+        $('#subject_add').click(function () {
+            $(this).post('/homework/new/', function (result) {
+                $('tbody', '#homeworkTable').prepend(result);
+            });
+            return false;
+        });
+
+        $('#buttonList').click(function () {
+            var year = $('#year').val();
+            var subject = $('#homework_subject').val();
+            if (year == '') {
+                $.JGrowl('Please enter a year');
+            }
+            $('tbody', '#homeworkTable').showLoadingBlock(true);
+            $(this).post('/homework/teacherrows', { year: year, subject: subject }, function (result) {
+                $('tbody', '#homeworkTable').html(result);
+            });
+        });
+
+        $('#buttonCancel', '.homework').live('click', function () {
+            var row = $(this).closest('tr');
+            var id = $(row).attr('alt');
+            if (id == '') {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+                return;
+            }
+
+            $(this).getx('/homework/single/' + id, function (result) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(result));
+                });
+            });
+
+        });
+
+        $('.jqedit', '.homework').live('click', function () {
+            var row = $(this).closest('tr');
+            var id = $(row).attr('alt');
+            $(this).post('/homework/edit/' + id, null, function (result) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(result));
+                });
+            });
+            return false;
+        });
+
+        $('.jqdelete', '.homework').live('click', function () {
+            var ok = window.confirm('Are you sure you want to delete this entry? There is NO UNDO.');
+            if (!ok) {
+                return false;
+            }
+            var row = $(this).closest('tr');
+            var id = $(row).attr('alt');
+            $(this).post('/homework/delete/' + id, null, function (json_result) {
+                if (json_result.success) {
+                    $(row).fadeOut('fast', function () {
+                        $(this).remove();
+                    });
+                }
+                $.jGrowl(json_result.message);
+            }, 'json');
+            return false;
+        });
+
+        $('.viewanswer').live('click', function () {
+            var row = $(this).closest('tr');
+            var homeworkid = $(row).attr('alt');
+            var self = this;
+
+            if ($('#homework_answer_container > .table_blue', row).length != 0) {
+                $('#homework_answer_container', row).slideUp(function () {
+                    $(this).html('');
+                });
+                $(self).text('show students');
+                return false;
+            }
+
+            $(this).post('/homework/homeworkanswers/' + homeworkid, function (results) {
+                $('#homework_answer_container', row).html(results).slideDown();
+                $(self).text('hide students');
+            });
+
+            return false;
+        });
+
+        function initAjaxUpload(context) {
+            // upload url
+            var uploader = new qq.FileUploader({
+                element: $('#buttonUpload', context)[0],
+                action: '/files/upload',
+                sizeLimit: 10485760,
+                onSubmit: function (id, filename) {
+
+                },
+                onComplete: function (id, filename, json_data) {
+                    // enable upload button
+                    if (json_data.success) {
+                        var file = json_data.data;
+                        var html = ['<span class="file" alt="', file.id, '">', file.name, '</span>'];
+                        $('.homework_files_content', context).append(html.join(''));
+                    }
+                    else {
+                        if (json_data.message == undefined || json_data.message == '') {
+                            $.jGrowl("Oops. Something wrong has occurred. We're currently looking into this.");
+                        }
+                        else {
+                            $.jGrowl(json_data.message);
+                        }
+                    }
+                }
+            });
+        }
+    
+    </script>
+

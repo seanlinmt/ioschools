@@ -1,0 +1,102 @@
+﻿@model System.Collections.Generic.IEnumerable<SelectListItem>
+<div id="schoolsubjects_container">
+<h2 class="mt10">School Subjects</h2>
+<p>Maintain predefined school subjects</p>
+<div class="content_filter">
+
+<div class="filter mt20">
+        <h4 class="acc">
+            Filter by</h4>
+        @Html.DropDownList("schoolList", Model)
+    </div>
+</div>
+<div class="main_columnright">
+    <div class="mt10 mb10">
+        <button id="subjectAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add subject</button>
+    </div>
+<table id="subjectTable" class="table_grey">
+<thead>
+<tr><td class="w150px">School</td><td>Name</td><td></td></tr>
+</thead>
+<tbody id="subject_content">
+@{ Html.RenderAction("subjectContent");}
+</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+    $('#schoolList', '#schoolsubjects_container').bind('change', function () {
+        $(this).post('/admin/subjectContent/' + $(this).val(), function (result) {
+            $('#subject_content').html(result);
+        });
+    });
+
+    $('#subjectAdd').click(function () {
+        $(this).getx('/subjects/edit', function (result) {
+            $('tbody', '#subjectTable').prepend(result);
+            $('#name', '#subjectTable').limit(50);
+            init_inputSelectors('#subjectTable');
+        });
+        return false;
+    });
+
+    $('.jqedit', '#schoolsubjects_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/subjects/edit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                $(row).after(result);
+                $('#name', '#subjectTable').limit(50);
+                $(this).remove();
+            });
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#schoolsubjects_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/subjects/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+
+        return false;
+    });
+
+    $('#buttonSave', '#schoolsubjects_container').die().live('click', function () {
+        var row = $(this).closest('tr');
+        var school = $('#schools', row).val();
+        var name = $('#name', row).val();
+        var id = $(row).attr('alt');
+        $(this).post('/subjects/save/' + id, { school: school, name: name }, function (json_result) {
+            if (json_result.success) {
+                $('#subject_content').showLoadingBlock(true);
+                $(this).post('/admin/subjectcontent', function (result) {
+                    $('#subject_content').html(result);
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+        return false;
+    });
+
+    $('#buttonCancel', '#schoolsubjects_container').die().live('click', function () {
+        $('#subject_content').showLoadingBlock(true);
+        $(this).post('/admin/subjectcontent', function (result) {
+            $('#subject_content').html(result);
+        });
+        return false;
+    });
+
+</script>
+
+

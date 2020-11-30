@@ -1,0 +1,53 @@
+﻿@model ioschools.Models.leave.LeaveTakenEdit
+<table id="newLeaveTable" class="table_edit">
+    <thead>
+        <tr><td colspan="2">New Leave</td></tr>
+    </thead>
+    <tbody>
+        <tr alt="@Model.id">
+            <td>
+                <div class="form_entry">
+            <div class="form_label">
+                <label>
+                    First Day</label>
+            </div>
+            <select id="start_time">
+                <option selected="selected" value="START">Start of Day</option>
+                <option value="MIDDLE">Middle of Day</option>
+            </select>
+            @Html.TextBox("start_date", Model.start_date)
+        </div>
+        <div class="form_entry">
+            <div class="form_label">
+                <label>
+                    Last Day</label>
+            </div>
+            <select id="end_time">
+                <option value="MIDDLE">Middle of Day</option>
+                <option selected="selected" value="END">End of Day</option>
+            </select>
+            @Html.TextBox("end_date", Model.end_date)
+        </div>
+        <div class="mt10">
+               <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button" onclick="$(this).closest('table').remove();">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>   
+              </div>
+        
+            </td>
+            <td>
+        @Html.DropDownList("type", Model.typeList)
+        <div class="form_entry">
+            <div class="form_label">
+                <label>
+                    Remarks</label>
+            </div>
+             @Html.TextArea("description", Model.description, new Dictionary<string, object>(){{"class", "w400px"}})
+        </div>
+    </td>
+        </tr>
+    </tbody>
+</table>
+

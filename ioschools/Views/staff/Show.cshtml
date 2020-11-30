@@ -1,0 +1,121 @@
+﻿@model ioschools.Models.user.staff.UserStaff
+@using ioschools.Data
+@using ioschools.Data.User
+@using ioschools.Library
+<div class="info">
+This section is only visible to users with <strong>Edit Staff Details</strong> permission.
+</div>
+<table id="staff_details" class="table_plain mt10 w700px">
+    <tbody>
+        <tr>
+            <td class="w100px">
+                Income Tax No.
+            </td>
+            <td>
+                @Model.incomeTax
+            </td>
+            <td class="w100px">
+                EPF No.
+            </td>
+            <td>
+                @Model.epf
+            </td>
+        </tr>
+        <tr>
+            <td class="w100px">
+                Salary Grade
+            </td>
+            <td>
+                @Model.salaryGrade
+            </td>
+            <td class="w100px">
+                SOCSO
+            </td>
+            <td>
+                @Model.socso
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div class="section_header">
+    Spouse Details</div>
+<div class="ml10">
+    <table id="staff_spouse_details" class="table_plain w700px">
+        <tbody>
+            <tr>
+                <td class="w150px">
+                    Name
+                </td>
+                <td colspan="3">
+                    @Model.spouseName
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Employer
+                </td>
+                <td colspan="3">
+                    @Model.spouseEmployer
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Employer Address
+                </td>
+                <td colspan="3">
+                    @Model.spouseEmployerAddress.ToHtmlBreak()
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Office Phone
+                </td>
+                <td>
+                    @Model.spousePhoneWork
+                </td>
+                <td class="w100px">
+                    Cell Phone
+                </td>
+                <td>
+                    @Model.spousePhoneCell
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="section_header">
+    Employment Details</div>
+    <table id="employmentDetailsTable" class="table_brown">
+        <thead>
+            <tr>
+                <td class="w200px">
+                    Date Joined
+                </td>
+                <td class="w200px">
+                    Date Left
+                </td>
+                <td>Remarks</td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var period in Model.employmentPeriods)
+               { 
+            <tr alt="@period.id">
+                <td>
+                    @period.startDate
+                </td>
+                <td>
+                    @period.endDate
+                </td>
+                <td>@period.remarks.ToHtmlBreak()</td>
+                <td>
+                    &nbsp;
+                </td>
+            </tr>
+            } 
+        </tbody>
+    </table>
+

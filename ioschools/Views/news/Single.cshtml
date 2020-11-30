@@ -1,0 +1,189 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+@model ioschools.Models.blog.BlogViewData
+@using ioschools.Data.CMS
+
+@section TitleContent {
+
+    @Model.blog.title
+
+}
+@section ExtraHeader {
+
+@if(Model.method == LayoutMethod.GALLERY){
+    <link rel="stylesheet" href="/Content/css/gallery/gallery.css" type="text/css" media="screen" />
+    <script src="/Scripts/gallery/jquery.galleriffic.js" type="text/javascript"></script>
+    <script src="/Scripts/gallery/jquery.opacityrollover.js" type="text/javascript"></script>
+}else
+   {
+<link rel="stylesheet" href="/Content/css/lightbox/jquery.lightbox-0.5.css" type="text/css" media="screen" />
+
+   }
+
+}
+
+<div class="mt20">
+<div class="breadcrumb">
+            <a href="/">Home</a> / <a href="/news">News &amp; Events</a> / @Model.blog.title
+        </div>
+    
+        <h1 class="icon_blog">
+            @Model.blog.title</h1>
+        <div class="mt10 font_grey">
+            @Model.blog.date
+        </div>
+                   @if(Model.method == LayoutMethod.GALLERY){
+<div class="navigation-container">
+					<div id="thumbs" class="navigation">
+						<a class="pageLink prev" style="visibility: hidden;" href="#" title="Previous Page"></a>
+						<ul class="thumbs noscript">
+                         @foreach (var photo in Model.photos)
+           {
+							<li>
+								<a class="thumb" name="leaf" href="@photo.url_fullsize" title="">
+									<img src="@photo.url" alt="" />
+								</a>
+								<div class="caption">
+								</div>
+							</li>
+                            
+           }
+						</ul>
+						<a class="pageLink next" style="visibility: hidden;" href="#" title="Next Page"></a>
+					</div>
+				</div>
+				<div class="content">
+					<div class="slideshow-container">
+						<div id="controls" class="controls"></div>
+						<div id="loading" class="loader"></div>
+						<div id="slideshow" class="slideshow"></div>
+					</div>
+                    <div class="clear"></div>
+					</div>
+                <script type="text/javascript">
+                    var onMouseOutOpacity = 0.67;
+                    $('#thumbs ul.thumbs li, div.navigation a.pageLink').opacityrollover({
+                        mouseOutOpacity: onMouseOutOpacity,
+                        mouseOverOpacity: 1.0,
+                        fadeSpeed: 'fast',
+                        exemptionSelector: '.selected'
+                    });
+
+                    var gallery = $('#thumbs').galleriffic({
+                        delay: 2500,
+                        numThumbs: 10,
+                        preloadAhead: 10,
+                        enableTopPager: false,
+                        enableBottomPager: false,
+                        imageContainerSel: '#slideshow',
+                        controlsContainerSel: '#controls',
+                        captionContainerSel: '#caption',
+                        loadingContainerSel: '#loading',
+                        renderSSControls: true,
+                        renderNavControls: true,
+                        playLinkText: 'Play Slideshow',
+                        pauseLinkText: 'Pause Slideshow',
+                        prevLinkText: '&lsaquo; Previous Photo',
+                        nextLinkText: 'Next Photo &rsaquo;',
+                        nextPageLinkText: 'Next &rsaquo;',
+                        prevPageLinkText: '&lsaquo; Prev',
+                        enableHistory: true,
+                        autoStart: false,
+                        syncTransitions: true,
+                        defaultTransitionDuration: 900,
+                        onSlideChange: function (prevIndex, nextIndex) {
+                            // 'this' refers to the gallery, which is an extension of $('#thumbs')
+                            this.find('ul.thumbs').children()
+							.eq(prevIndex).fadeTo('fast', onMouseOutOpacity).end()
+							.eq(nextIndex).fadeTo('fast', 1.0);
+
+                            // Update the photo index display
+                            this.$captionContainer.find('div.photo-index')
+							.html('Photo ' + (nextIndex + 1) + ' of ' + this.data.length);
+                        },
+                        onPageTransitionOut: function (callback) {
+                            this.fadeTo('fast', 0.0, callback);
+                        },
+                        onPageTransitionIn: function () {
+                            var prevPageLink = this.find('a.prev').css('visibility', 'hidden');
+                            var nextPageLink = this.find('a.next').css('visibility', 'hidden');
+
+                            // Show appropriate next / prev page links
+                            if (this.displayedPage > 0)
+                                prevPageLink.css('visibility', 'visible');
+
+                            var lastPage = this.getNumPages() - 1;
+                            if (this.displayedPage < lastPage)
+                                nextPageLink.css('visibility', 'visible');
+
+                            this.fadeTo('fast', 1.0);
+                        }
+                    });
+
+                    /**************** Event handlers for custom next / prev page links **********************/
+
+                    gallery.find('a.prev').click(function (e) {
+                        gallery.previousPage();
+                        e.preventDefault();
+                    });
+
+                    gallery.find('a.next').click(function (e) {
+                        gallery.nextPage();
+                        e.preventDefault();
+                    });
+                </script>
+}
+</div>
+        <div class="clear"></div>
+        <div class="col_2" style="width:690px;">
+        <div class="mt10">
+            @Model.blog.body
+        </div>
+        @if (Model.attachments.Count() != 0)
+           {
+        <div class="mt40">
+        <h2 class="icon_pin">Attachments</h2>
+        @foreach (var file in Model.attachments)
+               {
+            <span class="file"><a target="_blank" href="@file.url">@file.name</a></span>
+        
+               }
+        </div>
+        
+           }
+
+    </div>
+    @if(Model.method != LayoutMethod.GALLERY)
+       {
+        <div id="blog_thumbnails" class="mt20 fr">
+            @foreach (var photo in Model.photos)
+           {
+            <a class="thumbnail block" href="@photo.url_fullsize">
+                <img class="img_border" src="@photo.url" title="" alt="" />
+            </a>
+            
+           }
+        </div>
+    <div class="clear">
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#blog_thumbnails a').lightBox({
+                overlayBgColor: '#000',
+                overlayOpacity: 0.6,
+                imageLoading: '/Content/img/loading.gif',
+                imageBtnClose: '/Content/img/lightbox/lightbox-btn-close.gif',
+                imageBtnPrev: '/Content/img/lightbox/lightbox-btn-prev.gif',
+                imageBtnNext: '/Content/img/lightbox/lightbox-btn-next.gif',
+                imageBlank: '/Content/img/lightbox/lightbox-blank.gif',
+                containerResizeSpeed: 350,
+                txtImage: 'Image',
+                txtOf: 'of'
+            });
+        });
+    </script>
+    
+       }
+
+

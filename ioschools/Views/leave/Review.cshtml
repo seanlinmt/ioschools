@@ -1,0 +1,58 @@
+﻿@model long
+@using ioschools.Data.Leave
+
+<form id="reviewLeaveForm" action="/leave/review/@Model" method="POST">
+    <div class="form_entry">
+            <div class="form_label">
+                <label>
+                    Status</label>
+            </div>
+            <select id="status" name="status">
+                <option value="@(byte)LeaveStatus.APPROVED">Approve</option>
+                <option value="@(byte)LeaveStatus.REJECTED">Reject</option>
+            </select>
+        </div>
+        <div class="form_entry">
+            <div class="form_label">
+                <label>
+                    Reason (if any)</label>
+            </div>
+            @Html.TextArea("reason","", new Dictionary<string, object>(){{"class","w500px"}})
+        </div>
+        <div class="mt10">
+           <button type="button" id="buttonSave" class="large">
+                    <img class="am" src="/Content/img/icons/save.png" />
+                    Update</button>
+            <button type="button" id="buttonCancel" onclick="dialogBox_close();" class="large">Cancel</button>
+        </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_autogrow('#reviewLeaveForm');
+        init_inputSelectors('#reviewLeaveForm');
+    });
+
+    $('#buttonSave', '#reviewLeaveForm').click(function () {
+        $('#reviewLeaveForm').trigger('submit');
+    });
+
+    $('#reviewLeaveForm').submit(function () {
+        var action = $(this).attr('action');
+        var reason = $('#reason', this).val();
+        var status = $('#status', this).val();
+
+        $('#buttonSave', '#reviewLeaveForm').post(action, { reason: reason, status: status }, function (json_result) {
+            if (json_result.success) {
+                // insert updated row
+                var row = $('tbody > tr[alt="@Model"]', '#leaveTable');
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+                dialogBox_close();
+            }
+            $.jGrowl(json_result.message);
+        });
+        return false;
+    });
+
+</script>

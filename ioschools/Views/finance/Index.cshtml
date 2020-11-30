@@ -1,0 +1,364 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.finance.FinanceViewModel
+@using ioschools.Library.Helpers
+
+@section TitleContent {
+
+	Finance
+
+}
+@section ExtraHeader {
+
+<style type="text/css">
+.CodeMirror-line-numbers {
+    background-color: #EEEEEE;
+    color: #AAAAAA;
+    font-family: monospace;
+    font-size: 12px;
+    padding-right: 0.3em;
+    padding-top: 0.4em;
+    text-align: right;
+    width: 2.2em;
+}
+
+.CodeMirror-line-numbers div { line-height: 16px;}
+.CodeMirror-wrapping { border: 1px solid #eee;}
+</style>
+<script type="text/javascript" src="/Scripts/codemirror/codemirror.js"></script>
+
+}
+
+<div id="finance_tabs">
+    <ul class="hidden">
+        <li><a href="#alerts">Overdue Fees</a></li>
+        <li><a href="#fees">Fee Types</a></li>
+        <li><a href="#groups">Fee Groups</a></li>
+        <li><a href="#update">Update Fees</a></li>
+        <li><a href="#templates">Templates</a></li>
+        <li><a href="#messaging">Messaging</a></li>
+        <li><a href="#statistics">Statistics</a></li>
+    </ul>
+    <div id="alerts" class="hidden">
+        <div class="mt10 mb20">
+<div id="search_area" class="relative">
+            <span class="search"></span>
+            <input type="text" id="searchbox" name="searchbox" class="w300px" autocomplete="off" />
+        </div>    
+    <div class="clear"></div>
+</div>
+         @Html.Partial("alerts", Model.alerts) 
+    </div>
+    <div id="update" class="hidden">
+         @Html.Partial("update", Model.schoolList) 
+    </div>
+    <div id="fees" class="hidden">
+         @Html.Partial("fees", Model.schoolList) 
+    </div>
+    <div id="groups" class="hidden">
+         @Html.Partial("groups", Model.schoolList) 
+    </div>
+    <div id="templates" class="hidden">
+         @Html.Partial("templates", Model.templates) 
+    </div>
+    <div id="messaging" class="hidden">
+             @Html.Partial("messaging", Model.schoolList)
+
+        </div>
+        <div id="statistics" class="hidden">
+         @Html.Partial("statistics", Model.schoolList)
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#finance_tabs').tabs();
+        ioschools.util.setNavigation('#nfinance', 'selected_dark');
+    });
+
+    // bind searchbox
+    $('#searchbox', '#alerts').keyup(function (e) {
+        if (isEnterKey(e)) {
+            return;
+        }
+
+        var term = $(this).val().toLowerCase();
+
+        if (term.length == 0) {
+            $('.unpaidTable', '#alerts').show();
+            return;
+        }
+
+        $('.unpaidTable', '#alerts').hide();
+        $('.childname', '#alerts').each(function () {
+            if ($(this).text().toLowerCase().indexOf(term) != -1) {
+                $(this).closest('.unpaidTable').slideDown('fast');
+            }
+        });
+    }).bind('focus', function () {
+        $(this).siblings().addClass('searchfocused');
+    }).bind('blur', function () {
+        $(this).siblings().removeClass('searchfocused');
+    });
+
+    // bind searchbox
+    $('#searchbox', '#alerts').keyup(function (e) {
+        if (isEnterKey(e)) {
+            return;
+        }
+
+        var term = $(this).val().toLowerCase();
+
+        if (term.length == 0) {
+            $('.unpaidTable', '#alerts').show();
+            return;
+        }
+
+        $('.unpaidTable', '#alerts').hide();
+        $('.childname', '#alerts').each(function () {
+            if ($(this).text().toLowerCase().indexOf(term) != -1) {
+                $(this).closest('.unpaidTable').slideDown('fast');
+            }
+        });
+    }).bind('focus', function () {
+        $(this).siblings().addClass('searchfocused');
+    }).bind('blur', function () {
+        $(this).siblings().removeClass('searchfocused');
+    });
+
+    $('.buttonReminder', '#alerts').live('click', function () {
+        var table = $(this).closest('table');
+        var studentids = [];
+        $('tr #studentid', table).each(function () {
+            studentids.push($(this).val());
+        });
+
+        $(this).getx('/finance/reminder', { studentids: studentids }, function (json_result) {
+            if (json_result.success) {
+                $(table).fadeOut('fast', function () {
+                    table.replaceWith($(json_result.data));
+                });
+            } else {
+                $.jGrowl(json_result.message);
+            }
+        });
+    });
+
+    function reminder_getparameters(table) {
+        var duedate = $('#date_due', table).val();
+
+        // validate
+        if (duedate == '') {
+            throw 'You must specify a payment deadline for this reminder!';
+        }
+
+        var json = {
+            date_due: duedate,
+            parentid: $('#parent', table).val(),
+            templateid: $('#template', table).val(),
+            useEmail: $('#use_email', table).val(),
+            useSMS: $('#use_SMS', table).val(),
+            children: []
+        };
+
+        $('#studentid', table).each(function () {
+            var row = $(this).closest('tr');
+            var checked = $('#student', row).is(':checked');
+
+            var child = {
+                studentid: $('#studentid', row).val(),
+                selected: checked,
+                feeids: []
+            };
+
+            if (!checked) {
+                return;
+            }
+
+            // get fees
+            $('#feeid', row).each(function () {
+                var feerow = $(this).closest('tr');
+                var feechecked = $('#fee', feerow).is(':checked');
+                if (!feechecked) {
+                    return;
+                }
+
+                var feeid = $('#feeid', feerow).val();
+                child.feeids.push(feeid);
+            });
+
+            if (child.feeids.length != 0) {
+                json.children.push(child);
+            }
+        });
+
+        // require at least 1 child and 1 fee
+        if (json.children.length == 0 ||
+            json.children[0].feeids == 0) {
+            throw 'You must select at least one child and fee.';
+        }
+
+        return json;
+    }
+
+    $('.buttonPrintReminder', '#alerts').live('click', function () {
+        $(this).closest('.previewContainer').find('#previewPlaceholder').jqprint();
+        return false;
+    });
+
+    $('.buttonReminderPreview', '#alerts').live('click', function () {
+        var table = $(this).closest('table');
+        var button = this;
+        var json;
+
+        try {
+            json = reminder_getparameters(table);
+        } catch (e) {
+            $.jGrowl(e);
+            return;
+        }
+
+        // post 
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: "/finance/reminderpreview",
+            dataType: "json",
+            context: $(button),
+            data: JSON.stringify(json),
+            success: function (json_result) {
+                if (json_result.success) {
+                    $('#previewPlaceholder', table).html(json_result.data).addClass('p10 mt10');
+                    $('.buttonReminderSend,.previewContainer', table).show();
+                } else {
+                    $.jGrowl(json_result.message);
+                }
+
+            }
+        });
+    });
+    
+    $('.buttonReminderSend', '#alerts').live('click', function () {
+        var table = $(this).closest('table');
+        var button = this;
+        var json;
+
+        try {
+            json = reminder_getparameters(table);
+        } catch (e) {
+            $.jGrowl(e.message);
+            return;
+        }
+
+        // post 
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: "/finance/remindersend",
+            dataType: "json",
+            context: $(button),
+            data: JSON.stringify(json),
+            success: function (json_result) {
+                if (json_result.success) {
+                    $(table).fadeOut('fast', function () {
+                        table.replaceWith($(json_result.data));
+                    });
+                }
+                $.jGrowl(json_result.message);
+
+            }
+        });
+    });
+    
+    $('.buttonReminderCancel', '#alerts').live('click', function () {
+        var table = $(this).closest('table');
+        var studentids = [];
+        $('tr #studentid', table).each(function () {
+            studentids.push($(this).val());
+        });
+
+        $(this).getx('/finance/alerts', { studentids: studentids }, function (result) {
+            $(table).fadeOut('fast', function () {
+                table.replaceWith($(result));
+            });
+        });
+    });
+
+    $('.reminderDetails', '#alerts').live('click', function () {
+        var row = $(this).closest('tr');
+        var feeid = $(row).attr('alt');
+
+        if ($(row).next().find('#reminderHistory').length != 0) {
+            $(row).next().fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+
+        $(this).getx('/finance/reminderHistory/' + feeid, function (json_result) {
+            if (json_result.success) {
+                $(row).after(json_result.data);
+            } else {
+                $.jGrowl(json_result.message);
+            }
+        });
+
+        return false;
+    });
+
+    $('.addAdditionalFee', '#overdueFeesTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var cloned = $(row).next().clone().removeClass('hidden');
+        var table = $(this).closest('table');
+
+        $('tbody', table).append(cloned);
+        init_inputSelectors(table);
+        $('#other_name', table).limit(200);
+        $('#other_amount', table).numeric({allow:'.'});
+
+        $("#other_duedate", table).datepicker(
+        {
+            dateFormat: 'D, d M yy'
+        });
+
+        $("#other_duedate", table).attr('readonly', 'readonly');
+
+        return false;
+    });
+
+    $('#buttonCancel', '#overdueFeesTable').live('click', function () {
+        var row = $(this).closest('tr');
+
+        $(row).fadeOut('fast', function () {
+            $(this).remove();
+        });
+        return false;
+    });
+
+    $('#buttonSave', '#overdueFeesTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var amount = $('#other_amount', row).val();
+        var name = $('#other_name', row).val();
+        
+        var childrow = $(row).closest('.childrow');
+
+        var studentid = $('td:first > #studentid', childrow).val();
+
+        $(this).post('/finance/addfee', { name: name, amount: amount, studentid: studentid }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            else {
+                $.jGrowl(json_result.message);
+            }
+        });
+    });
+</script>
+
+
+
+
+

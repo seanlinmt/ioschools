@@ -1,0 +1,113 @@
+﻿@model System.Collections.Generic.IEnumerable<ioschools.Models.fees.FeeNotificationTemplate>
+<div id="feenotification_container">
+    <div class="mt10 mb10">
+        <button id="buttonAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add template</button>
+    </div>
+<table id="feenotificationTable" class="table_grey">
+<thead>
+<tr><td>Templates</td><td class="w175px"></td></tr>
+</thead>
+<tbody>
+ @Html.Partial("TemplateRows", Model)
+</tbody>
+</table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    
+    function template_initeditrow(row) {
+        var codemirror = CodeMirror.fromTextArea($("#content", row)[0], {
+            height: "400px",
+            parserfile: "parsers/parseliquid.js",
+            stylesheet: ["/Content/css/codemirror/xmlcolors.css?v2",
+                             "/Content/css/codemirror/liquidcolors.css?v2",
+                             "/Content/css/codemirror/csscolors.css?v4",
+                             "/Content/css/codemirror/jscolors.css?v3"],
+            path: "/Scripts/codemirror/",
+            textWrapping: true,
+            lineNumbers: true,
+            onChange: function () {
+                $('#content', row).val(codemirror.getCode());
+            }
+        });
+    }
+
+    $('#buttonAdd').click(function () {
+        $(this).getx('/finance/templateadd', function (result) {
+            $('tbody', '#feenotificationTable').prepend(result);
+            template_initeditrow($('tbody > tr:first', '#feenotificationTable'));
+        });
+        return false;
+    });
+
+    $('.jqedit', '#feenotification_container').live('click', function () {
+        var row = $(this).parents('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/finance/templateedit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+                var newrow = $('tr[alt=' + id + ']', '#feenotificationTable');
+                template_initeditrow(newrow);
+            });
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#feenotification_container').live('click', function () {
+        var ok = window.confirm("Are you sure? There is no UNDO.");
+        if (!ok) {
+            return false;
+        }
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/finance/templatedelete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+
+        return false;
+    });
+
+    $('#buttonSave', '#feenotification_container').live('click', function () {
+        var row = $(this).parents('tr');
+        var content = $('#content', row).val();
+        var title = $('#title', row).val();
+        var id = $(row).attr('alt');
+        $(this).post('/finance/templatesave/' + id, { body: content, title: title }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+        return false;
+    });
+
+    $('#buttonCancel', '#feenotification_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        if (id == '') {
+            $(row).fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+
+        $(this).getx('/finance/templaterows/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+            });
+        });
+        return false;
+    });
+
+</script>
+
+

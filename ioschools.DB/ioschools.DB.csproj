@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ioschools.DB</RootNamespace>
     <AssemblyName>ioschools.DB</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_Test|AnyCPU'">
     <OutputPath>bin\Release_Test\</OutputPath>
@@ -46,6 +48,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -111,13 +114,17 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\clearpixels\clearpixels.Logging\clearpixels.Logging.csproj">
-      <Project>{C5EAEA68-6654-4311-951C-577F8924640F}</Project>
-      <Name>clearpixels.Logging</Name>
+    <ProjectReference Include="..\..\clearpixels\clearpixels.crypto\clearpixels.crypto.csproj">
+      <Project>{9596ba41-36f8-4a59-abaa-2a41f224b4c0}</Project>
+      <Name>clearpixels.crypto</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\tradelr\bajula\tradelr.Crypto\tradelr.Crypto.csproj">
-      <Project>{9596BA41-36F8-4A59-ABAA-2A41F224B4C0}</Project>
-      <Name>tradelr.Crypto</Name>
+    <ProjectReference Include="..\..\clearpixels\clearpixels.Helpers\clearpixels.Helpers.csproj">
+      <Project>{0d0768d7-17e9-45de-95b9-f24c45b04323}</Project>
+      <Name>clearpixels.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\clearpixels\clearpixels.Logging\clearpixels.Logging.csproj">
+      <Project>{14e4934e-a77b-4a05-ab59-2aaefdf10c22}</Project>
+      <Name>clearpixels.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\ioschools.Data\ioschools.Data.csproj">
       <Project>{D0F663B9-FDF4-45FB-928B-37D1C30A8F8C}</Project>

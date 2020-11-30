@@ -1,0 +1,49 @@
+﻿@model System.Collections.Generic.IEnumerable<ioschools.Models.fees.ReminderSent>
+<tr>
+    <td colspan="3">
+        <table id="reminderHistory" class="table_blue">
+            <thead>
+                <tr>
+                    <td>
+                        Reminders Sent
+                    </td>
+                    <td>
+                        Title
+                    </td>
+                    <td>
+                        To
+                    </td>
+                    <td>
+                        Payment Date
+                    </td>
+                    <td>
+                        Viewed Statement
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var reminder in Model)
+                   {
+                <tr>
+                    <td>
+                        @reminder.created
+                    </td>
+                    <td>
+                        @reminder.title
+                    </td>
+                    <td>
+                        @reminder.receiver
+                    </td>
+                    <td>
+                        @reminder.due_date
+                    </td>
+                    <td>
+                        @reminder.viewed?"<img src='/Content/img/icons/tick.png' />":""
+                    </td>
+                </tr>
+                 } 
+            </tbody>
+        </table>
+    </td>
+</tr>
+

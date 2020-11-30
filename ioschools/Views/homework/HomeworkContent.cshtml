@@ -1,0 +1,6 @@
+﻿@model System.Collections.Generic.IEnumerable<ioschools.Models.homework.HomeworkStudent>
+@foreach (var homework in Model)
+   {
+ @Html.Partial("~/Views/homework/studentsingle.cshtml", homework) 
+
+   }

@@ -2,6 +2,7 @@
 {
     public static class Constants
     {
+        public const int LUCENE_SEARCH_RESULTS_MAX = 50;
         public const int DURATION_1DAY_SECS = 86400;
         public const int DURATION_1HOUR_SECS = 3600;
         public const string DATEFORMAT_DATEPICKER = "ddd, d MMM yyyy";

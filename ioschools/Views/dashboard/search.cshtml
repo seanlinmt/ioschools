@@ -1,0 +1,302 @@
+﻿@model IEnumerable<SelectListItem>
+<div class="mt10">
+    <h2>
+        Search</h2>
+    <div class="content_filter">
+        <div id="schoolList" class="filter">
+            <h4 class="acc">
+                Schools</h4>
+            <select>
+                <option value=''>All Schools</option>
+                <option value="1">Kindergarten</option>
+                <option value="2">Primary</option>
+                <option value="3">Secondary</option>
+                <option value="4">International</option>
+            </select>
+        </div>
+        <div id="formList" class="filter">
+            <h4 class="acc">
+                Class</h4>
+            <select>
+            </select>
+        </div>
+        <div id="ecaList" class="filter">
+            <h4 class="acc">
+                ECA</h4>
+            <select>
+            </select>
+        </div>
+        <div class="filter">
+            <h4 class="acc">
+                Groups</h4>
+            <select id="groupList">
+                <option value=''>All</option>
+                <option value="admin">Admin</option>
+                <option value="clerk">Clerk</option>
+                <option value="director">Director</option>
+                <option value="finance">Finance</option>
+                <option value="guardian">Guardian</option>
+                <option value="head">Headmaster / Headmistress</option>
+                <option value="student">Student</option>
+                <option value="support">Support</option>
+                <option value="teacher">Teacher</option>
+            </select>
+        </div>
+        <div class="filter">
+            <h4 class="acc">
+                Attendance Status</h4>
+            <select id="attendanceStatus" class="mb10">
+                <option value="">All</option>
+                <option value="late">Late</option>
+                <option value="absent">Absent</option>
+                <option value="excused">Excused</option>
+            </select>
+            <input id="attendanceDate" type="text" value="" style="width: 140px" />
+        </div>
+        <div class="filter">
+            <h4 class="acc">
+                Discipline Points</h4>
+            <select id="disciplineList">
+                <option value='>50'>50 or more</option>
+                <option value='>40'>40 or more</option>
+                <option value='>30'>30 or more</option>
+                <option value='>20'>20 or more</option>
+                <option value='>10'>10 or more</option>
+                <option value='>0'>more than 0</option>
+                <option selected="selected" value=''>Any</option>
+                <option value='<0'>less than 0</option>
+                <option value='<-10'>-10 or less</option>
+                <option value='<-20'>-20 or less</option>
+                <option value='<-30'>-30 or less</option>
+                <option value='<-40'>-40 or less</option>
+                <option value='<-50'>-50 or less</option>
+            </select>
+        </div>
+        <div id="activeList" class="filter">
+            <h4 class="acc">
+                Status</h4>
+            <select>
+                <option value="true" selected="selected">Active</option>
+                <option value="false">Inactive</option>
+            </select>
+        </div>
+        <div class="filter">
+            <h4 class="acc">
+                Year</h4>
+            @Html.DropDownList("yearList", Model)
+        </div>
+        @{ Html.RenderAction("IssuesFilter", "Users"); }
+        <div class="mt20">
+            <button type="button" onclick="resetSearchValues();">
+                <img src="/Content/img/icons/reset.png" class="am" />
+                reset</button>
+            <button id="buttonSearch" type="button">
+                search
+                <img src="/Content/img/icons/continue.png" class="am" /></button>
+        </div>
+    </div>
+    <div class="main_columnright">
+        <div class="fr pt10">
+            <button type="button" id="buttonExport" title="Exports user search results to excel">
+                <img src="/Content/img/icons/up.png" class="at" />
+                Export Users</button>
+            <button type="button" id="buttonNewUser">
+                <img src="/Content/img/icons/plus.png" class="at" />
+                New User</button>
+        </div>
+        <div id="search_area" class="relative">
+            <span class="search"></span>
+            <input type="text" id="searchbox" name="searchbox" />
+        </div>
+        <div class="clear_right mt20">
+        </div>
+        <div id="grid_content">
+            <table id="usersGridView" class="scroll">
+            </table>
+            <div id="usersGridNavigation" class="scroll ac">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/jqgrid.js"></script>
+<script type="text/javascript">
+    var selectedClass = '';
+    var selectedEca = '';
+    $(document).ready(function () {
+        ioschools.util.setNavigation('#nhome', 'selected_link');
+        usersBindToGrid();
+
+        // load previous search
+        var search_obj = load_search();
+        if (search_obj != null) {
+            $('select', '#schoolList').val(search_obj.school);
+            selectedClass = search_obj.sclass;
+            selectedEca = search_obj.seca;
+            $('#attendanceDate').val(search_obj.date);
+            $('#attendanceStatus').val(search_obj.attStatus);
+            $('#groupList').val(search_obj.group);
+            $('#disciplineList').val(search_obj.discipline);
+            $('select', '#activeList').val(search_obj.status);
+            $('#yearList').val(search_obj.year);
+            $('#searchbox').val(search_obj.term);
+            $('#hasIssues').attr('checked', search_obj.hasIssues);
+        }
+
+        reloadUsersGrid();
+
+        initSideFilters();
+
+        $('#searchbox').keyup(function(e) {
+            if (!isEnterKey(e)) {
+                return;
+            }
+            reloadUsersGrid();
+        }).bind('focus', function() {
+            $(this).siblings().addClass('searchfocused');
+        }).bind('blur', function() {
+            $(this).siblings().removeClass('searchfocused');
+        });
+
+        $('#attendanceDate').datepicker(
+        {
+            dateFormat: 'D, d M yy'
+        });
+        $('#attendanceDate').attr('readonly', 'readonly');
+
+        $('#attendanceDate').watermark('on this date');
+
+        // export button
+        $('#buttonExport').click(function () {
+            var records = $('#usersGridView').getGridParam('records');
+            if (records == null || records == 0) {
+                $.jGrowl('No user listed in dashboard');
+                return;
+            }
+
+            var ok = window.confirm('Are you sure you want to export ' + records + (records == 1 ? ' user?' : ' users?'));
+            if (!ok) {
+                return;
+            }
+            dialogBox_open('/users/export', 'Export Users', 600);
+        });
+
+        // search button
+        $('#buttonSearch').click(function () {
+            reloadUsersGrid();
+        });
+
+        // new user button
+        $('#buttonNewUser').click(function () {
+            window.location = "/users/add";
+        });
+
+        // reset grid parameters when any filter parameter changes
+        $('input, textarea, select', '.content_filter').change(function () {
+            $("#usersGridView").setGridParam({ page: 1 });
+        });
+    });
+
+    // bind side filter click events
+    $('#attendanceStatus').change(function () {
+        var selected = $(this).val();
+        if (selected == '') {
+            $('#attendanceDate').attr('disabled', true);
+        } else {
+            $('#attendanceDate').attr('disabled', false);
+        }
+    });
+
+    $('#groupList').change(function () {
+        var group = $(this).val();
+        if (group == 'student') {
+            $('#attendanceStatus,#attendanceDate,#disciplineList').attr('disabled', false).closest('.filter').show();
+            $('#attendanceStatus').trigger('change');
+        } else {
+            $('#attendanceStatus,#attendanceDate,#disciplineList').attr('disabled', true).closest('.filter').hide();
+        }
+    });
+
+    $('select', '#schoolList').change(function () {
+        var school = $(this).val();
+        $('select', '#formList,#ecaList').html('<option value="">All</option>');
+        if (school == '') {
+            $('select', '#formList,#ecaList').attr('disabled', true);
+        }
+        else {
+            $(this).getx('/schools/classes/' + school, function (json_result) {
+                if (json_result.success) {
+                    $.each(json_result.data, function (i) {
+                        var option = ["<option value='", this.id, "'>", this.name, "</option>"];
+                        $('select', '#formList').append(option.join(''));
+                        if (i == json_result.data.length - 1) {
+                            $('select', '#formList').val(selectedClass);
+                        }
+                    });
+                    if (json_result.data.length != 0) {
+                        $('select', '#formList').attr('disabled', false);
+                    } else {
+                        $('select', '#formList').attr('disabled', true);
+                    }
+                }
+                else {
+                    $.jGrowl(json_result.message);
+                }
+            }, 'json');
+
+            $(this).getx('/eca/list/' + school, function (json_result) {
+                if (json_result.success) {
+                    $.each(json_result.data, function (i) {
+                        var option = ["<option value='", this.id, "'>", this.name, "</option>"];
+                        $('select', '#ecaList').append(option.join(''));
+                        // last entry
+                        if (i == json_result.data.length - 1) {
+                            $('select', '#ecaList').val(selectedEca);
+                        }
+                    });
+                    if (json_result.data.length != 0) {
+                        $('select', '#ecaList').attr('disabled', false);
+                    } else {
+                        $('select', '#ecaList').attr('disabled', true);
+                    }
+                }
+                else {
+                    $.jGrowl(json_result.message);
+                }
+            }, 'json');
+        }
+    });
+
+    function load_search() {
+        var saved = $.cookie('search');
+        if (saved == undefined || saved == null || saved == '') {
+            return null;
+        }
+
+        return JSON.parse(saved);
+    }
+
+    function initSideFilters() {
+        $('#attendanceStatus,#groupList').trigger('change');
+        $('select', '#schoolList').trigger('change');
+    }
+
+    function resetSearchValues() {
+        $.cookie('search', '');
+
+        var date = new Date();
+        var year = date.getFullYear();
+        $('#yearList').val(year);
+        $('select', '#schoolList').val('');
+        $('select', '#formList').val('');
+        $('select', '#ecaList').val('');
+        $('#attendanceStatus,#attendanceDate').val('');
+        $('#groupList').val('');
+        $('#disciplineList').val('');
+        $('#hasIssues').attr('checked', false);
+        $('select', '#activeList').val('');
+        $('#searchbox').val('');
+
+        initSideFilters();
+    }
+</script>
+

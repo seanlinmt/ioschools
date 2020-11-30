@@ -1,0 +1,173 @@
+﻿@model ioschools.Models.enrolment.AdmissionViewModel
+<h3 class="font_red">Father</h3>
+<div class="fl mr10 form_entry">
+    <div class="form_label">
+        Title</div>
+        @Html.DropDownList("parent1_designation", Model.designationList)
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        <label class="required">Full Name</label></div>
+    @Html.TextBox("parent1_name", "", new Dictionary<string, object> { { "class", "required w400px" } })
+</div>
+<div class="clear"></div>
+<div class="fl form_entry">
+    <div class="form_label">
+        <label class="required">NRIC / Passport</label></div>
+    @Html.TextBox("parent1_passportnric", "", new Dictionary<string, object> { { "class", "required unique" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Occupation</label></div>
+    @Html.TextBox("parent1_occupation", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Name/Address of Employer</label></div>
+        <textarea id="parent1_employer" name="parent1_employer" class="w500px required"></textarea>
+</div>
+<div class="fl mr10">
+<div class="form_entry w175px">
+    <div class="form_label">
+        Race</div>
+    @Html.TextBox("parent1_race")
+</div>
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Dialect</div>
+    @Html.TextBox("parent1_dialect")
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        Religion</div>
+    @Html.TextBox("parent1_religion")
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+@Html.CheckBox("parent1_bumi") <label for="parent1_bumi">Bumiputra</label>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Marital Status</label></div>
+    @Html.DropDownList("parent1_marital", Model.maritalStatusList, new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Citizenship</label></div>
+    @Html.TextBox("parent1_citizenship", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Office phone</label></div>
+    @Html.TextBox("parent1_officephone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Home Phone</label></div>
+    @Html.TextBox("parent1_homephone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl form_entry w175px">
+    <div class="form_label">
+        <label class="required">Cell Phone</label></div>
+    @Html.TextBox("parent1_handphone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        E-mail</div>
+        <input type="text" id="parent1_email" name="parent1_email" class="required_group unique" />
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Home Address</label></div>
+    <textarea id="parent1_address" name="parent1_address" class="w500px required"></textarea>
+</div>
+<h3 class="font_red mt20">Mother</h3>
+<div class="fl mr10 form_entry">
+    <div class="form_label">
+        Title</div>
+        @Html.DropDownList("parent2_designation", Model.designationList)
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        <label class="required">Full Name</label></div>
+    @Html.TextBox("parent2_name", "", new Dictionary<string, object> { { "class", "required w400px" } })
+</div>
+<div class="clear"></div>
+<div class="fl form_entry">
+    <div class="form_label">
+        <label class="required">NRIC / Passport</label></div>
+    @Html.TextBox("parent2_passportnric", "", new Dictionary<string, object> { { "class", "required unique" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Occupation</label></div>
+    @Html.TextBox("parent2_occupation", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Name/Address of Employer</label></div>
+<textarea id="parent2_employer" name="parent2_employer" class="w500px required"></textarea>
+</div>
+<div class="fl mr10">
+<div class="form_entry w175px">
+    <div class="form_label">
+        Race</div>
+    @Html.TextBox("parent2_race")
+</div>
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Dialect</div>
+    @Html.TextBox("parent2_dialect")
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        Religion</div>
+    @Html.TextBox("parent2_religion")
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    @Html.CheckBox("parent2_bumi") <label for="parent2_bumi">Bumiputra</label>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Marital Status</label></div>
+    @Html.DropDownList("parent2_marital", Model.maritalStatusList, new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Citizenship</label></div>
+    @Html.TextBox("parent2_citizenship", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Office Phone</label></div>
+    @Html.TextBox("parent2_officephone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Home Phone</label></div>
+    @Html.TextBox("parent2_homephone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        <label class="required">Cell Phone</label></div>
+    @Html.TextBox("parent2_handphone", "", new Dictionary<string, object> { { "class", "required" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        E-mail</div>
+    <input type="text" id="parent2_email" name="parent2_email" class="required_group unique" />
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        <label class="required">Home Address</label></div>
+    <textarea id="parent2_address" name="parent2_address" class="w500px required"></textarea>
+</div>

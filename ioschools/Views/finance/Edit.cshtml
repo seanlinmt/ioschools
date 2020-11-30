@@ -1,0 +1,20 @@
+﻿@model ioschools.Models.fees.FeePayable
+<tr alt="@Model.id" class="bg_edit">
+    <td>
+        @Html.DropDownList("schools", Model.schoolList)
+    </td>
+    <td>
+        @Html.TextBox("name", Model.name, new Dictionary<string, object>(){{"class", "w300px"}})
+    </td>
+    <td>
+        @Html.TextBox("amount", Model.amount, new Dictionary<string, object>(){{"class", "w100px ar"}})
+    </td>
+    <td class="ar">
+        <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+    </td>
+</tr>
+

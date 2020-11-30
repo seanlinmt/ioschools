@@ -1,0 +1,17 @@
+﻿@model ioschools.Models.school.SchoolYear
+<tr alt="@Model.id" class="bg_edit">
+    <td>
+        @Html.TextBox("name", Model.name)
+    </td>
+    <td>
+        @Html.DropDownList("method", Model.gradingmethodList)
+    </td>
+    <td class="ar">
+        <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+    </td>
+</tr>
+

@@ -1,0 +1,10 @@
+﻿@model ioschools.Models.feedback.FeedbackEmailViewModel
+<p>Dear @Model.receiver,</p>
+<p>You have received the following feedback from 
+<a href="@ioschools.Data.Constants.HTTP_HOST/users/@Model.sender.id">@Model.sender.name</a> </p>
+<p><i>@Model.message</i></p>
+<p>To contact the person who posted this feedback, just reply this email directly.</p>
+<p>
+ School Information System
+</p>
+

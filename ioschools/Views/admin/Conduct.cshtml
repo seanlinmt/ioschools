@@ -1,0 +1,106 @@
+﻿
+<div id="conduct_container">
+<h2 class="mt10">Conduct</h2>
+<p>Maintain predefined types of conduct.</p>
+    <div class="mt10 mb10">
+        <button id="buttonAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add type</button>
+    </div>
+<table id="conductTable" class="table_grey">
+<thead>
+<tr><td>Name</td><td class="w150px">Type</td><td class="w100px">Min</td><td class="w100px">Max</td><td class="w175px"></td></tr>
+</thead>
+<tbody id="conduct_content">
+@{ Html.RenderAction("AdminContent","Conduct");}
+</tbody>
+</table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+    
+    function conduct_initeditrow(row) {
+        $('#name', row).limit(100);
+        $('#min,#max', row).numeric();
+        init_inputSelectors(row);
+    }
+
+    $('#buttonAdd').click(function () {
+        $(this).getx('/conduct/edit', function (result) {
+            $('tbody', '#conductTable').prepend(result);
+            conduct_initeditrow($('tbody > tr:first', '#conductTable'));
+        });
+        return false;
+    });
+
+    $('.jqedit', '#conduct_container').live('click', function () {
+        var row = $(this).parents('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/conduct/edit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+                var newrow = $('tr[alt=' + id + ']', '#conductTable');
+                conduct_initeditrow(newrow);
+            });
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#conduct_container').live('click', function () {
+        var ok = window.confirm("Are you sure? Delete will fail if entry is in use.");
+        if (!ok) {
+            return false;
+        }
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/conduct/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+
+        return false;
+    });
+
+    $('#buttonSave', '#conduct_container').live('click', function () {
+        var row = $(this).parents('tr');
+        var name = $('#name', row).val();
+        var isdemerit = $('#merit', row).val();
+        var min = $('#min', row).val();
+        var max = $('#max', row).val();
+        var id = $(row).attr('alt');
+        $(this).post('/conduct/save/' + id, { name: name, isdemerit: isdemerit, min: min, max: max }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+        return false;
+    });
+
+    $('#buttonCancel', '#conduct_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        if (id == '') {
+            $(row).fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+
+        $(this).getx('/conduct/admincontent/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+            });
+        });
+        return false;
+    });
+
+</script>
+
+

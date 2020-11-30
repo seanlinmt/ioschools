@@ -1,0 +1,186 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@model ioschools.Models.calendar.CalendarViewModel
+
+@section TitleContent {
+
+    School Calendar
+
+}
+
+<script src="../../Scripts/jquery.scrollTo-min.js" type="text/javascript"></script>
+    <div class="body_content">
+        <div class="breadcrumb">
+            <a href="/">Home</a> / Calendar
+        </div>
+            <h1 class="icon_calendar">
+            2011 School Calendar</h1>
+            <div class="w650px fl">
+            <table class="table_blue">
+            <thead>
+            <tr><td>Term</td><td>School Days / Holidays</td><td>Start</td><td>End</td></tr>
+            </thead>
+            <tbody>
+            <tr><td rowspan="3">1</td><td>First Semester</td><td>3 Jan 2011</td><td>11 Mar 2011</td></tr>
+            <tr><td><b>First Mid Term Break</b></td><td><b>12 Mar 2011</b></td><td><b>20 Mar 
+                2011</b></td></tr>
+            <tr><td>Second Semester</td><td>21 Mar 2011</td><td>27 May 2011</td></tr>
+            <tr><td></td><td><b>Mid Year Break</b></td><td><b>28 May 2011</b></td><td><b>12 Jun 
+                2011</b></td></tr>
+            <tr><td rowspan="3">2</td><td>Third Semester</td><td>13 Jun 2011</td><td>26 Aug 2011</td></tr>
+            <tr><td><b>Second Mid Term Break</b></td><td><b>27 Aug 2011</b></td><td><b>4 Sep 
+                2011</b></td></tr>
+            <tr><td>Fourth Semester</td><td>5 Sep 2011</td><td>18 Nov 2011</td></tr>
+            <tr><td></td><td><b>Year End Break</b></td><td><b>19 Nov 2011</b></td><td><b>1 Jan 
+                2012</b></td></tr>
+            </tbody>
+            </table>
+            </div>
+            <div class="w300px fl ml20">
+            <p class="icon_note">School hours for the individual schools can be found at the following pages:</p>
+            <ul class="blue">
+            <li><a href="/kindergarten#hours"> Kindergarten</a></li>
+            <li><a href="/primary#hours"> Primary</a></li>
+            <li><a href="/secondary#hours"> Secondary</a></li>
+            <li><a href="/international#hours"> International</a></li>
+            </ul>
+            </div>
+            <div class="clear"></div>
+            <div class="mb10 mt40">
+            <table class="calendar_selector table_blue">
+            <thead>
+            <tr><th class="ac w50px">Year</th><td class="ac">Month</td></tr>
+            </thead>
+            <tbody>
+            @foreach (var entry in Model.time)
+               {
+                   <tr><th class="font_grey">@entry.Key</th><td>
+            <ul>
+            @foreach (var month in entry.Value){
+                <li>@month</li>
+            } 
+            </ul>
+            </td></tr>
+               } 
+               </tbody>
+               </table>
+            </div>
+            <div class="clear"></div>
+            @foreach (var pair in Model.months)
+               {
+            <div class="calendar_month">
+            <h3>@ioschools.Models.calendar.Calendar.months[pair.First - 1] @pair.Second<a class="scroll_top" href="">back to top</a></h3>
+            <table id="@pair.First_@pair.Second">
+            <thead><tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr></thead>
+            <tbody>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            <tr><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td><td><h4></h4><div></div></td></tr>
+            </tbody>
+            </table>
+            </div>
+            
+               }
+              <span id="calendar_json" class="hidden">@Model.calendar</span>
+    </div>
+    <script src="../../Scripts/date.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('li', '.calendar_selector').live('click', function () {
+            var index = $('li', '.calendar_selector').index(this);
+            $.scrollTo('.calendar_month:eq(' + index + ')', 800);
+            return false;
+        });
+
+        $('.scroll_top').live('click', function () {
+            $.scrollTo('.calendar_selector:first', 800);
+            return false;
+        });
+
+        var calendar;
+        function getCalendarEntry(day, month, year) {
+            var returnString = [];
+            var holiday = false;
+            var entries = null;
+            $.each(calendar, function (i, val) {
+                if (val.year == year && val.month == month && val.day == day) {
+                    entries = val.entry;
+                    holiday = val.holiday;
+                    calendar.splice(i, 1);
+                    return false;
+                }
+            });
+            if (entries != null) {
+                if (entries.length == 1) {
+                    returnString.push(entries[0]);
+                }
+                else {
+                    returnString.push('<ul>');
+                    for (var i = 0; i < entries.length; i++) {
+                        returnString.push('<li>' + entries[i] + '</li>');
+                    }
+                    returnString.push('</ul>');
+                }
+            }
+            return {
+                holiday: holiday,
+                entries: returnString.join('')
+            };
+        }
+
+        $(document).ready(function () {
+            calendar = $.parseJSON($('#calendar_json').html());
+            var months = $('.calendar_month');
+            $.each(months, function () {
+                var monthyear = $('table', this).attr('id').split('_');
+                var month = monthyear[0] - 1;
+                var year = monthyear[1];
+
+                var startday = new Date(year, month, 1).getDay();
+                var cells = $('td', this);
+                var day = 1;
+                $.each(cells, function (j) {
+                    if (j >= startday) {
+                        try {
+                            if (Date.validateDay(day, year, month)) {
+                                $('h4', this).html(day);
+                                var entry = getCalendarEntry(day, month + 1, year);
+                                $('div', this).html(entry.entries);
+                                if (entry.holiday) {
+                                    $(this).css('backgroundColor', '#FFFFCC');
+                                }
+                                day++;
+                            }
+                        } catch (e) {
+
+                        }
+                    }
+                });
+
+                // remove empty rows
+                var rows = $('tr', this);
+
+                $.each(rows, function () {
+                    var emptyrow = false;
+                    if ($('h4', this).length != 0 && $('h4', this).contents().length == 0) {
+                        emptyrow = true;
+                    }
+                    if (emptyrow) {
+                        $(this).remove();
+                    }
+                });
+            });
+
+            // zebra lists
+            $('li:odd', '.calendar_month').each(function () {
+                $(this).css('color', '#666');
+            });
+
+        });             // ready
+    </script>
+
+

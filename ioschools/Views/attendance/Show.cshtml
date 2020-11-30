@@ -1,0 +1,74 @@
+﻿@model ioschools.Models.attendance.AttendanceViewModel
+<div class="fr">
+    @{ Html.RenderAction("admin", "attendance"); }
+</div>
+@if (Model.years.Any())
+   {
+<div class="mt10 fl" id="attendance_year_selector_@Model.studentid">
+    @Html.DropDownList("attendance_year_select", Model.years)
+</div>
+}
+<div class="clear">
+</div>
+@if (Model.years.Any())
+   {
+<div class="ar mr10">
+    <span><strong>Class</strong>:
+        @Model.class_late
+        late,
+        @Model.class_absent
+        absent</span> <span class="pl10"><strong>ECA</strong>:
+            @Model.eca_late
+            late,
+            @Model.eca_absent
+            absent</span>
+</div>
+}
+<table id="attendanceTable" class="table_brown">
+    <thead>
+        <tr>
+            <td class="w100px">
+                Date
+            </td>
+            <td class="w150px">
+                Class / ECA
+            </td>
+            <td class="w100px">
+                Type
+            </td>
+            <td>
+                Details / Reason
+            </td>
+            @if (Model.canEdit)
+               { 
+            <td class="w100px">
+            </td>
+             }
+        </tr>
+    </thead>
+    <tbody id="attendance_results_@Model.studentid">
+        @if (!Model.attendances.Any())
+           {	
+        <tr>
+            <td colspan="@Model.canEdit?"5":"4"">
+                No late or absent records found.
+            </td>
+        </tr>
+        }
+           else
+           {
+               @Html.Partial("~/Views/attendance/Content.cshtml", Model)
+           }
+    </tbody>
+</table>
+@if (Model.canEdit)
+   { 
+<script type="text/javascript">
+    $('select', '#attendance_year_selector_@Model.studentid').bind('change', function () {
+        var selected = $(this).val();
+        $(this).post('/attendance/content/@Model.studentid', { year: selected }, function (result) {
+            $('#attendance_results_@Model.studentid').html(result);
+        });
+    });
+</script>
+} 

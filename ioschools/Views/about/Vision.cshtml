@@ -1,0 +1,50 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@section TitleContent {
+
+	Vision
+
+}
+
+
+<div class="nav_side mt20">
+<ul>
+            <li><a href="/about">About </a></li>
+            <li><a href="/about/history">History</a></li>
+            <li><a href="/about/philosophy">Philosophy</a></li>
+            <li><a class="selected" href="/about/vision">Vision</a></li>
+            <li><a href="/about/mission">Mission</a></li>
+            <li><a href="/about/people">People</a></li>
+            <li><a href="/about/spirit">Spirit</a></li>
+        </ul>
+</div>
+<div class="col_2 ml20 mt10">
+<div class="breadcrumb">
+<a href="/">Home</a> / Vision
+</div>
+    <h1>Vision</h1>
+    <div class="img_border w700px">
+    <div class="slider w700px" style="height:300px;">
+        <img src="/Content/img/about/vision1.jpg" alt="" />
+        <img src="/Content/img/about/vision2.jpg" alt="" />
+        <img src="/Content/img/about/vision3.jpg" alt="" />
+        <img src="/Content/img/about/vision4.jpg" alt="" />
+        <img src="/Content/img/about/vision5.jpg" alt="" />
+        <img src="/Content/img/about/vision6.jpg" alt="" />
+    </div></div>
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.slider').nivoSlider({
+            controlNav: false,
+            directionNav: false,
+            pauseTime: 5000,
+            pauseOnHover: false
+        });
+    });
+    </script>
+
+

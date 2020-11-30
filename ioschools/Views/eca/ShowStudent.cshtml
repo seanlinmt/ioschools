@@ -1,0 +1,107 @@
+﻿@model ioschools.Models.eca.ECAStudentViewModel
+@using ioschools.Library
+<div class="mt10" id="eca_year_selector_@Model.studentid">
+@if(Model.years.Count() != 0)
+   {
+   @Html.DropDownList("eca_year_select", Model.years)
+    
+   }
+   <div class="fr">
+       @{ Html.RenderAction("AddStudent","Eca"); }
+   </div>
+   <div class="clear"></div>
+</div>
+<table id="ecaTable" class="table_brown">
+    <thead>
+        <tr>
+            <td class="w200px">
+                Activity
+            </td>
+            <td class="w150px">
+                Post Held
+            </td>
+            <td>Achievement</td>
+            <td class="w70px"></td>
+        </tr>
+    </thead>
+    <tbody id="eca_results_@Model.studentid">
+    @{ if (!Model.ecas.Any())
+       {
+   <tr class="norow"><td colspan="7">No extra-curricular records found.</td></tr>
+@}
+       else
+       {
+           foreach (var eca in Model.ecas)
+           {
+        <tr alt="@eca.id">
+            <td>
+                <div class="font_black">@eca.name</div>
+                <div class="font_grey smaller">@eca.type</div>
+            </td>
+            <td>
+            @eca.post
+            </td>
+            <td>
+            @eca.achievement.ToHtmlBreak()
+                <div class="font_darkred mt20">@!String.IsNullOrEmpty(eca.remarks)?"Remarks ":"" </div>
+            <div class="@Model.canEdit?"inlineedit ":""  font_darkblue">
+            @eca.remarks.ToHtmlBreak()
+            </div>
+            </td>
+            <td>
+                @if (Model.canEdit)
+               {
+<span class="jqedit">edit</span>
+<span class="jqdelete">delete</span>
+                
+               }
+                </td>
+        </tr>
+        
+           }
+       }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('select', '#eca_year_selector_@Model.studentid').bind('change', function () {
+        var selected = $(this).val();
+        var div = $(this).parents("div[id^='ECA_']");
+        $(this).getx('/eca/showstudent/@Model.studentid', { year: selected }, function (result) {
+            $(div).html(result);
+        });
+    });
+
+    $(document).ready(function() {
+        @if(Model.canEdit){ 
+
+        $('.inlineedit', '#ecaTable').inlineEdit({
+            control: "textarea",
+            limit: 500,
+            placeholder: 'Click here to add remarks. Remarks are not included in the student\'s report card',
+            save: function(e, data) {
+                var id = $(this).parents('tr').attr('alt');
+                var ok = window.confirm('Are you sure?');
+                var editor = this;
+                var oldvalue = $(editor).data('oldvalue.inlineedit');
+                if (!ok) {
+                    return false;
+                }
+                var params = {
+                    id: id,
+                    remark: data.value
+                };
+                $.post('/eca/saveremark', params, function(json_result) {
+                    $.jGrowl(json_result.message);
+                    if (!json_result.success) {
+                        $(editor).data('value.inlineedit', oldvalue);
+                        $(editor).html(oldvalue);
+                    }
+                });
+
+                return true;
+            }
+        });
+        } 
+    });
+</script>
+}

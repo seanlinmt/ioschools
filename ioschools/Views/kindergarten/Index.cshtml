@@ -1,0 +1,121 @@
+﻿
+@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@section TitleContent {
+
+     Kindergarten - About
+
+}
+
+    <div class="nav_side mt20">
+        <ul>
+            <li><a class="selected" href="/kindergarten">About</a></li>
+            <li><a href="/kindergarten/afterschool">After School Care</a></li>
+        </ul>
+    </div>
+    <div class="col_2 ml20 mt10">
+        <div class="breadcrumb">
+            <a href="/">Home</a> / <a href="/Schools">Schools</a> / <a href="/kindergarten/">Kindergarten</a>
+            / About
+        </div>
+        <h1>
+             Kindergarten</h1>
+        <div class="img_border w250px fl">
+            <div class="slider" style="height: 372px; width: 250px;">
+                <img src="/Content/img/schools/kindergarten/about1.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/about2.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/about3.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/about4.jpg" alt="" />
+            </div>
+        </div>
+        <div style="width: 430px;" class="fl ml10">
+            <p>
+                 Kindergarten provides a three year programme, catering for children aged 4
+                to 6 years. The curriculum used is the Thematic Approach based on the Malaysian
+                Pre-School Curriculum. The programme also integrates the British and Singaporean
+                curricular, making  Kindergarten a much sought-after institution for early
+                childhood education.
+            </p>
+            <p>
+                English is the medium of instruction. The 3-year programme provides a solid head-start
+                foundation in English comprehension and expression, reading and arithmetic skills.
+            </p>
+            <p>
+                In the first year, the 4 year child ( Kindy A) is exposed to the training of motor
+                skills and co-ordination through play activities. In the second year (Kindy B),
+                a more structured curriculum is employed, where letter recognition and writing and
+                social interaction become the main thrust of instruction. At the same time, Bahasa
+                Malaysia and Mandarin are introduced.
+            </p>
+            <p>
+                In the final year, the child is challenged to undertake more formal tasks of reading,
+                writing and arithmetic.
+            </p>
+        </div>
+        <div class="clear">
+        </div>
+        <h3 class="mt20">
+            Facilities and Activities</h3>
+        <div class="img_border w700px">
+            <div class="slider w700px" style="height: 300px;">
+                <img src="/Content/img/schools/kindergarten/facility4.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/facility1.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/facility2.jpg" alt="" />
+                <img src="/Content/img/schools/kindergarten/facility3.jpg" alt="" />
+            </div>
+        </div>
+        <p class="mt10">
+            Various facilities like playground, computer room, in-door activity room, day-care
+            center are provided. Activities like games, concerts, sports day and field trips
+            all make up the kindergarten curriculum, encouraging each child to interact and
+            develop into a confident person.
+        </p>
+        <h3 class="mt20">
+            Schooling Hours</h3>
+            <a name="hours"></a>
+        <table class="table_side">
+            <tr>
+                <td colspan="2">
+                    Monday to Friday
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Kindy A
+                </td>
+                <td>
+                    8.00am to 12.00 noon
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Kindy B
+                </td>
+                <td>
+                    8.00am to 12.30 pm
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Kindy C
+                </td>
+                <td>
+                    8.00am to 12.45 pm
+                </td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.slider').nivoSlider({
+                controlNav: false,
+                directionNav: false,
+                pauseTime: 5000,
+                pauseOnHover: false
+            });
+        });
+    </script>
+
+

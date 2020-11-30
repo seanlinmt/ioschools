@@ -1,0 +1,103 @@
+﻿@{
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.exam.viewmodels.ExamDashboardViewModel
+@section TitleContent {
+Exam Records
+}
+
+<div id="content_result">
+    <div class="mt10">
+        <h2>Exam Records</h2>
+        <div class="content_filter">
+            <button id="examAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add exam record</button>
+            <form action="/exams/export" method="post" class="mt20">
+                <div id="schoolList" class="filter mt10">
+                    <h4 class="acc">
+                        Schools
+                    </h4>
+                    @Html.DropDownList("school", Model.schools)
+                </div>
+                <div id="formList" class="filter">
+                    <h4 class="acc">
+                        Class
+                    </h4>
+                    <select name="sclass"></select>
+                </div>
+                <div id="yearList" class="filter">
+                    <h4 class="acc">
+                        Year
+                    </h4>
+                    @Html.DropDownList("year", Model.yearlist)
+                </div>
+                <div class="mt10">
+                    <button id="examExport" type="submit" title="exports displayed exam results to excel">export <img src="/Content/img/icons/up.png" class="am" /></button>
+                    <button id="buttonSearch" type="button" class="ajax">search <img src="/Content/img/icons/continue.png" class="am" /></button>
+                </div>
+            </form>
+        </div>
+        <div class="main_columnright">
+            <div id="grid_content">
+                <table id="examsGridView" class="scroll">
+                </table>
+                <div id="examsGridNavigation" class="scroll ac">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="/js/jqgrid.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ioschools.util.setNavigation('#nexams', 'selected_link');
+            pageInit();
+            examsBindToGrid();
+            reloadExamsGrid();
+            showClasses();
+
+            $('#examExport').click(function () {
+                var ok = window.confirm('Export all displayed exam results?');
+                if (!ok) {
+                    return false;
+                }
+                $(this).trigger('submit');
+            });
+
+            // search button
+            $('#buttonSearch').click(function () {
+                reloadExamsGrid();
+            });
+        });
+
+        function pageInit() {
+            // add button
+            $('#examAdd').click(function () {
+                window.location = '/exams/add';
+            });
+
+            ////////////// category
+            // bind side filter click events
+            $('select', '#schoolList').bind("change", function () {
+                showClasses();
+            });
+        };
+
+        function showClasses() {
+            $('select', '#formList').html('<option value="">All</option>');
+            var schoolid = $('select', '#schoolList').val();
+            if (schoolid != '') {
+                $.get('/schools/classes/' + schoolid, function (json_result) {
+                    if (json_result.success) {
+                        $.each(json_result.data, function () {
+                            var option = ["<option value='", this.id, "'>", this.name, "</option>"];
+                            $('select', '#formList').append(option.join(''));
+                        });
+                    }
+                    else {
+                        $.jGrowl(json_result.message);
+                    }
+                }, 'json');
+            }
+        }
+    </script>
+</div>
+

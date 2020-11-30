@@ -1,0 +1,136 @@
+﻿@model ioschools.Models.fees.viewmodel.ReminderViewModel
+@using ioschools.Models.fees
+<table class="reminderTable table_edit mt20">
+    <thead>
+        <tr>
+            <td colspan="2">
+                Send Reminder
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="2">
+                <div class="form_entry">
+                    <div class="form_label">
+                        Send To</div>
+                    @Html.DropDownList("parent", Model.parents)
+                </div>
+                <div class="form_entry">
+                    <div class="form_label">
+                        Reminder Template</div>
+                    @Html.DropDownList("template", Model.templates)
+                </div>
+                <div class="form_entry">
+                    <div class="form_label">
+                        Next Payment Due</div>
+                    @Html.TextBox("date_due", Model.nextduedate)
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="bold w300px">
+                Select children and fees pertinent to the reminder
+            </td>
+            <td class="pr20 ar">
+                Payment Due
+            </td>
+        </tr>
+        @foreach (var child in Model.alerts)
+           {
+        <tr class="bt">
+            <td>
+                @Html.CheckBox("student", true)
+                <label>
+                    @child.studentname</label>
+                @Html.Hidden("studentid", child.studentid)
+            </td>
+            <td>
+                <table class="table_row w100p">
+                    <tbody>
+                        @foreach (var fee in child.overdueFees)
+                           {
+                        <tr>
+                            <td class="p0 w25px">
+                                @Html.CheckBox("fee", true)
+                            </td>
+                            <td class="pl0">
+                                <label>
+                                    @fee.name</label>
+                                @Html.Hidden("feeid", fee.id)
+                            </td>
+                            <td class="ar w150px">
+                                RM@fee.amount.ToString("n2")
+                            </td>
+                            <td class="ar w150px">
+                                <div class="bold">
+                                    @fee.duedate.ToSmartDate()
+                                </div>
+                                <div>
+                                    <strong>
+                                        @fee.warningsent</strong>
+                                    @fee.warningsent == 1?"reminder":"reminders"
+                                </div>
+                            </td>
+                        </tr>
+                         } 
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+         } 
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2">
+                <div class="form_entry">
+                    <div class="form_label">
+                        <label>
+                            Send using:</label>
+                    </div>
+                    <ul class="fl">
+                        <li>
+                            @Html.CheckBox("use_email", true)<label for="use_email">Email</label></li>
+                        <li>
+                            @Html.CheckBox("use_SMS", false, new Dictionary<string, object>() { { "disabled", "disabled" } })<label
+                                for="use_SMS">SMS</label></li>
+                    </ul>
+                </div>
+                <div class="clear">
+                </div>
+                <div class="previewContainer hidden bg_lightgrey p10">
+                    <div class="ar">
+                        <button class="buttonPrintReminder" type="button"><img src="/Content/img/icons/printer.png" alt="" /> print</button>
+                    </div>
+                <div id="previewPlaceholder" style="background-color: #fff;">
+                </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button class="buttonReminderPreview large" type="button">
+                    preview</button>
+                <button class="buttonReminderSend large hidden" type="button">
+                    <img class="am" src="/Content/img/icons/send.png" />
+                    send</button>
+                <button class="buttonReminderCancel large" type="button">
+                    <img class="am" src="/Content/img/icons/cancel.png" />
+                    cancel
+                </button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#date_due", '.reminderTable').datepicker(
+                {
+                    dateFormat: 'D, d M yy'
+                });
+
+        $("#date_due", '.reminderTable').attr('readonly', 'readonly');
+    });
+</script>
+

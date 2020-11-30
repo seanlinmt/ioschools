@@ -1,0 +1,6 @@
+﻿@model System.Collections.Generic.IEnumerable<ioschools.Models.school.SchoolTermsViewModel>
+@foreach (var entry in Model)
+   {
+   @Html.Partial("SchoolDays", entry) 
+    } 
+

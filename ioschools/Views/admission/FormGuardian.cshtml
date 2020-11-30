@@ -1,0 +1,93 @@
+﻿@model ioschools.Models.enrolment.AdmissionViewModel
+<h3 class="font_red mt20">Local Guardian</h3>
+<div class="tip">This section is only required if both parents are overseas.</div>
+<div class="fl mr10 form_entry">
+    <div class="form_label">
+        Title</div>
+        @Html.DropDownList("guardian_designation", Model.designationList)
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        Full Name</div>
+    @Html.TextBox("guardian_name", "", new Dictionary<string, object> { { "class", "w400px" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+        <input type="radio" checked="checked" id="guardian_male" name="guardian_sex" value="male" /><label for="guardian_male">male</label>
+        <input type="radio" id="guardian_female" name="guardian_sex" value="female" /><label for="guardian_female">female</label>
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        NRIC / Passport</div>
+    @Html.TextBox("guardian_passportnric", "", new Dictionary<string, object> { { "class", "unique" } })
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        Occupation</div>
+    @Html.TextBox("guardian_occupation")
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Name/Address of Employer</div>
+    <textarea id="guardian_employer" name="guardian_employer" class="w500px"></textarea>
+</div>
+<div class="fl mr10">
+<div class="form_entry w175px">
+    <div class="form_label">
+        Race</div>
+    @Html.TextBox("guardian_race")
+</div>
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Dialect</div>
+    @Html.TextBox("guardian_dialect")
+</div>
+<div class="fl form_entry">
+    <div class="form_label">
+        Religion</div>
+    @Html.TextBox("guardian_religion")
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+@Html.CheckBox("guardian_bumi") <label for="guardian_bumi">Bumiputra</label>
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Marital Status</div>
+    @Html.DropDownList("guardian_marital", Model.maritalStatusList)
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Citizenship</div>
+    @Html.TextBox("guardian_citizenship")
+</div>
+
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Office phone</div>
+    @Html.TextBox("guardian_officephone")
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Home Phone</div>
+    @Html.TextBox("guardian_homephone")
+</div>
+<div class="fl mr10 form_entry w175px">
+    <div class="form_label">
+        Cell Phone</div>
+    @Html.TextBox("guardian_handphone")
+</div>
+<div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        E-mail</div>
+    <input type="text" id="guardian_email" name="guardian_email" class="required_group unique" />
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Home Address</div>
+        <textarea id="guardian_address" name="guardian_address" class="w500px"></textarea>
+</div>
+

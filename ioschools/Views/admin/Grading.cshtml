@@ -1,0 +1,178 @@
+﻿
+<div id="method_container">
+<h2 class="mt10">Grading</h2>
+<p>Define how marks are graded by specifying a grading method which will contain a list of rules. 
+A Grading Rule tells the system that if the mark is <strong>equal or greater</strong> than the defined mark in the rule, this is the Grade Point or Grade.
+    <strong>Rules with the higher mark are processed first</strong>.
+</p>
+
+<p>The method can then be applied to existing School Years. 
+<a href="#" onclick="$('#admin_tabs').tabs('select', 1);return false;">School Years can be configured here</a>.</p>
+    <div class="mt10 mb10">
+        <button id="methodAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> new method</button>
+    </div>
+<table id="methodTable" class="table_grey">
+<thead>
+<tr><td class="w200px">Method Name</td><td>Rules</td><td class="w200px"></td></tr>
+</thead>
+<tbody id="method_content">
+@{ Html.RenderAction("Rows","Grading");}
+</tbody>
+</table>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+    function method_initeditrow(row) {
+        $('#name', row).limit(100);
+        $('#details', row).limit(500);
+        init_inputSelectors(row);
+    }
+
+    $('#methodAdd', '#method_container').click(function () {
+        $(this).getx('/grading/add', function (result) {
+            $('#methodTable > tbody', '#method_container').prepend(result);
+            method_initeditrow($('tbody tr:first', '#method_container'));
+        });
+        return false;
+    });
+
+    $('.jqedit', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/grading/edit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+                var newrow = $('tr[alt=' + id + ']', '#methodTable');
+                method_initeditrow(newrow);
+            });
+        });
+        return false;
+    });
+
+    $('.deletemethod', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var ok = window.confirm('Are you sure? This action will fail if the method is currently in use.');
+        if (!ok) {
+            return false;
+        }
+
+        $(this).post('/grading/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        }, 'json');
+
+        return false;
+    });
+
+    $('#buttonSave', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var name = $('#name', row).val();
+        var id = $(row).attr('alt');
+        var method = {
+            id: id,
+            name: name,
+            rules: []
+        };
+
+        $('#methodruleTable tbody > tr', row).each(function () {
+            var rule = {
+                id: $(this).attr('alt'),
+                gradepoint: $('#gp', this).val(),
+                grade: $('#g', this).val(),
+                mark: $('#mark', this).val()
+            };
+            method.rules.push(rule);
+        });
+
+        $.ajax({
+            contentType: 'application/json',
+            type: "POST",
+            url: '/grading/save/',
+            context: this,
+            dataType: "json",
+            data: JSON.stringify(method),
+            success: function (json_result) {
+                if (json_result.success) {
+                    $(row).fadeOut('fast', function () {
+                        row.replaceWith($(json_result.data));
+                    });
+                }
+                $.jGrowl(json_result.message);
+            }
+        });
+
+        return false;
+    });
+
+    $('#buttonCancel', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        if (id == '') {
+            $(row).fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+        $(this).post('/grading/rows/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+            });
+        });
+        return false;
+    });
+
+
+    // rules
+    $('.showRules', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        var self = this;
+
+        if ($('#rules_container > table', row).length != 0) {
+            $('#rules_container', row).html('');
+            $(self).text('show rules');
+            return false;
+        }
+
+        $('#rules_container', row).showLoadingBlock(true);
+        $(this).getx('/grading/rules/' + id, function (result) {
+            $('#rules_container', row).html(result);
+            $(self).text('hide rules');
+        });
+
+        return false;
+    });
+
+    function gradingrule_initrow(row) {
+        $('#mark,#gp', row).numeric({allow:'.'});
+        $('#g', row).limit(5);
+        init_inputSelectors(row);
+    }
+
+    $('.buttonAddRule', '#method_container').live('click', function () {
+        var table = $(this).closest('table');
+
+        $(this).getx('/grading/addrule', function (result) {
+            $('tbody', table).prepend(result);
+            gradingrule_initrow($('tbody > tr:first', table));
+        });
+    });
+
+    $('.deleterule', '#method_container').live('click', function () {
+        var row = $(this).closest('tr');
+
+        $(row).fadeOut('fast', function () {
+            $(this).remove();
+        });
+
+        return false;
+    });
+</script>
+

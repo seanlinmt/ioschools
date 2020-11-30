@@ -1,0 +1,43 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+
+@section TitleContent {
+
+    Philosophy
+}
+@section ExtraHeader {
+
+
+}
+
+    <div class="nav_side mt20">
+        <ul>
+            <li><a href="/about">About </a></li>
+            <li><a href="/about/history">History</a></li>
+            <li><a class="selected" href="/about/philosophy">Philosophy</a></li>
+            <li><a href="/about/vision">Vision</a></li>
+            <li><a href="/about/mission">Mission</a></li>
+            <li><a href="/about/people">People</a></li>
+            <li><a href="/about/spirit">Spirit</a></li>
+        </ul>
+    </div>
+    <div class="col_2 ml20 mt10">
+        <div class="breadcrumb">
+            <a href="/">Home</a> / Philosophy
+        </div>
+       
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.slider').nivoSlider({
+                controlNav: false,
+                directionNav: false,
+                pauseTime: 5000,
+                pauseOnHover: false
+            });
+        });
+    </script>
+
+

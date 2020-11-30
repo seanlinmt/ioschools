@@ -1,0 +1,54 @@
+﻿
+<form id="feedbackVendorForm" action="/feedback/vendor" method="post">
+<p>Please complain so we can fix it faster and make it better.</p>
+<div class="form_entry">
+    <div class="form_label">
+        Your Message</div>
+        <textarea id="message" name="message" class="w400px"></textarea>
+</div>
+<div class="mt10">
+        <button type="button" id="buttonSave" class="ajax medium">
+           <img class="am" src="/Content/img/icons/send.png" /> send</button>
+           <a href="#" onclick="dialogBox_close();return false;">cancel</a>
+    </div>
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_inputSelectors('#feedbackVendorForm');
+        init_autogrow('#feedbackVendorForm');
+    });
+
+    $('#buttonSave','#feedbackVendorForm').click(function () {
+        $('#feedbackVendorForm').trigger('submit');
+    });
+
+    $('#feedbackVendorForm').submit(function () {
+        var ok = $('#feedbackVendorForm').validate({
+            invalidHandler: function (form, validator) {
+                $(validator.invalidElements()[0]).focus();
+            },
+            focusInvalid: false,
+            rules: {
+                message: {
+                    required: false
+                }
+            }
+        }).form();
+        if (!ok) {
+            return false;
+        }
+        
+        
+        var serialized = $(this).serialize();
+        var action = $(this).attr("action");
+
+        // post form
+        $('#buttonSave', '#feedbackVendorForm').post(action, serialized, function (json_result) {
+            if (json_result.success) {
+                dialogBox_close();
+            }
+            $.jGrowl(json_result.message);
+        });
+        return false;
+    });
+</script>

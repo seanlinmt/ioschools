@@ -1,0 +1,43 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.user.student.StudentViewModel
+@using ioschools.Library.Helpers
+@section TitleContent {
+
+ Information System
+
+}
+@section ExtraHeader {
+
+
+}
+
+    @Html.JavascriptInclude("/Scripts/ajaxUpload/fileuploader.js")
+    <div id="student_tabs">
+        <ul class="hidden">
+            <li><a href="#homework">Homework</a></li>
+            <li><a href="#exam">Results</a></li>
+            <li><a href="#timetable">Timetable</a></li>
+            <li><a href="#discipline">Conduct</a></li>
+        </ul>
+        <div id="homework" class="hidden">
+             @Html.Partial("~/Views/homework/IndexStudent.cshtml", Model.homework) 
+        </div>
+        <div id="exam" class="hidden">
+             @Html.Partial("~/Areas/exams/Views/Exams/Show.cshtml", Model.exam) 
+        </div>
+        <div id="timetable" class="hidden">
+            @{ Html.RenderAction("ScheduleContent", "Schedule"); }
+        </div>
+            <div id="discipline" class="hidden">
+         @Html.Partial("~/Views/Discipline/Show.cshtml", Model.discipline) 
+    </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#student_tabs').tabs();
+        });
+    </script>
+
+

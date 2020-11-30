@@ -1,0 +1,17 @@
+﻿@model ioschools.Models.eca.ECARow
+<tr alt="@Model.eca.id" class="bg_edit">
+    <td>
+        @Html.DropDownList("schools", Model.schoolList)
+    </td>
+    <td>
+        @Html.TextBox("name", Model.eca.name, new Dictionary<string, object>(){{"class", "w400px"}})
+    </td>
+    <td class="ar">
+        <button id="buttonSave" type="button">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button id="buttonCancel" type="button">
+            <img class="am" src="/Content/img/icons/cancel.png" /> cancel
+            </button>
+    </td>
+</tr>
+

@@ -1,0 +1,80 @@
+﻿@model ioschools.Models.user.student.LeavingCert
+<h1 class="icon_user">
+    @Model.student_name</h1>
+<form id="certForm" action="/leavingcert/save" method="post">
+<div class="form_entry fl mr10">
+            <div class="form_label">
+                <label>
+                    Admission Date</label>
+            </div>
+                @Html.TextBox("admission", Model.admissionDate)
+        </div>
+        <div class="form_entry fl">
+            <div class="form_label">
+                <label>
+                    Leaving Date <span class="tip">(student status will be set as INACTIVE on this date)</span></label>
+            </div>
+                @Html.TextBox("leaving", Model.leavingDate)
+                
+        </div>
+        <div class="clear"></div>
+<div class="form_entry">
+    <div class="form_label">
+        Reason For Leaving</div>
+    @Html.TextBox("reason", Model.reason, new Dictionary<string, object>(){{"class","w400px"}})
+</div>
+<div class="form_entry">
+    <div class="form_label">
+        Remarks</div>
+    @Html.TextArea("remarks", Model.remarks, new Dictionary<string, object>(){{"class","w99p"}})
+</div>
+<div class="mt10">
+    <button id="buttonSave" type="button" class="medium">
+        <img class="am" src="/Content/img/icons/save.png" />
+        save</button>
+        <button id="buttonCreate" type="button" class="medium">
+        <img class="am" src="/Content/img/icons/document.png" />
+        export</button>
+    <a href="#" onclick="dialogBox_close();return false;">close</a>
+</div>
+@Html.Hidden("studentid", Model.studentid)
+</form>
+<script type="text/javascript">
+    $(document).ready(function () {
+        init_inputSelectors('#certForm');
+        $("#leaving", '#certForm').datepicker(
+        {
+            dateFormat: 'D, d M yy'
+        });
+        $('#remarks', '#certForm').limit(100);
+        $('#reason', '#certForm').limit(200);
+        $("#admission,#leaving", '#certForm').attr('readonly', 'readonly');
+    });
+
+    $('#buttonCreate', '#certForm').click(function () {
+        $('#certForm').attr('action', '/leavingcert/export');
+        $('#certForm').trigger('submit');
+    });
+
+    $('#buttonSave', '#certForm').click(function () {
+        $('#certForm').attr('action', '/leavingcert/save');
+        var action = $('#certForm').attr("action");
+        var serialized = $('#certForm').serialize();
+
+        // post form
+        $.ajax({
+            type: "POST",
+            url: action,
+            data: serialized,
+            context: this,
+            dataType: 'json',
+            success: function (json_data) {
+                $.jGrowl(json_data.message);
+                return false;
+            }
+        });
+        return false;
+    });
+    
+</script>
+

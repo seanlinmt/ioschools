@@ -1,0 +1,81 @@
+﻿@model ioschools.Models.fees.LateFeeAlertSiblings
+@using ioschools.Data
+@using ioschools.Models.fees
+<div id="overduefees_container">
+<h2>Payments Outstanding as of @DateTime.Now.ToString(Constants.DATETIME_SHORT_DATE)</h2>
+@if (Model.totalPayable != 0)
+       {
+       <table class="table_grey mt20">
+    <thead>
+        <tr>
+            <td class="w300px">
+               
+            </td>
+            <td>
+                <div class="fl ml10">Overdue Fees</div>
+                <div class="fr mr10">Payment Due</div>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var child in Model.children)
+           {
+        <tr>
+            <td>
+                @child.studentname
+            </td>
+            <td>
+                <table id="overdueFeesTable" class="w100p">
+                    <tbody>
+                        @foreach (var fee in child.overdueFees)
+                           {
+                        <tr alt="@fee.id">
+                            <td class="">
+                                @fee.name
+                            </td>
+                            <td class="ar w150px">
+                                @fee.amount.ToString("n2")
+                            </td>
+                            <td class="ar w150px">
+                                <div class="">
+                                  @fee.duedate.ToSmartDate()
+                                </div>
+                            </td>
+                        </tr>
+                         } 
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+         } 
+    </tbody>
+    <tfoot>
+         <tr>
+            <td>
+               
+            </td>
+            <td>
+                <table class="w100p">
+                    <tr>
+                            <td class="bold">
+                               TOTAL PAYABLE
+                            </td>
+                            <td class="ar w150px bold">
+                                RM@Model.totalPayable.ToString("n2")
+                            </td>
+                            <td class="ar w150px">
+                              
+                            </td>
+                        </tr>
+                </table>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+       }
+       else
+       { 
+      <p>No outstanding payments found.</p>
+
+       } 
+</div>

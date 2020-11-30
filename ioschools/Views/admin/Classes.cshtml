@@ -1,0 +1,198 @@
+﻿@model System.Collections.Generic.IEnumerable<SelectListItem>
+<div id="classes_container">
+<h2 class="mt10">School Classes</h2>
+<p>Configure school years and school classes</p>
+<div class="content_filter">
+
+<div class="filter mt20">
+        <h4 class="acc">
+            School</h4>
+            @Html.DropDownList("schoolList", Model)
+    </div>
+    <button id="buttonList" type="button">
+            List</button>
+</div>
+<div id="classes_result" class="main_columnright">
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+    });
+
+    $('#buttonList', '#classes_container').click(function () {
+        var schoolid = $('#schoolList', '#classes_container').val();
+        if (schoolid == '') {
+            $.jGrowl('Please select a school');
+            return;
+        }
+
+        $('#classes_result', '#classes_container').showLoadingBlock(true);
+        $(this).getx('/classes/admincontent/' + schoolid, function (result) {
+            $('#classes_result', '#classes_container').html(result);
+        });
+    });
+
+
+    // school years
+    $('#buttonAdd', '#schoolyearTable').live('click', function () {
+        $(this).getx('/schools/addyear', function (result) {
+            $('tbody', '#schoolyearTable').prepend(result);
+            $('#name', '#schoolyearTable').limit(50);
+            init_inputSelectors('#schoolyearTable');
+        });
+        return false;
+    });
+
+    $('.jqedit', '#schoolyearTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/schools/edityear/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+                $('#name', '#schoolyearTable').limit(50);
+                init_inputSelectors('#schoolyearTable');
+            });
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#schoolyearTable').live('click', function () {
+        var ok = window.confirm('Are you sure? This action will fail if this entry is already in use.');
+        if (!ok) {
+            return false;
+        }
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/schools/deleteyear/' + id, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    $(this).remove();
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+
+        return false;
+    });
+
+    $('#buttonSave', '#schoolyearTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var name = $('#name', row).val();
+        var method = $('#method', row).val();
+        var id = $(row).attr('alt');
+        var schoolid = $('#schoolid', '#classes_container').val();
+        $(this).post('/schools/saveyear/' + id, { name: name, method: method, schoolid: schoolid }, function (json_result) {
+            if (json_result.success) {
+                $(row).fadeOut('fast', function () {
+                    row.replaceWith($(json_result.data));
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+        return false;
+    });
+
+    $('#buttonCancel', '#schoolyearTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        if (id == '') {
+            $(row).fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+        $(this).getx('/schools/yearrows/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+            });
+        });
+
+        return false;
+    });
+
+    // school classes
+    $('#buttonAdd', '#schoolclassesTable').live('click', function () {
+        var schoolid = $('#schoolid', '#classes_container').val();
+        $(this).getx('/classes/add/', {schoolid:schoolid}, function (result) {
+            $('tbody', '#schoolclassesTable').prepend(result);
+            $('#name', '#schoolclassesTable').limit(50);
+            init_inputSelectors('#schoolclassesTable');
+        });
+        return false;
+    });
+
+    $('.jqedit', '#schoolclassesTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        $(this).getx('/classes/edit/' + id, function (result) {
+            $(row).fadeOut('fast', function () {
+                row.replaceWith($(result));
+                $('#name', '#schoolclassesTable').limit(50);
+                init_inputSelectors('#schoolclassesTable');
+            });
+        });
+        return false;
+    });
+
+    $('.jqdelete', '#schoolclassesTable').live('click', function () {
+        var ok = window.confirm('Are you sure? This action will fail if entry is already in use.');
+        if (!ok) {
+            return false;
+        }
+        var row = $(this).parents('tr');
+        var id = $(row).attr('alt');
+
+        $(this).post('/classes/delete/' + id, function (json_result) {
+            if (json_result.success) {
+                $('tbody', '#schoolclassesTable').showLoadingBlock(true);
+                $(this).post('/classes/rows/', function (result) {
+                    $('tbody', '#schoolclassesTable').html(result);
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+
+        return false;
+    });
+
+    $('#buttonSave', '#schoolclassesTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var name = $('#name', row).val();
+        var year = $('#year', row).val();
+        var next = $('#next', row).val();
+        var id = $(row).attr('alt');
+        var schoolid = $('#schoolid', '#classes_container').val();
+        
+        $(this).post('/classes/save/' + id, { name: name, year: year, next: next, schoolid:schoolid }, function (json_result) {
+            if (json_result.success) {
+                $('tbody', '#schoolclassesTable').showLoadingBlock(true);
+                $(this).getx('/classes/rows/', { schoolid: schoolid }, function (result) {
+                    $('tbody', '#schoolclassesTable').html(result);
+                });
+            }
+            $.jGrowl(json_result.message);
+        });
+        return false;
+    });
+
+    $('#buttonCancel', '#schoolclassesTable').live('click', function () {
+        var row = $(this).closest('tr');
+        var id = $(row).attr('alt');
+        if (id == '') {
+            $(row).fadeOut('fast', function () {
+                $(this).remove();
+            });
+            return false;
+        }
+        $('tbody','#schoolclassesTable').showLoadingBlock(true);
+        $(this).getx('/classes/rows/',{schoolid : $('#schoolid', '#classes_container').val()}, function (result) {
+            $('tbody', '#schoolclassesTable').html(result);
+        });
+        return false;
+    });
+
+</script>
+
+
+

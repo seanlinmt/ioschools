@@ -1,0 +1,17 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.dashboard.DashboardViewModel
+@section TitleContent {
+Dashboard
+}
+@section ExtraHeader {
+
+
+}
+
+<div id="content_result">
+        @Html.Partial("search", Model.yearList) 
+</div>
+
+

@@ -1,0 +1,38 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.fees.viewmodel.ParentFinanceViewModel
+@using ioschools.Data
+
+@section TitleContent {
+
+	Finance
+
+}
+
+
+<div id="finance_tabs">
+    <ul class="hidden">
+         <li><a href="#fees_statement">Statement</a></li>
+        <li><a href="#fees_unpaid">Payments Outstanding</a></li>
+    </ul>
+    <div id="fees_unpaid" class="hidden pt10">
+         @Html.Partial("~/Views/schoolfees/overduefees.cshtml", Model.alert) 
+    </div>
+    <div id="fees_statement" class="hidden pt10">
+         @Html.Partial("~/Views/schoolfees/statement.cshtml", Model.statement) 
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        ioschools.util.setNavigation('#nfinance', 'selected_dark');
+        $('#finance_tabs').tabs();
+    });
+    </script>
+
+
+@section ExtraHeader {
+
+
+}
+

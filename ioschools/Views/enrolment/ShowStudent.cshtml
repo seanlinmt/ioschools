@@ -1,0 +1,99 @@
+﻿@model IEnumerable<ioschools.Models.enrolment.Enrolment>
+@using ioschools.Data
+@using ioschools.Library
+@foreach (var row in Model)
+   {
+  <div class="enrolment_row" alt="@row.id">
+      <div class="fr">
+      @{ Html.RenderAction("ModifyStudent", "Enrolment"); }
+      </div>
+      <div class="clear"></div>
+<table class="enrolment_table ml10 w99p bb">
+    <tbody>
+        <tr>
+            <td class="w150px">
+                Status
+            </td>
+            <td class="w300px bold" colspan="3">
+                @row.status
+            </td>
+            <td class="w100px">
+                Admission Date
+            </td>
+            <td class="w150px bold">
+                @row.admissionDate.HasValue ? row.admissionDate.Value.ToString(Constants.DATETIME_SHORT_DATE) : ""
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Enrolling For
+            </td>
+            <td class="bold" colspan="3">
+                @row.year, @row.school_year,  @row.school
+            </td>
+            <td>
+                Leaving Date
+            </td>
+            <td class="bold">
+                @row.leftDate.HasValue?row.leftDate.Value.ToString(Constants.DATETIME_SHORT_DATE):""
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Previous School &amp; Class
+            </td>
+            <td class="bold">
+               @row.previous_class - @row.previous_school.ToHtmlBreak()
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Attachments
+            </td>
+            <td colspan="5">
+                @foreach (var attachment in row.attachments)
+                   {
+                <a class="icon_file" target="_blank" href="@attachment.url">
+                    @attachment.name</a>
+                } 
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Leaving Reason
+            </td>
+            <td colspan="5" class="bold">
+                @row.leaving_reason
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Disability Details
+            </td>
+            <td colspan="5">
+                <strong>@row.handicap.HasValue && row.handicap.Value ? "YES" : "NO"</strong> Handicap, 
+                                <strong>@row.learning_problems.HasValue && row.learning_problems.Value ? "YES" : "NO"</strong> Learning Problems
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="5" class="bold">
+                @row.disability_details
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+   } 
+  
+
+

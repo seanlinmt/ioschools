@@ -1,0 +1,28 @@
+﻿@model ioschools.Models.stats.ConductStatistics
+<h3 class="fl">Student Conduct</h3>
+<div class="fr">
+<form id="statsExportForm" method="post" action="/discipline/exportstats">
+@Html.Hidden("from", Model.from)
+@Html.Hidden("to", Model.to)
+@Html.Hidden("school", Model.school)
+<button id="statExport" type="submit">export <img src="/Content/img/icons/continue.png" class="am" /></button>
+</form>
+</div>
+<div class="clear_right"></div>
+<table class="table_grey">
+<thead>
+<tr><td>Conduct Type</td><td class="ar">Students</td><td class="ar">Incidents</td></tr>
+</thead>
+<tbody>
+    <tr><td colspan="3" class="bg_red"><strong class="font_white">Demerits</strong></td></tr>
+@foreach (var entry in Model.demerits.OrderByDescending(x => x.totalIncidents)){
+  <tr><td>@entry.name</td><td class="ar">@entry.totalStudents</td><td class="ar">@entry.totalIncidents</td></tr>
+} 
+    <tr><td colspan="3" class="bg_green"><strong class="font_white">Merits</strong></td></tr>
+@foreach (var entry in Model.merits.OrderByDescending(x => x.totalIncidents))
+   {
+  <tr><td>@entry.name</td><td class="ar">@entry.totalStudents</td><td class="ar">@entry.totalIncidents</td></tr>
+} 
+</tbody>
+</table>
+

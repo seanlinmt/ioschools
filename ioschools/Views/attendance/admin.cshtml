@@ -1,0 +1,18 @@
+﻿@model dynamic
+<div class="mt10">
+<button id="attendanceAdd" type="button"><img class="am" src="/Content/img/icons/plus.png" /> add attendance</button>
+<button id="attendanceNotify" type="button"><img src="/Content/img/icons/send.png" class="am" /> notify parents/guardian</button>
+</div>
+<script type="text/javascript">
+    $('#attendanceNotify').click(function () {
+        var studentid = $('#studentid').val();
+        dialogBox_open('/attendance/send/' + studentid, 'Attendance Notification', 600);
+        return false;
+    });
+    $('#attendanceAdd').click(function () {
+        var studentid = $('#studentid').val();
+        dialogBox_open('/attendance/add/' + studentid, 'Student Attendance', 600);
+    });
+</script>
+
+

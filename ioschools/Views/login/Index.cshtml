@@ -1,0 +1,106 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@section TitleContent {
+
+	Sign In
+
+}
+
+
+    <div class="w400px mt40 h600px ml20">
+        <h1>Sign In</h1>
+        <form id="loginForm" class="content_panel_form bg_lightgrey ba p10" action="/login" method="post">
+        <div class="form_entry">
+            <div class="form_label">
+                <label for="email">
+                    Your Email Address</label></div>
+            <input type="text" name="email" id="email" class="w300px" />
+        </div>
+        <div class="form_entry">
+            <div class="form_label">
+                <label for="password">
+                    Password</label></div>
+            <input type="password" name="password" id="password" autocomplete="off" />
+        </div>
+        <div>
+            @Html.CheckBox("remember_me", new Dictionary<string, object>(){{"id","remember_me2"}})
+            <label for="remember_me2">
+                Remember me until I log out</label>
+        </div>
+        <div id="checkedmessage" class="ba smaller w200px p10 mt10 hidden bg_lightblue">
+            <b>We'll keep you logged in</b>
+            <br />
+            Don't use this on public computers
+        </div>
+        <div class="mt10">
+            <button id="buttonLogin" type="submit" class="large">
+                Sign in</button>
+        </div>
+        @Html.Hidden("redirect")
+        </form>
+        <a href="#" onclick="$(this).siblings('.resetpassword_panel').fadeIn('fast');return false;" class="mt10 icon_help underline_hoveroff block">Forgot your password?</a>
+                <div class="resetpassword_panel hidden mt10 ba p10 bg_edit">
+            <h2 class="font_red">Password Reset</h2>
+            <p>Enter your current email below. We will send your new password there.</p>
+                                <input type="text" id="email_forgot" class="w300px" />
+                                <div class="mt10">
+                                   <button id="panelResetPassword" type="button" class="ajax">reset password</button> 
+                                <a href="#" id="password_cancel" onclick="$(this).closest('.resetpassword_panel').fadeOut('fast');return false;">cancel</a> 
+                                </div>
+                    </div>
+    </div>
+
+<script type="text/javascript">
+    $('#remember_me2', '#loginForm').change(function () {
+        if ($(this).is(':checked')) {
+            $('#checkedmessage', '#loginForm').show();
+        }
+        else {
+            $('#checkedmessage', '#loginForm').hide();
+        }
+    });
+
+    $('#loginForm').submit(function () {
+        var redirect = ioschools.util.querySt("redirect");
+        $('#redirect', '#loginForm').val(redirect);
+
+        var serialized = $(this).serialize();
+        var action = $(this).attr("action");
+
+        var ok = $(this).validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true
+                },
+                password: {
+                    required: true
+                }
+            }
+        }).form();
+
+        if (!ok) {
+            return false;
+        }
+
+        $('#buttonLogin', this).post(action, serialized, function (json_result) {
+            if (json_result.success) {
+                window.location = json_result.data;
+            }
+            else {
+                $.jGrowl(json_result.message, { sticky: true });
+            }
+        }, 'json');
+
+        return false;
+    });
+</script>
+
+
+@section ExtraHeader {
+
+
+}
+

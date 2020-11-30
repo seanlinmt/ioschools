@@ -1,0 +1,119 @@
+﻿
+<div id="selector_student" class="pt10 mb20 hidden">
+<input id="selector_student_all" type="checkbox" /><label for="selector_student_all">select all</label>
+<div id="selector_student_result">
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+    var studentSelectorHandler = function () {
+        var students = [];
+        var context;
+
+        var addAll = function () {
+            clearAll();
+            var blocks = $('.blockSelectable', context);
+            $.each(blocks, function () {
+                var id = $(this).attr('alt');
+                students.push(id);
+            });
+        };
+
+        var clearAll = function () {
+            students = [];
+        };
+
+        var add = function (val) {
+            if (students.indexOf(val) == -1) {
+                students.push(val);
+            }
+        };
+
+        var remove = function (val) {
+            var index = students.indexOf(val);
+
+            if (index != -1) {
+                students.splice(index, 1);
+            }
+        };
+
+        var bindClicks = function () {
+            $('.blockSelectable', context).die().live('click', function () {
+                var id = $(this).attr('alt');
+                if (!$(this).hasClass('selected')) {
+                    // add selected
+                    $(this).animate({ backgroundColor: "#2C85D3", color: "#ffffff" }, 800).addClass('selected');
+                    add(id);
+                } else {
+                    // remove selected
+                    $(this).animate({ backgroundColor: "#ffffff", color: "#000000" }, 800).removeClass('selected');
+                    remove(id);
+                }
+                return false;
+            });
+
+            $('#selector_student_all', context).click(function () {
+                var checked = $(this).is(':checked');
+                $('.blockSelectable', context).each(function () {
+                    if (checked) {
+                        $(this).css({ backgroundColor: "#2C85D3", color: "#ffffff" }).addClass('selected');
+                        addAll();
+                    } else {
+                        $(this).css({ backgroundColor: "#ffffff", color: "#000000" }).removeClass('selected');
+                        clearAll();
+                    }
+                });
+            });
+        };
+
+        var initBlocks = function (classidArray, year) {
+            for (var a = 0; a < classidArray.length; a++) {
+                $.post('/users/students/' + classidArray[a], { year: year, active: true }, function (json_result) {
+                    if (json_result.success) {
+                        for (var i = 0; i < json_result.data.length; i++) {
+                            var entry = json_result.data[i];
+                            var block = ["<div class='blockSelectable' alt='",
+                                entry.id,
+                                "'><div class='fl w50px ac'><img src='", entry.imageUrl, "' /></div><div class='content'><div class='pb5'>",
+                                entry.name,
+                                "</div><strong>", entry.classname,"</strong></div></div>"];
+                            $('#selector_student_result', context).append(block.join(''));
+                        }
+                        $('#selector_student', context).show();
+
+                        for (var j = 0; j < students.length; j++) {
+                            $('.blockSelectable[alt=' + students[j] + ']', context).trigger('click');
+                        }
+                    }
+                    else {
+                        $.jGrowl(json_result.message);
+                    }
+                }, 'json');
+            }
+            bindClicks();
+        };
+
+        return {
+            init: function (classidArray, year, ctx) {
+                context = ctx;
+                initBlocks(classidArray, year);
+
+            },
+            get: function () {
+                return students;
+            },
+            populate: function (idarray) {
+                for (var i = 0; i < idarray.length; i++) {
+                    // just add because blocks may not be ready yet
+                    add(idarray[i]);
+                }
+            }
+        };
+
+    };
+
+
+
+    
+</script>
+</div>
+

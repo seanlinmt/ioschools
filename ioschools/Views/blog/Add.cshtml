@@ -1,0 +1,282 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Internal.cshtml";
+}
+@model ioschools.Models.blog.BlogViewData
+@using ioschools.Data.CMS
+@using ioschools.Library.Helpers
+@section TitleContent {
+Circulars / News
+}
+@section ExtraHeader {
+
+@Html.JavascriptInclude("/Scripts/ajaxUpload/fileuploader.js")
+<link media="screen, print" type="text/css" rel="stylesheet" href="/editor/jquery.wysiwyg.css" />
+@Html.JavascriptInclude("/editor/jquery.wysiwyg.js")
+@Html.JavascriptInclude("/editor/jquery.autoload.js")
+@Html.JavascriptInclude("/editor/controls/wysiwyg.table.js")
+@Html.JavascriptInclude("/editor/controls/wysiwyg.link.js")
+@Html.JavascriptInclude("/editor/plugins/wysiwyg.autoload.js")
+@Html.JavascriptInclude("/editor/plugins/wysiwyg.rmFormat.js")
+
+}
+
+<div class="mt10">
+    <div class="breadcrumb"><a href="/admin">Admin</a> > <a href="/blog">Circulars / News</a> > @Model.blog.pagetitle</div>
+<h2 id="editor_title" class="icon_blog">
+    @Model.blog.pagetitle</h2>
+    @if (string.IsNullOrEmpty(Model.blog.id))
+       { 
+             <div class="info">Content should include a short introduction as the first 100 characters of the content will be used as the summary on the website.</div>
+       } 
+<form id="editorform" method="post" action="/blog/save" class="pb50">
+<div id="blog_thumbnails">
+<div class="form_entry">
+    <div class="form_label">
+        Attachments</div>
+        <span class="tip">Include documents or photos</span>
+</div>
+<div class="images_column">
+    <div class="results">
+        @foreach (var photo in Model.photos){
+        <div class='thumbnail'>
+            <img src='@photo.url' alt='@photo.id' />
+            <div class='del'></div>
+        </div>
+        } 
+    </div>
+</div>
+    <div class="swfu_container">
+        <div class="swfu_button">
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="fl ml10">
+<div class="form_entry">
+    <div class="form_label">
+        Title</div>
+    <input type="text" id="title" name="title" class="w650px" value="@Model.blog.title" />
+</div>
+<div class="form_entry">
+        <div id="attachment_results">
+        @foreach (var file in Model.attachments){
+        <div class="attachment">
+            <span class="file" alt="@file.id"><a target="_blank" href="@file.url">@file.name</a></span>
+            <div class="del"></div>
+        </div>
+        } 
+        </div>
+</div>
+<div class="form_entry">
+<div class="form_label">
+        Content</div>
+<div class="tip">If you have problems saving, please click on <span class="font_red">'X'</span> to try remove illegal characters.</div>
+    <textarea id="content" name="content" class="w650px" style="height:400px;">@Model.blog.body</textarea>
+</div>
+<div class="form_entry">
+@Html.CheckBox("blog_public", Model.blog.ispublic) <label for="blog_public">publish to website</label>
+<span class="ml20">
+@Html.CheckBox("blog_gallery", Model.method == LayoutMethod.GALLERY) <label for="blog_gallery">use photo gallery</label>
+</span>
+</div>
+<div class="form_entry">
+@Html.CheckBox("blog_email") 
+<label>send email to
+@Html.DropDownList("school", Model.schools)
+</label>
+</div>
+<div class="mt40 clear_left">
+        <button type="button" id="buttonSave" class="ajax large">
+            <img class="am" src="/Content/img/icons/save.png" /> save</button>
+            <button type="button" id="buttonSendTest" class="ajax large">
+            send test email to self</button>
+</div>
+</div>
+<div class="clear">
+</div>
+@Html.Hidden("id", Model.blog.id)
+@Html.Hidden("photoids")
+@Html.Hidden("attachmentids")
+@Html.Hidden("test")
+</form>
+</div>
+<script type="text/javascript">
+    $('#buttonSave').click(function () {
+        $('#test').val('false');
+        $('#editorform').trigger('submit');
+    });
+
+    $('#buttonSendTest').click(function () {
+        $('#test').val('true');
+        $('#editorform').trigger('submit');
+    });
+
+    $('.del', '.thumbnail').die().live('click', function () {
+        var photoid = $(this).siblings('img').attr('alt');
+        var element = this;
+        var confirm = window.confirm('Delete photo?');
+        if (!confirm) {
+            return false;
+        }
+
+        $(this).post('/blog/deletephoto/' + photoid, null, function (json_result) {
+            if (json_result.success) {
+                $(element).parents(".thumbnail").fadeOut(500, function () {
+                    $(this).remove();
+                });
+            }
+            else {
+                $.jGrowl(json_result.message);
+            }
+
+        });
+        return false;
+    });
+
+    $('.del', '.attachment').die().live('click', function () {
+        var attachmentid = $(this).siblings('.file').attr('alt');
+        var element = this;
+        var confirm = window.confirm('Delete attachment?');
+        if (!confirm) {
+            return false;
+        }
+
+        $(this).post('/blog/deleteattachment/' + attachmentid, null, function (json_result) {
+            if (json_result.success) {
+                $(element).parents(".attachment").fadeOut(500, function () {
+                    $(this).remove();
+                });
+            }
+            else {
+                $.jGrowl(json_result.message);
+            }
+        });
+
+        return false;
+    });
+
+    var editmode = false;
+    $(document).ready(function () {
+        if ($('#id').val() != '') {
+            editmode = true;
+        }
+        $(window).trackUnsavedChanges('#buttonSave');
+        // update title as we type
+        if (editmode) {
+            $('#title').bind('keyup', function () {
+                $('#editor_title').html($(this).val());
+            });
+        }
+
+        $('#title').limit(255);
+        ioschools.util.setNavigation('#nadmin', 'selected_link');
+        init_inputSelectors('#editorform');
+        initAjaxUpload();
+
+        $('#content').wysiwyg({
+            autoGrow: false,
+            autoload: true,
+            controls: {
+                insertImage: { visible: false }
+            },
+            css: '/Content/css/common.css?v=3'
+        });
+    });
+
+    $('#editorform').submit(function () {
+        var action = $(this).attr("action");
+        var ok = $('#editorform').validate({
+            invalidHandler: function (form, validator) {
+                $(validator.invalidElements()[0]).focus();
+            },
+            focusInvalid: false,
+            rules: {
+                title: {
+                    required: true
+                }
+            }
+        }).form();
+
+        if (!ok) {
+            return false;
+        }
+
+        // append photos
+        // get ids from uploaded images and put it into photoIDs was comma separated string
+        var photoids = [];
+        var thumbs = $('.thumbnail > img', '#blog_thumbnails');
+        $.each(thumbs, function (i, v) {
+            photoids.push($(this).attr('alt'));
+        });
+
+        $('#photoids').val(photoids.toString());
+
+        var serialized = $(this).serialize();
+
+        // post form
+        $('#buttonSave', '#editorform').post(action, serialized, function (json_data) {
+            if (json_data.success) {
+                if (!editmode && $('#test').val() != 'true') {
+                    window.location = '/blog';
+                }
+            }
+            if ($('#test').val() != 'true') {
+                $.scrollTo('#container', 800);
+            }
+            $.jGrowl(json_data.message);
+        }, 'json');
+        return false;
+    });
+
+    function initAjaxUpload() {
+        // upload url
+        var uploader = new qq.FileUploader({
+            element: $('.swfu_container', '#editorform')[0],
+            action: '/blog/upload/' + $('#id', '#editorform').val(),
+            onSubmit: function (id, filename) {
+            },
+            onComplete: function (id, filename, json_data) {
+                // enable upload button
+                if (json_data.success) {
+                    var attachment = json_data.data;
+                    if (attachment.name != undefined) {
+                        // this is a file
+                        var html = ['<div class="attachment"><span class="file" alt="',
+                                    attachment.id, '"><a target="_blank" href="',
+                                    attachment.url, '">', 
+                                    attachment.name, '</a></span><div class="del"></div></div>'];
+                        
+                        $('#attachment_results').append(html.join(''));
+
+                        var attachmentids = [];
+                        $('.file', '.attachment').each(function () {
+                            attachmentids.push($(this).attr('alt'));
+                        });
+
+                        $('#attachmentids').val(attachmentids.join(','));
+                    }
+                    else {
+                        // this is a photo
+                        var html = ["<div class='thumbnail w100p'>",
+                                        , "<img src='", attachment.url, "' alt='", attachment.id, "' />",
+                                        "<div class='del'></div>",
+                                        "</div>"];
+                        $('.results', '#blog_thumbnails').append(html.join(''));
+
+                        // update ids
+                        var photoids = [];
+                        $('img', '.thumbnail').each(function () {
+                            photoids.push($(this).attr('alt'));
+                        });
+
+                        $('#photoids').val(photoids.join(','));
+                    }
+                }
+                else {
+                    $.jGrowl(json_data.message);
+                }
+            }
+        });
+    }
+</script>
+

@@ -1,0 +1,107 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Main.cshtml";
+}
+
+@model ioschools.Models.enrolment.AdmissionViewModel
+
+@section TitleContent {
+
+    Admission
+
+}
+@section ExtraHeader {
+
+    <link rel="stylesheet" href="/Content/css/fileuploader/fileuploader.css" type="text/css"
+        media="screen" />
+
+}
+
+    <div class="nav_side mt20">
+        <ul>
+            <li><a class="selected" href="/admission">Admission</a></li>
+            <li><a href="/fees">Fees</a></li>
+            <li><a href="/uniforms">Uniforms</a></li>
+        </ul>
+    </div>
+    <div class="col_2 ml20 mt10">
+        <div class="breadcrumb">
+            <a href="/">Home</a> / Admission
+        </div>
+        <h1>
+            Admission</h1>
+            <div id="initial_page">
+        <h3>
+                        General Admission</h3>
+                    <a class="mimetype_pdf inline-block" href="/Content/media/AdmissionApplicationForm2012.pdf">
+                        Application Form</a>
+        <h1 class="mt40">Enrolling Online</h1>
+        <p>
+            If you have an existing email address, you can enrol online.</p>
+        <p>
+            <button type="button" id="buttonEnroll" class="large">
+                enrol your child online</button></p>
+        <div id="theform" class="hidden">
+             @Html.Partial("form") 
+        </div>
+        </div>
+        <div id="success" class="hidden boxSuccess">
+        <h3>Online Enrolment Successful</h3>
+            <p>
+                Your registration has been received and is being processed. An email has been sent
+                to you with further instructions. </p>
+
+                <p><a href="/admission">Enrol another child.</a></p>
+        </div>
+        <div id="fail" class="hidden boxFailure">
+        <h3>Online Enrolment Error</h3>
+            <p>
+                An error has occurred while processing your registration. We are currently looking
+                into the issue. Please try again later.</p>
+        </div>
+        <div id="emailexist" class="hidden boxFailure">
+        <h3>Online Enrolment Error</h3>
+            <p>
+                The email address you have specified is currently in use. Please specify a different email address.</p>
+                <p><a href="/admission">Try again.</a></p>
+        </div>
+        <div id="noemail" class="hidden boxFailure">
+        <h3>Online Enrolment Error</h3>
+            <p>
+                No email was specified. The email of either the parents or guardian is required to complete your online registration.</p>
+                <p> <a href="/admission">Try again.</a></p>
+        </div>
+        <div id="noid" class="hidden boxFailure">
+        <h3>Online Enrolment Error</h3>
+            <p>
+                You must specify a NRIC or Passport Number. </p>
+                <p><a href="/admission">Try again.</a></p>
+        </div>
+        <div id="incorrectnricpassport" class="hidden boxFailure">
+        <h3>Online Enrolment Error</h3>
+            <p>
+                Invalid NRIC or Passport Number. Please check that you have correctly specified your child's NRIC or Passport.</p>
+                <p><a href="/admission">Try again.</a></p>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#buttonEnroll').click(function () {
+            $(this).fadeOut('fast', function () {
+                $('#theform').fadeIn();
+            });
+            $('#success,#fail,#noemail,#incorrectnricpassport,#noid,#emailexist').remove();
+            return false;
+        });
+
+        $(document).ready(function () {
+            var hash = window.location.hash;
+            if (hash != "") {
+                $(hash).show();
+                $('#initial_page').hide();
+            }
+            else {
+                $('#initial_page').show();
+            }
+        });
+    </script>
+
+
